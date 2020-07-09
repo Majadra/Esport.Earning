@@ -1,0 +1,82 @@
+#####################################
+#Here is would be mining information from EsportsEarnings.com
+#This is to make the data set more relevant for analysis
+#
+#Auther - Ran K.
+#July 2020
+#####################################
+
+#Installing Packages
+library(tidyverse)
+library(stringr)
+library(rvest)
+
+#Loading initial data
+E_Sport_Earnings <- read.csv("E-Sport Earnings.csv", stringsAsFactors = FALSE)
+
+################
+#Text mining
+################
+
+initial_link <- "https://www.esportsearnings.com/games/browse-by-genre"
+webpg <- read_html(initial_link)
+link_list <- paste("https://www.esportsearnings.com",webpg %>% html_nodes(".games_main_game_title a") %>% html_attr("href"),sep = "")
+game_list <- webpg %>% html_nodes(".games_main_game_title a") %>% html_text()
+game_stats <- webpg %>% html_nodes(".games_main_game_stats") %>% html_text()
+genres <- webpg %>% html_nodes(".games_main_genre_title") %>% html_text()
+webpg %>% html_nodes(".games_main_genre_header") %>% html_children()
+
+#Preparing a df an empty df for information that I will mine
+df <- data.frame()
+
+#Looping throgh each game and mining more information
+for (i in 1:length(link_list)) {
+  game_pg <- read_html(link_list[i])
+  
+  #Name of game
+  df[i,"Name"] <- game_pg %>% html_node(".info_box_title") %>% html_text()
+  
+  #Release year
+  df[i,"ReleaseYear"] <- game_pg %>% html_node(".format_row:nth-child(1) .info_text_value") %>% html_text()
+  
+  #tourny prize (will be taken form the game webpage)
+  df[i,"LargestPrizePool"] <- game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament+ .detail_list_prize") %>% html_text()
+  
+  #Name of biggest tourny - as tournemens could be one of two types of links, ill use an if statement
+  
+  if (!is.na(game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament a+ a") %>% html_text())) {
+    df[i,"LargestTournementName"] <- game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament a+ a") %>% html_text()
+    tourny_link <- game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament a+ a") %>% html_attr("href")
+  }
+  else {
+    df[i,"LargestTournementName"] <- game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament a") %>% html_text()
+    tourny_link <- game_pg %>% html_node(".highlight:nth-child(2) .detail_list_tournament a") %>% html_attr("href")
+  }
+  #if the link exists we gather more information
+  
+  if (!is.na(tourny_link)) {
+    
+    tourny_link <- paste("https://www.esportsearnings.com",tourny_link,sep = "")
+    tourny_pg <- read_html(tourny_link)
+    #tourny date
+    df[i,"DateOfTounement"] <- tourny_pg %>% html_node("time") %>% html_text()
+  
+    #tourny location
+    df[i,"LocationOfTournement"] <- tourny_pg %>% html_node(".info_box_title+ .info_box_inner .format_row:nth-child(1) .info_text_value") %>% html_text()
+  }
+}  
+#Treating game_stats
+  #As game_stats  is actully a string containing 3 different variables, ill split it first then add to the database.
+  #Splitting into 3 variables
+TotalPrizePool <- regexpr("(?<=\\$)(.*?)\\.\\d{2}",game_stats,perl = TRUE)
+TotalPrizePool <- regmatches(game_stats,TotalPrizePool)
+TotalPlayers<- regexpr("(?<=\\d{2})\\d*(?= Pl)",game_stats,perl = TRUE)
+TotalPlayers <- regmatches(game_stats,TotalPlayers)
+TotalTournements <- regexpr("(?<=ers|er)\\d*(?= T)",game_stats,perl = TRUE)
+TotalTournements <- regmatches(game_stats,TotalTournements)
+
+  #Adding the variables into the database
+df["TotalPrizePool"] <- TotalPrizePool
+df["TotalPlayers"] <- TotalPlayers
+df["TotalTournements"] <- TotalTournements
+write.csv(df,"EsportEarning.csv", row.names = FALSE)
