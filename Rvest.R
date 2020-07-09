@@ -11,9 +11,6 @@ library(tidyverse)
 library(stringr)
 library(rvest)
 
-#Loading initial data
-E_Sport_Earnings <- read.csv("E-Sport Earnings.csv", stringsAsFactors = FALSE)
-
 ################
 #Text mining
 ################
