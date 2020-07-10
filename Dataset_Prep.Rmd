@@ -1,0 +1,157 @@
+---
+title: "Dataset Preparation"
+author: "Ran K"
+date: "7/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#Installing Packages
+
+library(tidyverse)
+library(stringr)
+library(rvest)
+```
+
+# DataMining
+
+All data was taken from [EsportEarning.com](www.esportsearnings.com)
+
+## Mining part 1 - general information
+
+First ill do some preparation.
+
+```{r mining_part_1_prep}
+webpg1 <- read_html("https://www.esportsearnings.com/games/browse-by-genre")
+
+#Preparing list of links for each game
+link_list <- paste0("https://www.esportsearnings.com",webpg1 %>% html_nodes(".games_main_game_title a") %>% html_attr("href"))
+
+#Preparing an empty df to directly recieve the data that I will mine
+temp_df1 <- data.frame()
+
+```
+
+Then comes the text mining
+
+``` {r mining_part_1_mining}
+
+genres <- webpg1 %>%
+  html_nodes(".games_main_genre_header span") %>%
+  html_text()
+#genres variable will need some treatment before we add to the database
+
+#Looping throgh each game and mining more information
+for (i in 1:length(link_list)) {
+  game_pg <- read_html(link_list[i])
+  
+  #Name of game
+  temp_df1[i,"Name"] <- game_pg %>%
+    html_node(".info_box_title") %>%
+    html_text()
+  
+  #Release year
+  temp_df1[i,"ReleaseDate"] <- game_pg %>%
+    html_node(".format_row:nth-child(1) .info_text_value") %>%
+    html_text()
+  
+  #Largest tournement prize pool (will be taken from the game webpage)
+  temp_df1[i,"LargestPrizePool"] <- game_pg %>%
+    html_node(".highlight:nth-child(2) .detail_list_tournament+ .detail_list_prize") %>%
+    html_text()
+  
+}  
+
+```
+
+Here I will deal with the variable that needs extra attention before entering our dataframe
+
+``` {r mining_part_1_cleaning}
+
+############################
+#Treating and adding the genre variable
+############################
+
+#Creating a varibale which will will contain the list of genres
+gameGenres <- as.character()
+#using a loop i will duplicate the string indicating the
+# genre based on the number of games in each category
+
+for (i in seq(1,length(genres),2)) {
+  temp <- as.numeric(regmatches(genres[i+1],regexpr("\\d*",genres[i+1])))
+  gameGenres <- append(gameGenres,rep(genres[i],temp))
+}
+
+# Adding to database.
+temp_df1["genre"] <- gameGenres
+
+```
+
+## Mining Part 2 - Historical information
+
+You can also embed plots, for example:
+
+```{r mining_part_2}
+temp_df2 <- data.frame()
+for (i in 1998:2020) {
+  
+  
+  webpg2 <- read_html(paste0("https://www.esportsearnings.com/history/",i,"/games"))
+  games <- webpg2 %>% html_nodes(".detail_list_player a") %>% html_text()
+  
+  prizepool <- webpg2 %>% html_nodes(".detail_list_player+ .detail_list_prize") %>% html_text()
+  prizepool <- as.numeric(gsub("[\\$,]","",prizepool))
+  
+  players <- webpg2 %>% html_nodes(".detail_list_prize:nth-child(4)") %>% html_text()
+  players <- as.numeric(gsub("\\D","",players))
+  
+  tournaments <- webpg2 %>% html_nodes(".detail_list_prize~ .detail_list_prize+ .detail_list_prize") %>% html_text()
+  tournaments <- as.numeric(gsub("\\D","",tournaments))
+  
+  year <- webpg2 %>% html_nodes("h1") %>% html_text()
+  year <- gsub("\\D","",year)
+  year <- rep(year, length(games))
+  temp <- data.frame(Year = year, Earnings = prizepool, Players = players,
+                        Tournaments = tournaments, Game = games)
+  
+  temp_df2 <- rbind(temp_df2,temp)
+  
+}
+```
+
+# Database Preparation
+
+Here ill connenct the two temporary dataframe to form the final database.
+
+```{r df_preparation}
+
+df_final <- temp_df2
+
+for (i in 1:nrow(df_final)) {
+  df_final[i,"ReleaseDate"] <- 
+    temp_df1[match(df_final[i,"Game"],temp_df1[,"Name"]),"ReleaseDate"]
+  df_final[i,"Genre"] <- 
+    temp_df1[match(df_final[i,"Game"],temp_df1[,"Name"]),"genre"]
+}
+
+#Fixning an error
+df_final[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
+
+
+```
+
+
+All done
+
+
+
+
+
+
+
+
+
+
+
+
