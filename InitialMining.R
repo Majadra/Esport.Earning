@@ -1,6 +1,6 @@
 #####################################
-#Here is would be mining information from EsportsEarnings.com
-#This is to make the data set more relevant for analysis
+#Here I would be mining information from EsportsEarnings.com
+#in order to upload dataset  kaggle
 #
 #Auther - Ran K.
 #July 2020
