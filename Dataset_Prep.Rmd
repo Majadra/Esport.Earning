@@ -135,11 +135,22 @@ for (i in 1:nrow(df_final)) {
     temp_df1[match(df_final[i,"Game"],temp_df1[,"Name"]),"genre"]
 }
 
-#Fixning an error
+#Fixing an error
 df_final[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
 
+#Reordering columns
+col_order <- c("Year","Game","ReleaseDate","Genre","Earnings","Players","Tournaments")
+df_final <- df_final[,col_order]
+
+df_final$Genre <- as.factor(df_final$Genre)
+```
+
+```{r save_to_csv}
+
+write.csv(df_final,"EsportsEarnings_final.csv", row.names = FALSE)
 
 ```
+
 
 
 All done
