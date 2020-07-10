@@ -40,9 +40,9 @@ Then comes the text mining
 genres <- webpg1 %>%
   html_nodes(".games_main_genre_header span") %>%
   html_text()
-#genres variable will need some treatment before we add to the database
+#The genres variable will need some treatment before we add it to the database
 
-#Looping throgh each game and mining more information
+#Looping through each game and mining more information
 for (i in 1:length(link_list)) {
   game_pg <- read_html(link_list[i])
   
@@ -51,7 +51,7 @@ for (i in 1:length(link_list)) {
     html_node(".info_box_title") %>%
     html_text()
   
-  #Release year
+  #Release date
   temp_df1[i,"ReleaseDate"] <- game_pg %>%
     html_node(".format_row:nth-child(1) .info_text_value") %>%
     html_text()
