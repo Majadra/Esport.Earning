@@ -56,11 +56,6 @@ for (i in 1:length(link_list)) {
     html_node(".format_row:nth-child(1) .info_text_value") %>%
     html_text()
   
-  #Largest tournement prize pool (will be taken from the game webpage)
-  temp_df1[i,"LargestPrizePool"] <- game_pg %>%
-    html_node(".highlight:nth-child(2) .detail_list_tournament+ .detail_list_prize") %>%
-    html_text()
-  
 }  
 
 ```
@@ -88,16 +83,15 @@ temp_df1["genre"] <- gameGenres
 
 ```
 
-## Mining Part 2 - Historical information
+## Mining Part 2 - Monthly historical information
 
-You can also embed plots, for example:
 
 ```{r mining_part_2}
 temp_df2 <- data.frame()
 for (i in 1998:2020) {
+  for (j in 1:12) {
   
-  
-  webpg2 <- read_html(paste0("https://www.esportsearnings.com/history/",i,"/games"))
+  webpg2 <- read_html(paste0("https://www.esportsearnings.com/history/",i,"-",j,"/games"))
   games <- webpg2 %>% html_nodes(".detail_list_player a") %>% html_text()
   
   prizepool <- webpg2 %>% html_nodes(".detail_list_player+ .detail_list_prize") %>% html_text()
@@ -109,14 +103,13 @@ for (i in 1998:2020) {
   tournaments <- webpg2 %>% html_nodes(".detail_list_prize~ .detail_list_prize+ .detail_list_prize") %>% html_text()
   tournaments <- as.numeric(gsub("\\D","",tournaments))
   
-  year <- webpg2 %>% html_nodes("h1") %>% html_text()
-  year <- gsub("\\D","",year)
-  year <- rep(year, length(games))
-  temp <- data.frame(Year = year, Earnings = prizepool, Players = players,
+  date <- paste0(j,"/",i)
+  date <- rep(date, length(games))
+  temp <- data.frame(Date = date, Earnings = prizepool, Players = players,
                         Tournaments = tournaments, Game = games)
   
   temp_df2 <- rbind(temp_df2,temp)
-  
+  }
 }
 ```
 
@@ -139,11 +132,19 @@ for (i in 1:nrow(df_final)) {
 df_final[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
 
 #Reordering columns
-col_order <- c("Year","Game","ReleaseDate","Genre","Earnings","Players","Tournaments")
+col_order <- c("Date","Game","ReleaseDate","Genre","Earnings","Players","Tournaments")
 df_final <- df_final[,col_order]
 
-df_final$Genre <- as.factor(df_final$Genre)
 ```
+
+
+```{r df_preparation2}
+df_final$Genre <- as.factor(df_final$Genre)
+df_final$Date <- paste0("01/",df_final$Date)
+df_final$Date <- as.Date(df_final$Date, format = "%d/%m/%Y")
+
+```
+
 
 ```{r save_to_csv}
 
