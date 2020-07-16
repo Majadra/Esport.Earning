@@ -129,7 +129,7 @@ for (i in 1:nrow(df_final)) {
 }
 
 #Fixing an error
-df_final[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
+df_final$ReleaseDate[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
 
 #Reordering columns
 col_order <- c("Date","Game","ReleaseDate","Genre","Earnings","Players","Tournaments")
