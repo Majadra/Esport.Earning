@@ -31,6 +31,8 @@ str(df)
 # I would like to change the "Year" and "ReleaseDate" variables into date format
 
 df$Date <- as.Date(df$Date)
+
+#fixing a small error
 df[which(df$ReleaseDate==11),"ReleaseDate"] <- 2011 #checked online
 df$ReleaseDate <- paste0("01/01/",df$ReleaseDate)
 df$ReleaseDate <- as.Date(df$ReleaseDate,format = "%d/%m/%Y")
@@ -138,9 +140,9 @@ ggplot(data = Earnings_by_genre,aes(x = Genre,y = Number_of_games, fill = Genre)
 ``` {r Avg_earnings_per_releasedate}
 # Creating a dataframe with the top 5 games
 top5 <- Earnings_by_game[order(Earnings_by_game$Earnings,decreasing = TRUE),][1:5,]
-top5$[which(top5$Game == "Counter-Strike: Global Offensive")] <- "CS:GO"
-top5[which(top5$Game == "League of Legends")] <- "LOL"
-top5[which(top5$Game == "StarCraft II")] <- "SC2"
+top5$Game[which(top5$Game == "Counter-Strike: Global Offensive")] <- "CS:GO"
+top5$Game[which(top5$Game == "League of Legends")] <- "LOL"
+top5$Game[which(top5$Game == "StarCraft II")] <- "SC2"
 
 
 # Plotting
