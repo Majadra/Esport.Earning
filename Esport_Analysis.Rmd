@@ -1,0 +1,171 @@
+---
+title: "Esport_Analysis"
+author: "Ran K"
+date: "7/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(scales)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+<center><h2>Loading data</center></h2>
+<br>
+
+```{r Load Data}
+df <- read.csv("EsportsEarnings_final.csv")
+
+#Quick variable summary.
+str(df)
+```
+
+<center><h2>Some variable manipulation</center></h2>
+
+
+```{r variable_manipulation_dates}
+# I would like to change the "Year" and "ReleaseDate" variables into date format
+
+df$Date <- as.Date(df$Date)
+df[which(df$ReleaseDate==11),"ReleaseDate"] <- 2011 #checked online
+df$ReleaseDate <- paste0("01/01/",df$ReleaseDate)
+df$ReleaseDate <- as.Date(df$ReleaseDate,format = "%d/%m/%Y")
+```
+
+
+
+
+
+<center><h2> Explanetory Data Analysis</h2></center>
+<br>
+
+The first think I will check is quite obvious - how much prize money was distributed by year and by genre.
+
+```{r Earning_timeseries,echo = FALSE}
+#Disabling scientific annotation
+options(scipen = 100)
+
+# Creating a dataframe
+Earning_timeseries <- df %>% select(Earnings,Date) %>% filter(Earnings > 0) %>% group_by(Date) %>% summarise(Earnings = sum(Earnings))
+Earning_timeseries$Year <- format(Earning_timeseries$Date,"%Y")
+
+# Plotting
+ggplot(data = Earning_timeseries,aes(x = Date, y = Earnings)) +
+  geom_line(color = "Red") +
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = label_number(scale = 1/1000000)) +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
+  labs(title = "Esport monthly earnings", subtitle = "In millions of dollars", y = "Earnings") +
+  theme_classic() +
+  geom_hline(yintercept = 0, linetype="dashed")
+
+# Plotting yearly earnings
+ggplot(data = Earning_timeseries %>%
+         group_by(Year) %>%
+         summarise(Earnings_in_millions = round((sum(Earnings)/1000000),1)),aes(x = Year, y = Earnings_in_millions)) +
+  geom_bar(stat = "Identity", fill = "lightblue") +
+  geom_text(aes(label = Earnings_in_millions),
+            vjust = -0.3,hjust = 0.55, size = 3.5) +
+  theme_classic() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.text.x = element_text(angle=90)) + 
+  labs(title = "Earnings by year", subtitle = "In millions of dollars", y = element_blank())
+  
+```
+<br>
+We can see that the Esports industry picked up towards 2011 - 2012, reaching a whopping 228.9 miliion dollar in prizes distributed in 2019. <br>
+
+let's look at the diffrenet genres <br>
+
+```{r Genre_manupulation,echo = FALSE}
+# Creating a dataframe
+df$Genre <- gsub(" Game","",df$Genre)
+df$Genre[which(df$Genre == "Multiplayer Online Battle Arena")] <- "MOBA"
+df$Genre[which(df$Genre == "Role-Playing")] <- "RPG"
+df$Genre[which(df$Genre == "Third-Person Shooter")] <- "TPS"
+df$Genre[which(df$Genre == "First-Person Shooter")] <- "FPS"
+```
+
+
+```{r A_look_at_genres,echo = FALSE}
+# Creating a dataframe
+Earnings_by_game <- df %>% select(Game,Genre,Earnings,ReleaseDate) %>% filter(Earnings > 0) %>% group_by(Game,Genre,ReleaseDate) %>% summarise(Earnings = sum(Earnings))
+
+# Creating Earnings_by_genre
+Earnings_by_genre <- Earnings_by_game %>%
+  group_by(Genre) %>%
+  summarise(Total_earnings = round(sum(Earnings)/1000000,2),
+            Average_earnings = round(mean(Earnings)/1000,2),
+            Median_Earnings = round(median(Earnings)/1000,2),
+            Number_of_games = n())
+
+# Creating Earnings_by_releasedate
+Earnings_by_releasedate <- Earnings_by_game %>%
+  group_by(ReleaseDate) %>%
+  summarise(Total_earnings = round(sum(Earnings)/1000000,2),
+            Average_earnings = round(mean(Earnings)/1000,2),
+            Median_Earnings = round(median(Earnings)/1000,2),
+            Number_of_games = n())
+```
+
+
+``` {r Total_earnings_per_genre}
+# Plotting
+ggplot(data = Earnings_by_genre,aes(x = Genre,y = Total_earnings, fill = Genre)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Total_earnings),
+            vjust = -0.3,hjust = 0.55, size = 3.5) +
+  theme_classic() +
+  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right") + 
+  labs(title = "Total Earnings", subtitle = "In millions of dollars", y = element_blank(), x = element_blank())
+```
+
+
+``` {r Total_games_per_genre}
+# Plotting
+ggplot(data = Earnings_by_genre,aes(x = Genre,y = Number_of_games, fill = Genre)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Number_of_games),
+            vjust = -0.3,hjust = 0.55, size = 3.5) +
+  theme_classic() +
+  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right") + 
+  labs(title = "Number of games per genre", y = element_blank(), x = element_blank())
+```
+  
+``` {r Avg_earnings_per_releasedate}
+# Creating a dataframe with the top 5 games
+top5 <- Earnings_by_game[order(Earnings_by_game$Earnings,decreasing = TRUE),][1:5,]
+top5$[which(top5$Game == "Counter-Strike: Global Offensive")] <- "CS:GO"
+top5[which(top5$Game == "League of Legends")] <- "LOL"
+top5[which(top5$Game == "StarCraft II")] <- "SC2"
+
+
+# Plotting
+ggplot(data = Earnings_by_game,aes(x = ReleaseDate,y = Earnings,fill = Genre)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  scale_y_continuous(labels = scales::label_number(scale = 1/1000000)) +
+  labs(title = "Earnings by release date",subtitle = "In millions of dollars", y = element_blank(), x = element_blank()) +
+  geom_text(aes(x = ReleaseDate, y = Earnings,label = Game), data = top5,size = 3.5)
+```  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
