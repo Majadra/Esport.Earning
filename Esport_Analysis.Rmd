@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(ggrepel)
 library(scales)
+library(gridExtra)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -90,37 +91,114 @@ First, let's look at how the earnings developped through the years.
 options(scipen = 100)
 
 # Creating a dataframe
-Earning_timeseries <- df %>% select(Earnings,Date) %>% filter(Earnings > 0) %>% group_by(Date) %>% summarise(Earnings = sum(Earnings))
+Earning_timeseries <- df %>% select(Earnings,Date,Tournaments) %>% filter(Earnings > 0) %>% group_by(Date) %>% summarise(Earnings_in_millions = round((sum(Earnings)/1000000),1), Tournaments = sum(Tournaments))
 Earning_timeseries$Year <- format(Earning_timeseries$Date,"%Y")
+Earning_timeseries$Month <- format(Earning_timeseries$Date,"%m")
+```
 
-# Plotting
-ggplot(data = Earning_timeseries,aes(x = Date, y = Earnings)) +
-  geom_line(color = "Red") +
-  theme(legend.position = "bottom") +
-  scale_y_continuous(labels = label_number(scale = 1/1000000)) +
-  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
-  labs(title = "Esport monthly earnings", subtitle = "In millions of dollars", y = "Earnings") +
-  theme_classic() +
-  geom_hline(yintercept = 0, linetype="dashed")
 
+```{r Yearly_earnings, echo = FALSE}
 # Plotting yearly earnings
 ggplot(data = Earning_timeseries %>%
          group_by(Year) %>%
-         summarise(Earnings_in_millions = round((sum(Earnings)/1000000),1)),aes(x = Year, y = Earnings_in_millions)) +
+         summarise(Earnings_in_millions = sum(Earnings_in_millions)), aes(x = Year, y = Earnings_in_millions)) +
   geom_bar(stat = "Identity", fill = "lightblue") +
   geom_text(aes(label = Earnings_in_millions),
             vjust = -0.3,hjust = 0.55, size = 3.5) +
   theme_classic() +
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.text.x = element_text(angle=90)) + 
-  labs(title = "Earnings by year", subtitle = "In millions of dollars", y = element_blank())
+  labs(title = "Earnings by year", subtitle = "In millions of dollars", y = element_blank(),x = element_blank())
 
+ggplot(data = Earning_timeseries %>%
+         group_by(Year) %>%
+         summarise(Earnings_in_millions = sum(Earnings_in_millions), Tournaments = sum(Tournaments)), aes(x = as.Date(Year, format = "%Y"), y = Tournaments, group = 1)) +
+  geom_line(color = "darkred",size = 1, linetype = "longdash") +
+  geom_point(color = "darkblue") +
+  geom_text(aes(label = Tournaments), vjust = - 1,hjust = 0.55, size = 3) +
+  theme(legend.position='none') +
+  labs(title = "Tournaments per year", y = element_blank(),x = element_blank()) +
+  ylim(0,6000)
 ```
 <br>
-
+__It is important to note that 2020 is not finished and this is why the earnings are low.
 We can see that the Esports industry picked up towards 2011 - 2012, reaching a whopping 228.9 miliion dollar in prizes distributed in 2019. <br>
-*It is important to note that 2020 is not finished and this is why the earnings are low. <br><br>
+ <br>
+
+Tournament wise, we see that the number of tournaments started to skyrocket in 2011, stabilizing at the 4500 - 5500 range from 2015 onwards. <br> 
+
+
+Now let's look at the monthly data: is there a specific period with more tournaments and more prize earnings? 
+(for these plots I will filter out all datapoints from 2020, as it is not over yet).
+
+```{r Earnings_Per_month, echo = FALSE}
+#Creating a 5 year interval for the dataframe
+
+# Plotting
+p1 <- ggplot(data = Earning_timeseries %>% 
+         filter(Date < as.Date("2020-01-01")) %>%
+         group_by(Month) %>%
+         summarise(Earnings_in_millions = sum(Earnings_in_millions)), aes(x = Month, y = Earnings_in_millions)) +
+  geom_bar(stat = "identity",fill = "lightblue") +
+  theme(legend.position = "bottom") +
+  geom_text(aes(label = Earnings_in_millions), vjust = -0.3,hjust = 0.55, size = 3) +
+  labs(title = "Esport monthly earnings", subtitle = "In millions of dollars", y = element_blank()) +
+  theme_classic() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+p2 <- ggplot(data = Earning_timeseries %>%
+         filter(Date < as.Date("2020-01-01")) %>%
+         group_by(Month) %>%
+         summarise(Tournaments = sum(Tournaments)), aes(x = Month, y = Tournaments,fill = Month)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  theme(legend.position='none') +
+  labs(title = "Number of tournaments", y = element_blank())
+
+grid.arrange(p3,p4,ncol = 2)
+rm(list = c("p1","p2"))
+```
+
+We can see that most of the earnings came from the months of july and august, and as we see that the number of tournements isn't especially higher in these months, it is safe to say that the avarage prizepool is higher in these times (which makes since, as the summer is a peak periode in the Esports industry).
+
+### Did the coronavirus pandemic affect earnings and amount of tournaments?
+
+To check this, ill creat a line plot of months with each line representing a year from 2016 onwards, if the coronavirus had no affect, we should see that 2020 looks to be similar to other years in the matter of tournaments, and higher than other years earning wise.
+
+```{r Coronavirus_effect_earnings, echo = FALSE, warning = FALSE}
+# Filtering to last 5 years and plotting monthly earnings
+
+ggplot(data = Earning_timeseries %>%
+  filter(Date >= as.Date("2016-01-01")), aes(x = Month, y = Earnings_in_millions, group = Year)) +
+  geom_line(aes(color = Year), size = 1) +
+  theme_minimal() +
+  labs(title = "Monthly earnings 2016 - 2020",subtitle = "In millions of dollars",x = element_blank(), y = element_blank())
+
+```
+We can see that 2020 did not open well as expected, with weaker earnings from january to june (except for fabruary). <br>
+In needs to be said though, that the negative effect of the pandemic is not that significative, I would like to revisit this charte when we will have the complete data for the months of july and august (biggest months, earning wise). <br>
+
+Let's look at the tournament plot now.
+
+
+```{r Coronavirus_effect_tournaments, echo = FALSE, warning = FALSE}
+# Filtering to last 5 years and plotting monthly amount of tournaments
+
+ggplot(data = Earning_timeseries %>%
+  filter(Date >= as.Date("2016-01-01")), aes(x = Month, y = Tournaments, group = Year)) +
+  geom_line(aes(color = Year), size = 1) +
+  theme_minimal() +
+  labs(title = "Monthly amount of tournaments 2016 - 2020", x = element_blank(), y = element_blank()) +
+  ylim(200,600)
+
+```
+
+Here there is a noticable decrease in the amount of tournaments being held.
+Again, it would be interesting to see how if this negative trend persists in the rest of 2020. <br>
+
 
 Let's look at the diffrenet genres <br>
+
+
 
 ```{r A_look_at_genres,echo = FALSE}
 # Creating the dataframes
@@ -186,7 +264,7 @@ ggplot(data = Earnings_by_game,aes(x = ReleaseDate,y = Earnings,fill = Genre)) +
   scale_y_continuous(labels = scales::label_number(scale = 1/1000000)) +
   labs(title = "Earnings by release date",subtitle = "In millions of dollars", y = element_blank(), x = element_blank()) +
   geom_text(aes(x = ReleaseDate, y = Earnings,label = Game), data = top5,size = 3.5)
-
+ rm(top5)
 ```  
 <br>
 We can see that there is no real correlation between the release date of the game and the success it will have in the Esports scene.<br>
@@ -201,7 +279,7 @@ In this part i'd like to create new variables which will help in the analysis pr
 <h3>Creating **Franchise** variable</h3><br>
 As a lot of the games are a part of a franchise containing several games, it may help us if we look at the date looking at the entire franchise, for example, let's take a look at the **Street - Fighter** franchise.<br>
 
-```{r Street_Fighter_look,echo = TRUE, warning = FALSE}
+```{r Street_Fighter_look,echo = TRUE, warning = FALSE,tidy = TRUE}
 # Creating a dataframe with games with a name containing the name "Street Fighter"
 df_sf <- Earnings_by_game[which(grepl("[Ss]treet [Ff]ighter",Earnings_by_game$Game) == TRUE),]
 df_sf
@@ -221,9 +299,12 @@ To figure out which games are a part of which franchise, ill work with the __Ear
 
 # At the start ill cast a large net, finding the first 5 words of each game.
 # then filtering to find groups of 2 or more games with the same 5 first words in the title.
+
 temp_5_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Earnings_by_game$Game)
+# Creating a dataframe to recieve the matches
 temp_5_words <- data.frame(words = regmatches(Earnings_by_game$Game,temp_5_words))
-temp_5_words <-  temp_5_words %>%group_by(words) %>% summarise(n=n())
+temp_5_words <-  temp_5_words %>% group_by(words) %>% summarise(n=n())
+# Filtering and presnting
 temp_5_words <- temp_5_words %>% filter(n >1)
 temp_5_words
 
@@ -238,9 +319,11 @@ rm(temp_5_words)
 ```
 <br>
 
-Now we move into the 4 words category, but at first we will need to filter out the games with a valid francise variable, ill put all the games that are left in another temporary dataframe - **Franchise_check**.
+Now we move into the 4 words category, but at first we will need to filter out the games with a valid francise variable, ill put all the games that are left in another temporary dataframe - **Franchise_check**. <br>
 
-```{r franchise_search_4_words, warning = FALSE}
+I'll continue the same process for expressions that inclue 4, 3, 2 and then one word (ill not present it to not clutter too much).
+
+```{r franchise_search_4_words, warning = FALSE, include = FALSE}
 
 Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
 temp_4_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
@@ -261,7 +344,6 @@ Earnings_by_game[which(grepl("Under Night In-Birth",Earnings_by_game$Game) == TR
 rm(temp_4_words)
 ```
 
-I will do the same for 3, 2 and then one word (ill not present it to not clutter too much). <br>
 
 ```{r franchise_search_3_words, include = FALSE}
 
@@ -391,6 +473,7 @@ Earnings_by_game %>% filter(is.na(Earnings_by_game$Franchise))
 # Deleating the df
 rm(Franchise_check)
 ```
+
 Now let's do some analysis about different franchises in the Esports scene. <br>
 
 First, let's see which if after itroducing franchises, the list of top 10 in distribution of prize money change.
@@ -407,7 +490,7 @@ Earnings_by_franchise[order(Earnings_by_franchise$Earnings,decreasing = TRUE),][
 ```
 
 <br>
-As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th placem with 15 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
+As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th place with 15 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
 
 
 ```{r Largest_amount_of_tournaments, echo = FALSE}
@@ -416,8 +499,6 @@ Earnings_by_franchise[order(Earnings_by_franchise$Tournaments,decreasing = TRUE)
 ```
 <br>
 Also in hte matter of the amount of tournaments, except the Call of Duty and WarCraft franchises, the list stays about the same.
-
-
 
 
 ``` {r Total_franchises_per_genre,echo = FALSE}
@@ -438,6 +519,7 @@ ggplot(data = Franchise_by_genre,aes(x = Genre,y = Number_of_franchises, fill = 
 
 ```
 
+<br>
 
 
 
