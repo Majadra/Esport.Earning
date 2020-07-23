@@ -3,17 +3,23 @@ title: "Esport_Analysis"
 author: "Ran K"
 date: "7/14/2020"
 output: html_document
+  
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 library(tidyverse)
 library(ggrepel)
 library(scales)
 library(gridExtra)
-knitr::opts_chunk$set(echo = TRUE)
+library(forcats)
+library(ggrepel)
 ```
 
-
+```{r knitr_otions, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.width=9, fig.height=6)
+```
 
 <center><h2>Loading data</center></h2>
 <br>
@@ -48,45 +54,116 @@ df$Genre[which(df$Genre == "Third-Person Shooter")] <- "TPS"
 df$Genre[which(df$Genre == "First-Person Shooter")] <- "FPS"
 ```
 
-<center><h2> Explanetory Data Analysis</h2></center>
+<center><h2> Explanatory Data Analysis</h2></center>
 <br>
+
+**An important note**, all the information from this dataset comes from [EsportsEarnings](https://www.esportsearnings.com), this site gets its information by different contributers. As the data is collected by volunteers, it is likely that there would be errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened more then 10-15 years ago, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
 
 First of all, let's look at which games had the biggest amount of money distributed.
 
-```{r Biggest_games,echo = TRUE}
+```{r Biggest_games}
 # Creating a dataframe
 Earnings_by_game <- df %>%
   group_by(Game,Genre,ReleaseDate) %>%
   summarise(Earnings = sum(Earnings),Tournaments = sum(Tournaments),Players = sum(Players))
 
-# Ordering and keeping the 10 biggest games.
-Earnings_by_game[order(Earnings_by_game$Earnings,decreasing = TRUE),][1:10,c(1:3,4,5)]
+# Adding a rank for the earnings per game
+Earnings_by_game$Earnings_rank <- as.integer(rank(-Earnings_by_game$Earnings))
+
+# Adding a precent from total variable
+Earnings_by_game$Percent_from_total <- Earnings_by_game$Earnings / sum(Earnings_by_game$Earnings)
+
+# Presenting top10
+Earnings_by_game[order(Earnings_by_game$Earnings_rank),] %>%
+  filter(Earnings_rank <= 10) %>%
+  select(Game,Genre,Earnings,Percent_from_total)
 
 # Creating statistical summary of the earnings.
 summary(Earnings_by_game$Earnings)
+
 ```
 <br>
 In the top 10 biggest games, there are no apparent surprises, we find **Dota 2**, **CS:GO**,**Fortnite**,**League of Legends**, and **Starcraft 2** at the top. <br>
 Also, the data shows that the earnings are extremely right skewed, as the mean is almost 4 times the size of the median.<br>
 
-**An important note**, all the information from this dataset comes from [EsportsEarnings](https://www.esportsearnings.com) ,this site gets its information by different people who document the different tournaments. As this is the case, it is highely like that there would be errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened more then 10-15 years ago, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
+```{r Game_earnings_pieplot}
+
+# Creating a specific index for the top 10 games
+Earnings_by_game$PlotIndex <- if_else(Earnings_by_game$Earnings_rank <= 10,Earnings_by_game$Game,"Other")
+# Reordering based on the ranking for changing the order of the levels
+Earnings_by_game <- arrange(Earnings_by_game,Earnings_rank)
+
+temp <- c(Earnings_by_game$PlotIndex[1:10],"Other")
+Earnings_by_game$PlotIndex <- fct_relevel(Earnings_by_game$PlotIndex,c(temp))
+# Plotting
+ggplot(Earnings_by_game,aes(x = "",y = Percent_from_total,fill = PlotIndex)) +
+  geom_bar(width = 1, stat = "identity",color = "black") +
+  theme_minimal() +
+  theme(legend.position = "right", legend.title = element_text(face = "bold"),
+        axis.text.x=element_blank()) +
+  coord_polar("y", start = 0) +
+  labs(title = "Total earning per game", y = "From total earnings", x = element_blank(),
+       fill = "Game Title") 
+```
+<br>
+We can see that the earnings are highly concentrated: about 75% of the total earnings come from the biggest 10 games.
+
 
 Now let's see which game had the most tournaments
 
-```{r Most_tournaments,echo = TRUE}
-# Ordering and keeping the 10 biggest games, tournament wise.
-Earnings_by_game[order(Earnings_by_game$Tournaments,decreasing = TRUE),][1:10,c(1,4:6)]
+```{r Most_tournaments}
+# Deleating all temporary variables which are now unnecessary
+Earnings_by_game <- subset(Earnings_by_game, select = -c(Percent_from_total,PlotIndex))
+
+# Adding a rank for the tournaments per game
+Earnings_by_game$Tournament_rank <- as.integer(rank(-Earnings_by_game$Tournaments))
+
+# Adding a precent from total variable
+Earnings_by_game$Percent_from_total <- Earnings_by_game$Tournaments / sum(Earnings_by_game$Tournaments)
+
+# Presenting top10
+Earnings_by_game[order(Earnings_by_game$Tournament_rank),] %>%
+  filter(Tournament_rank <= 10) %>%
+  select(Game,Genre,Tournaments,Percent_from_total)
 ```
 <br>
 
 It is not surprising that we find a similarity between the two lists: Dota 2, Starcraft 2, League of Legends and Counter-Strike: Global Offensive are all in the top 10 in prizepool earnings. <br>
 What is somewhat interaesting is the fact that we have 3 different Super Smash Bros games, all in the top 10, this is while being not as big in the matter of prize pools (1.2M, 1.5M and 3.1M). <br>
+Also, it seems as though the amount of tournaments is concentrated between a few big games, but less then the earnings, let's visualise.
 
+
+```{r Tournaments_pieplot}
+
+# Creating a specific index for the top 10 games (tournament wise)
+Earnings_by_game$PlotIndex <- if_else(Earnings_by_game$Tournament_rank <= 10,Earnings_by_game$Game,"Other")
+# Reordering based on the ranking for changing the order of the levels
+Earnings_by_game <- arrange(Earnings_by_game,Tournament_rank)
+
+temp <- c(Earnings_by_game$PlotIndex[1:10],"Other")
+Earnings_by_game$PlotIndex <- fct_relevel(Earnings_by_game$PlotIndex,c(temp))
+# Plotting
+ggplot(Earnings_by_game,aes(x = "",y = Percent_from_total,fill = PlotIndex)) +
+  geom_bar(width = 1, stat = "identity",color = "black") +
+  theme_minimal() +
+  theme(legend.position = "right", legend.title = element_text(face = "bold"),
+        axis.text.x=element_blank()) +
+  coord_polar("y", start = 0) +
+  labs(title = "Total tournements per game", y = "From total tournaments", x = element_blank(),
+       fill = "Game Title") 
+
+```
+<br>
+Indeed, tournaments are a little bit less concetrated then earnings.
+<br>
 
 Let's take a deeper look at the data - <br>
 First, let's look at how the earnings developped through the years.
 
 ```{r Earning_timeseries,echo = FALSE}
+# Deleating all temporary variables which are now unnecessary
+Earnings_by_game <- subset(Earnings_by_game, select = -c(Percent_from_total,PlotIndex))
+
 #Disabling scientific annotation
 options(scipen = 100)
 
@@ -97,7 +174,7 @@ Earning_timeseries$Month <- format(Earning_timeseries$Date,"%m")
 ```
 
 
-```{r Yearly_earnings, echo = FALSE}
+```{r Yearly_earnings}
 # Plotting yearly earnings
 ggplot(data = Earning_timeseries %>%
          group_by(Year) %>%
@@ -130,7 +207,7 @@ Tournament wise, we see that the number of tournaments started to skyrocket in 2
 Now let's look at the monthly data: is there a specific period with more tournaments and more prize earnings? 
 (for these plots I will filter out all datapoints from 2020, as it is not over yet).
 
-```{r Earnings_Per_month, echo = FALSE}
+```{r Earnings_Per_month}
 #Creating a 5 year interval for the dataframe
 
 # Plotting
@@ -154,17 +231,17 @@ p2 <- ggplot(data = Earning_timeseries %>%
   theme(legend.position='none') +
   labs(title = "Number of tournaments", y = element_blank())
 
-grid.arrange(p3,p4,ncol = 2)
+grid.arrange(p1,p2,ncol = 2)
 rm(list = c("p1","p2"))
 ```
 
 We can see that most of the earnings came from the months of july and august, and as we see that the number of tournements isn't especially higher in these months, it is safe to say that the avarage prizepool is higher in these times (which makes since, as the summer is a peak periode in the Esports industry).
 
-### Did the coronavirus pandemic affect earnings and amount of tournaments?
+### Did the coronavirus pandemic effect earnings and amount of tournaments?
 
 To check this, ill creat a line plot of months with each line representing a year from 2016 onwards, if the coronavirus had no affect, we should see that 2020 looks to be similar to other years in the matter of tournaments, and higher than other years earning wise.
 
-```{r Coronavirus_effect_earnings, echo = FALSE, warning = FALSE}
+```{r Coronavirus_effect_earnings}
 # Filtering to last 5 years and plotting monthly earnings
 
 ggplot(data = Earning_timeseries %>%
@@ -192,15 +269,13 @@ ggplot(data = Earning_timeseries %>%
 
 ```
 
-Here there is a noticable decrease in the amount of tournaments being held.
+Here **there is** a noticable decrease in the amount of tournaments being held.
 Again, it would be interesting to see how if this negative trend persists in the rest of 2020. <br>
 
 
 Let's look at the diffrenet genres <br>
 
-
-
-```{r A_look_at_genres,echo = FALSE}
+```{r A_look_at_genres}
 # Creating the dataframes
 
 # Creating Earnings_by_genre
@@ -249,22 +324,20 @@ ggplot(data = Earnings_by_genre,aes(x = Genre,y = Number_of_games, fill = Genre)
  
 Now let's look at the release date, do games from a specific year had a biggest impact on the Esports industry?
  
-``` {r Avg_earnings_per_releasedate, echo = FALSE}
-# Creating a dataframe with the top 5 games for the annotations
-top5 <- Earnings_by_game[order(Earnings_by_game$Earnings,decreasing = TRUE),][1:5,]
-top5$Game[which(top5$Game == "Counter-Strike: Global Offensive")] <- "CS:GO"
-top5$Game[which(top5$Game == "League of Legends")] <- "LOL"
-top5$Game[which(top5$Game == "StarCraft II")] <- "SC2"
-
+``` {r Avg_earnings_per_releasedate}
 
 # Plotting
 ggplot(data = Earnings_by_game,aes(x = ReleaseDate,y = Earnings,fill = Genre)) +
   geom_bar(stat = "identity",col = "Darkgrey") +
   theme_classic() +
   scale_y_continuous(labels = scales::label_number(scale = 1/1000000)) +
-  labs(title = "Earnings by release date",subtitle = "In millions of dollars", y = element_blank(), x = element_blank()) +
-  geom_text(aes(x = ReleaseDate, y = Earnings,label = Game), data = top5,size = 3.5)
- rm(top5)
+  labs(title = "Earnings by release date",subtitle = "In millions of dollars",
+    y = element_blank(), x = element_blank()) + 
+  ggrepel::geom_text_repel(
+    data = subset(Earnings_by_game,Earnings_rank <= 5), aes(label = Game), size = 3.5, box.padding = unit(0.35, "lines"),
+    point.padding = unit(0.3, "lines")
+  )
+
 ```  
 <br>
 We can see that there is no real correlation between the release date of the game and the success it will have in the Esports scene.<br>
@@ -279,11 +352,11 @@ In this part i'd like to create new variables which will help in the analysis pr
 <h3>Creating **Franchise** variable</h3><br>
 As a lot of the games are a part of a franchise containing several games, it may help us if we look at the date looking at the entire franchise, for example, let's take a look at the **Street - Fighter** franchise.<br>
 
-```{r Street_Fighter_look,echo = TRUE, warning = FALSE,tidy = TRUE}
+```{r Street_Fighter_look,echo = TRUE}
 # Creating a dataframe with games with a name containing the name "Street Fighter"
 df_sf <- Earnings_by_game[which(grepl("[Ss]treet [Ff]ighter",Earnings_by_game$Game) == TRUE),]
 df_sf
-print(paste0("The number_of_games is ",nrow(df_sf),"and the total earnings for the franchise is ",sum(df_sf$Earnings)))
+print(paste0("The number_of_games is ",nrow(df_sf)," and the total earnings for the franchise is ",sum(df_sf$Earnings)))
 
 # Removing the df as it is unnecessary
 rm(df_sf)
@@ -467,7 +540,7 @@ for (i in seq(1:nrow(Earnings_by_game)))
   }
 }
 
-Earnings_by_game %>% filter(is.na(Earnings_by_game$Franchise))
+sum(is.na(Earnings_by_game$Franchise))
 # All done!
 
 # Deleating the df
@@ -493,22 +566,23 @@ Earnings_by_franchise[order(Earnings_by_franchise$Earnings,decreasing = TRUE),][
 As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th place with 15 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
 
 
-```{r Largest_amount_of_tournaments, echo = FALSE}
+```{r Largest_amount_of_tournaments}
 # Ordering and keeping the 10 biggest franchises
-Earnings_by_franchise[order(Earnings_by_franchise$Tournaments,decreasing = TRUE),][1:10,]
+Earnings_by_franchise[order(Earnings_by_franchise$Tournaments,decreasing = TRUE),][1:10,c(1,3,4,5)]
 ```
 <br>
-Also in hte matter of the amount of tournaments, except the Call of Duty and WarCraft franchises, the list stays about the same.
+Also in the matter of the amount of tournaments, except the Call of Duty and WarCraft franchises, the list stays about the same.
 
 
-``` {r Total_franchises_per_genre,echo = FALSE}
-
+``` {r Total_franchises_per_genre}
 # Creating another df, this time for the plot
+
 Franchise_by_genre <- Earnings_by_franchise %>% 
   group_by(Genre) %>%
   summarise(Number_of_franchises = n(),Tournaments = sum(Tournaments),Earnings = sum(Earnings),Number_of_games = sum(Size),Avg_games_per_franchise = round( (sum(Size)/n()),2))
 
 # Plotting
+
 ggplot(data = Franchise_by_genre,aes(x = Genre,y = Number_of_franchises, fill = Genre)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = Number_of_franchises),
