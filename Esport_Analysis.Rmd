@@ -368,7 +368,7 @@ It is fair to say that the entire franchise had destruted prizes in an amount of
 
 To figure out which games are a part of which franchise, ill work with the __Earnings_per_game__ dataframe (as it has 1 observation per game, it is easier to work with) and use some regular expressions to find game titles which have identical words in it.
 
-```{r franchise_search_5_words, warning = FALSE}
+```{r franchise_search_5_words}
 
 # At the start ill cast a large net, finding the first 5 words of each game.
 # then filtering to find groups of 2 or more games with the same 5 first words in the title.
@@ -396,7 +396,7 @@ Now we move into the 4 words category, but at first we will need to filter out t
 
 I'll continue the same process for expressions that inclue 4, 3, 2 and then one word (ill not present it to not clutter too much).
 
-```{r franchise_search_4_words, warning = FALSE, include = FALSE}
+```{r franchise_search_4_words, include = FALSE}
 
 Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
 temp_4_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
@@ -551,7 +551,7 @@ Now let's do some analysis about different franchises in the Esports scene. <br>
 
 First, let's see which if after itroducing franchises, the list of top 10 in distribution of prize money change.
 
-```{r top10_franchise, echo = FALSE}
+```{r top10_franchise}
 # Creating df that groups by franchises
 Earnings_by_franchise <- Earnings_by_game %>% 
   select(Earnings,Genre,Tournaments,Franchise) %>% 
