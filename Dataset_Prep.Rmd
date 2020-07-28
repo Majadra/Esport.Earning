@@ -7,7 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#Installing Packages
+# Installing Packages
 
 library(tidyverse)
 library(stringr)
@@ -16,78 +16,142 @@ library(rvest)
 
 # DataMining
 
-All data was taken from [EsportEarning.com](www.esportsearnings.com)
+All data was taken from [EsportEarning.com](www.esportsearnings.com) <br>
+**A note** as of 07/24, I have decided to spilt the information into two files - <br>
+File 1 - GeneralData.csv - a file with monthly earnings for each game. <br>
+File 2 - HistoricalData.csv - a file with a data which is not time related like genre, release date and such.
 
-## Mining part 1 - general information
+## Mining part 1 - GeneralData.csv
 
 First ill do some preparation.
 
-```{r mining_part_1_prep}
+```{r GeneralData.csv_prep}
 webpg1 <- read_html("https://www.esportsearnings.com/games/browse-by-genre")
 
-#Preparing list of links for each game
+# Preparing list of links for each game
 link_list <- paste0("https://www.esportsearnings.com",webpg1 %>% html_nodes(".games_main_game_title a") %>% html_attr("href"))
 
-#Preparing an empty df to directly recieve the data that I will mine
-temp_df1 <- data.frame()
+# Preparing an empty df to directly recieve the data that I will mine
+GeneralData <- data.frame()
 
 ```
 
 Then comes the text mining
 
-``` {r mining_part_1_mining}
+``` {r GeneralData.csv_mining}
 
-genres <- webpg1 %>%
+Genres <- webpg1 %>%
   html_nodes(".games_main_genre_header span") %>%
   html_text()
-#The genres variable will need some treatment before we add it to the database
+# The Genres variable will need some treatment before we add it to the database
 
-#Looping through each game and mining more information
+Game_stats <- webpg1 %>% html_nodes(".games_main_game_stats") %>% html_text()
+# Game_stats variable will need some treatment before we add to the database
+
+# Looping through each game and mining more information
 for (i in 1:length(link_list)) {
   game_pg <- read_html(link_list[i])
   
-  #Name of game
-  temp_df1[i,"Name"] <- game_pg %>%
-    html_node(".info_box_title") %>%
+  # Name of game
+  GeneralData[i,"Game"] <- game_pg %>% 
+    html_node(".info_box_title") %>% 
     html_text()
   
-  #Release date
-  temp_df1[i,"ReleaseDate"] <- game_pg %>%
-    html_node(".format_row:nth-child(1) .info_text_value") %>%
+  # Release date
+  GeneralData[i,"ReleaseDate"] <- game_pg %>% 
+    html_node(".format_row:nth-child(1) .info_text_value") %>% 
     html_text()
   
+  # Online earnings
+   GeneralData[i,"OnlineEarnings"] <- game_pg %>% 
+     html_node(".detail_list_summary_box .highlight:nth-child(2) .detail_list_prize:nth-child(2)") %>% 
+     html_text()
+
+  # I dont manage to mine the offline earning line properly, so I wont include in the file and compute it by myself
+  
+  # Honestly only one of those is necessary but ill use both to verify that the total amount of earnings is valid
 }  
 
 ```
 
-Here I will deal with the variable that needs extra attention before entering our dataframe
 
-``` {r mining_part_1_cleaning}
+Here I will deal with the variable that needs extra attention before entering it into our dataframe
+
+
+``` {r GeneralData.csv_cleaning}
 
 ############################
-#Treating and adding the genre variable
+# Treating and adding the Genres variable
 ############################
 
-#Creating a varibale which will will contain the list of genres
-gameGenres <- as.character()
-#using a loop i will duplicate the string indicating the
-# genre based on the number of games in each category
+# Creating a varibale which will will contain the list of genres
+GameGenres <- as.character()
+# Using a loop i will duplicate the string indicating the
+# Genre based on the number of games in each category
 
-for (i in seq(1,length(genres),2)) {
-  temp <- as.numeric(regmatches(genres[i+1],regexpr("\\d*",genres[i+1])))
-  gameGenres <- append(gameGenres,rep(genres[i],temp))
+for (i in seq(1,length(Genres),2)) {
+  temp <- as.numeric(regmatches(Genres[i+1],regexpr("\\d*",Genres[i+1])))
+  GameGenres <- append(GameGenres,rep(Genres[i],temp))
 }
 
 # Adding to database.
-temp_df1["genre"] <- gameGenres
+GeneralData["Genre"] <- GameGenres
+GeneralData$Genre <- as.factor(GeneralData$Genre)
+
+##############################
+# Treating Game_stats variable
+##############################
+
+# As Game_stats  is actully a string containing 3 different variables, ill split it first then add to the database.
+# Splitting into 3 variables
+
+TotalEarnings <- regexpr("(?<=\\$)(.*?)\\.\\d{2}",Game_stats,perl = TRUE)
+TotalEarnings <- regmatches(Game_stats,TotalEarnings)
+TotalPlayers<- regexpr("(?<=\\d{2})\\d*(?= Pl)",Game_stats,perl = TRUE)
+TotalPlayers <- regmatches(Game_stats,TotalPlayers)
+TotalTournaments <- regexpr("(?<=ers|er)\\d*(?= T)",Game_stats,perl = TRUE)
+TotalTournaments <- regmatches(Game_stats,TotalTournaments)
+
+# Adding the variables into the database
+
+GeneralData["TotalEarnings"] <- TotalEarnings
+GeneralData["TotalPlayers"] <- TotalPlayers
+GeneralData["TotalTournaments"] <- TotalTournaments
+
+# Fixing a small typo in the release date
+GeneralData[which(GeneralData$ReleaseDate==11),"ReleaseDate"] <- 2011
+
+# Removing a duplicate line of the game Battalion 1944
+GeneralData <- GeneralData[-which(GeneralData$Game== "Battalion 1944" & GeneralData$TotalTournaments == 0),]
+
+############################
+# Removing unwarted characters and doing some last manupulations
+############################
+
+GeneralData$OnlineEarnings <- as.numeric(gsub("[\\$,]","",GeneralData$OnlineEarnings))
+GeneralData$TotalEarnings <- as.numeric(gsub("[\\$,]","",GeneralData$TotalEarnings))
+GeneralData$TotalPlayers <- as.numeric(GeneralData$TotalPlayers)
+GeneralData$TotalTournaments <- as.numeric(GeneralData$TotalTournaments)
+
+#Reordering columns
+col_order_General <- c("Game","ReleaseDate","Genre","TotalEarnings","OnlineEarnings","TotalPlayers","TotalTournaments")
+GeneralData <- GeneralData[,col_order_General]
 
 ```
+
+
+```{r GeneralData.csv_saving}
+
+write.csv(GeneralData,"GeneralEsportData.csv", row.names = FALSE)
+
+```
+
 
 ## Mining Part 2 - Monthly historical information
 
 
-```{r mining_part_2}
-temp_df2 <- data.frame()
+```{r HistoricalData.csv_mining}
+HistoricalData <- data.frame()
 for (i in 1998:2020) {
   for (j in 1:12) {
   
@@ -108,50 +172,30 @@ for (i in 1998:2020) {
   temp <- data.frame(Date = date, Earnings = prizepool, Players = players,
                         Tournaments = tournaments, Game = games)
   
-  temp_df2 <- rbind(temp_df2,temp)
+  HistoricalData <- rbind(HistoricalData,temp)
   }
 }
+rm(temp) #removing temporary df
 ```
 
-# Database Preparation
 
-Here ill connenct the two temporary dataframe to form the final database.
-
-```{r df_preparation}
-
-df_final <- temp_df2
-
-for (i in 1:nrow(df_final)) {
-  df_final[i,"ReleaseDate"] <- 
-    temp_df1[match(df_final[i,"Game"],temp_df1[,"Name"]),"ReleaseDate"]
-  df_final[i,"Genre"] <- 
-    temp_df1[match(df_final[i,"Game"],temp_df1[,"Name"]),"genre"]
-}
-
-#Fixing an error
-df_final$ReleaseDate[which(df_final$ReleaseYear==11),"ReleaseDate"] <- 2011 #checked online
+```{r HistoricalData.csv_cleaning}
+# Reformatting dates
+HistoricalData$Date <- paste0("01/",HistoricalData$Date)
+HistoricalData$Date <- as.Date(HistoricalData$Date, format = "%d/%m/%Y")
 
 #Reordering columns
-col_order <- c("Date","Game","ReleaseDate","Genre","Earnings","Players","Tournaments")
-df_final <- df_final[,col_order]
+col_order_Historical <- c("Date","Game","Earnings","Players","Tournaments")
+HistoricalData <- HistoricalData[,col_order_Historical]
 
 ```
 
 
-```{r df_preparation2}
-df_final$Genre <- as.factor(df_final$Genre)
-df_final$Date <- paste0("01/",df_final$Date)
-df_final$Date <- as.Date(df_final$Date, format = "%d/%m/%Y")
+```{r HistoricalData.csv_saving}
+
+write.csv(HistoricalData,"HistoricalEsportData.csv", row.names = FALSE)
 
 ```
-
-
-```{r save_to_csv}
-
-write.csv(df_final,"EsportsEarnings_final.csv", row.names = FALSE)
-
-```
-
 
 
 All done
