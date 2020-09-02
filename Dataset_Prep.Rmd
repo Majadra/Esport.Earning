@@ -26,6 +26,11 @@ File 2 - HistoricalData.csv - a file with a data which is not time related like 
 First ill do some preparation.
 
 ```{r GeneralData.csv_prep}
+nap <- function(){
+  print("Napping")
+  Sys.sleep(runif(1,2,3))
+}
+
 webpg1 <- read_html("https://www.esportsearnings.com/games/browse-by-genre")
 
 # Preparing list of links for each game
@@ -49,9 +54,10 @@ Game_stats <- webpg1 %>% html_nodes(".games_main_game_stats") %>% html_text()
 # Game_stats variable will need some treatment before we add to the database
 
 # Looping through each game and mining more information
-for (i in 1:length(link_list)) {
+for (i in 318:length(link_list)) {
   game_pg <- read_html(link_list[i])
-  
+  print(paste0("Scraping game number ",i))
+  nap()
   # Name of game
   GeneralData[i,"Game"] <- game_pg %>% 
     html_node(".info_box_title") %>% 
@@ -70,6 +76,7 @@ for (i in 1:length(link_list)) {
   # I dont manage to mine the offline earning line properly, so I wont include in the file and compute it by myself
   
   # Honestly only one of those is necessary but ill use both to verify that the total amount of earnings is valid
+   
 }  
 
 ```
@@ -137,6 +144,9 @@ GeneralData$TotalTournaments <- as.numeric(GeneralData$TotalTournaments)
 col_order_General <- c("Game","ReleaseDate","Genre","TotalEarnings","OnlineEarnings","TotalPlayers","TotalTournaments")
 GeneralData <- GeneralData[,col_order_General]
 
+#Removing extra variables
+rm(TotalEarnings,TotalPlayers,TotalTournaments)
+
 ```
 
 
@@ -154,7 +164,8 @@ write.csv(GeneralData,"GeneralEsportData.csv", row.names = FALSE)
 HistoricalData <- data.frame()
 for (i in 1998:2020) {
   for (j in 1:12) {
-  
+  print(paste0("Mining historical data from ",j,"/",i))
+  nap()
   webpg2 <- read_html(paste0("https://www.esportsearnings.com/history/",i,"-",j,"/games"))
   games <- webpg2 %>% html_nodes(".detail_list_player a") %>% html_text()
   

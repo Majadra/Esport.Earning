@@ -39,7 +39,7 @@ str(GenData)
 ```{r Variable_manipulation_date,echo = TRUE}
 # I would like to change the "Year" and "ReleaseDate" variables into date format
 
-HistData$Date <- as.Date(HistData$Date)
+HistData$Date <- as.Date(HistData$Date, format = "%m/%d/%Y")
 
 GenData$ReleaseDate <- paste0("01/01/",GenData$ReleaseDate)
 GenData$ReleaseDate <- as.Date(GenData$ReleaseDate,format = "%d/%m/%Y")
@@ -186,6 +186,7 @@ ggplot(data = HistData %>%
 <br>
 __It is important to note that 2020 is not finished and this is why the earnings are low.__
 We can see that the Esports industry picked up towards 2011 - 2012, reaching a whopping 228.9 miliion dollar in prizes distributed in 2019. <br>
+Also it is interesting to note that was a small dip earnings in 2009, probably caused by the 2008 - 2009 economic crisis.
 
 ```{r Yearly_tournaments}
 
@@ -311,9 +312,10 @@ ggplot(data = GenData,aes(x = ReleaseDate,y = TotalEarnings,fill = Genre)) +
   labs(title = "Earnings by release date",subtitle = "In millions of dollars",
     y = element_blank(), x = element_blank()) + 
   ggrepel::geom_text_repel(data = subset(GenData,Earnings_rank <= 5),
-                           aes(label = Game), size = 3.5,
-                           box.padding = unit(0.35, "lines"),
-                           point.padding = unit(0.3, "lines"))
+               aes(label = Game), size = 3.5,
+               box.padding = unit(0.35, "lines"),
+               point.padding = unit(0.3, "lines"))
+
 ```  
 <br>
 We can see that there is no real correlation between the release date of the game and the success it will have in the Esports scene.<br>
@@ -329,9 +331,9 @@ As a lot of the games are a part of a franchise containing several games, it may
 
 ```{r Street_Fighter_look,echo = TRUE}
 # Creating a dataframe with games with a name containing the name "Street Fighter"
-df_sf <- Earnings_by_game[which(grepl("[Ss]treet [Ff]ighter",Earnings_by_game$Game) == TRUE),]
+df_sf <- GenData[which(grepl("[Ss]treet [Ff]ighter",GenData$Game) == TRUE),]
 df_sf
-print(paste0("The number_of_games is ",nrow(df_sf)," and the total earnings for the franchise is ",sum(df_sf$Earnings)))
+print(paste0("The number of games is ",nrow(df_sf)," and the total earnings for the franchise is ",sum(df_sf$Earnings)))
 
 # Removing the df as it is unnecessary
 rm(df_sf)
@@ -348,9 +350,9 @@ To figure out which games are a part of which franchise, ill work with the __Ear
 # At the start ill cast a large net, finding the first 5 words of each game.
 # then filtering to find groups of 2 or more games with the same 5 first words in the title.
 
-temp_5_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Earnings_by_game$Game)
+temp_5_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",GenData$Game)
 # Creating a dataframe to recieve the matches
-temp_5_words <- data.frame(words = regmatches(Earnings_by_game$Game,temp_5_words))
+temp_5_words <- data.frame(words = regmatches(GenData$Game,temp_5_words))
 temp_5_words <-  temp_5_words %>% group_by(words) %>% summarise(n=n())
 # Filtering and presnting
 temp_5_words <- temp_5_words %>% filter(n >1)
@@ -358,9 +360,9 @@ temp_5_words
 
 # We already indentified a few franchises, ill put them in a new variable - "Franchise".
 
-Earnings_by_game[which(grepl("Call of Duty",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Call of Duty"
-Earnings_by_game[which(grepl("Guilty Gear",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Guilty Gear"
-Earnings_by_game[which(grepl("Street Fighter",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Street Fighter"
+GenData[which(grepl("Call of Duty",GenData$Game) == TRUE),"Franchise"] <- "Call of Duty"
+GenData[which(grepl("Guilty Gear",GenData$Game) == TRUE),"Franchise"] <- "Guilty Gear"
+GenData[which(grepl("Street Fighter",GenData$Game) == TRUE),"Franchise"] <- "Street Fighter"
 
 # Removing the dataframe unnecessary 
 rm(temp_5_words)
@@ -373,7 +375,7 @@ I'll continue the same process for expressions that inclue 4, 3, 2 and then one 
 
 ```{r franchise_search_4_words, include = FALSE}
 
-Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
+Franchise_check <- GenData %>% filter(is.na(Franchise))
 temp_4_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
 temp_4_words <- data.frame(words = regmatches(Franchise_check$Game,temp_4_words))
 temp_4_words <- temp_4_words %>% group_by(words) %>% summarise(n=n())
@@ -382,11 +384,11 @@ temp_4_words
 
 # Continuing on and inserting more franchises.
 
-Earnings_by_game[which(grepl("Dead or Alive",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Dead or Alive"
-Earnings_by_game[which(grepl("Dengeki Bunko",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Dengeki Bunko"
-Earnings_by_game[which(grepl("Melty Blood",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Melty Blood"
-Earnings_by_game[which(grepl("Need for Speed",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Need for Speed"
-Earnings_by_game[which(grepl("Under Night In-Birth",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Under Night In-Birth"
+GenData[which(grepl("Dead or Alive",GenData$Game) == TRUE),"Franchise"] <- "Dead or Alive"
+GenData[which(grepl("Dengeki Bunko",GenData$Game) == TRUE),"Franchise"] <- "Dengeki Bunko"
+GenData[which(grepl("Melty Blood",GenData$Game) == TRUE),"Franchise"] <- "Melty Blood"
+GenData[which(grepl("Need for Speed",GenData$Game) == TRUE),"Franchise"] <- "Need for Speed"
+GenData[which(grepl("Under Night In-Birth",GenData$Game) == TRUE),"Franchise"] <- "Under Night In-Birth"
 
 # Removing the dataframe unnecessary 
 rm(temp_4_words)
@@ -395,7 +397,7 @@ rm(temp_4_words)
 
 ```{r franchise_search_3_words, include = FALSE}
 
-Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
+Franchise_check <- GenData %>% filter(is.na(Franchise))
 temp_3_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
 temp_3_words <- data.frame(words = regmatches(Franchise_check$Game,temp_3_words))
 temp_3_words <- temp_3_words %>% group_by(words) %>% summarise(n=n())
@@ -404,23 +406,23 @@ temp_3_words
 
 # Continuing on and inserting more franchises.
 
-Earnings_by_game[which(grepl("Age of Empires",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Age of Empires"
-Earnings_by_game[which(grepl("Arcana Heart",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Arcana Heart"
-Earnings_by_game[which(grepl("BlazBlue",Earnings_by_game$Game) == TRUE),"Franchise"] <- "BlazBlue"
-Earnings_by_game[which(grepl("Capcom vs. SNK",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Capcom vs. SNK"
-Earnings_by_game[which(grepl("Gears of War",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Gears of War"
-Earnings_by_game[which(grepl("King of Fighters",Earnings_by_game$Game) == TRUE),"Franchise"] <- "King of Fighters"
-Earnings_by_game[which(grepl("Magic: The Gathering",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Magic: The Gathering"
-Earnings_by_game[which(grepl("Marvel vs. Capcom",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Marvel vs. Capcom"
-Earnings_by_game[which(grepl("Persona",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Persona"
-Earnings_by_game[which(grepl("Pro Evolution Soccer",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Pro Evolution Soccer"
-Earnings_by_game[which(grepl("Project Gotham Racing",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Project Gotham Racing"
-Earnings_by_game[which(grepl("Rainbow Six",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Rainbow Six"
-Earnings_by_game[which(grepl("Soul Calibur",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Soul Calibur"
-Earnings_by_game[which(grepl("Super Smash Bros",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Super Smash Bros"
-Earnings_by_game[which(grepl("Tekken ",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Tekken" #Left the space on purpose
-Earnings_by_game[which(grepl("Virtua Fighter",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Virtua Fighter"
-Earnings_by_game[which(grepl("World of Tanks",Earnings_by_game$Game) == TRUE),"Franchise"] <- "World of Tanks"
+GenData[which(grepl("Age of Empires",GenData$Game) == TRUE),"Franchise"] <- "Age of Empires"
+GenData[which(grepl("Arcana Heart",GenData$Game) == TRUE),"Franchise"] <- "Arcana Heart"
+GenData[which(grepl("BlazBlue",GenData$Game) == TRUE),"Franchise"] <- "BlazBlue"
+GenData[which(grepl("Capcom vs. SNK",GenData$Game) == TRUE),"Franchise"] <- "Capcom vs. SNK"
+GenData[which(grepl("Gears of War",GenData$Game) == TRUE),"Franchise"] <- "Gears of War"
+GenData[which(grepl("King of Fighters",GenData$Game) == TRUE),"Franchise"] <- "King of Fighters"
+GenData[which(grepl("Magic: The Gathering",GenData$Game) == TRUE),"Franchise"] <- "Magic: The Gathering"
+GenData[which(grepl("Marvel vs. Capcom",GenData$Game) == TRUE),"Franchise"] <- "Marvel vs. Capcom"
+GenData[which(grepl("Persona",GenData$Game) == TRUE),"Franchise"] <- "Persona"
+GenData[which(grepl("Pro Evolution Soccer",GenData$Game) == TRUE),"Franchise"] <- "Pro Evolution Soccer"
+GenData[which(grepl("Project Gotham Racing",GenData$Game) == TRUE),"Franchise"] <- "Project Gotham Racing"
+GenData[which(grepl("Rainbow Six",GenData$Game) == TRUE),"Franchise"] <- "Rainbow Six"
+GenData[which(grepl("Soul Calibur",GenData$Game) == TRUE),"Franchise"] <- "Soul Calibur"
+GenData[which(grepl("Super Smash Bros",GenData$Game) == TRUE),"Franchise"] <- "Super Smash Bros"
+GenData[which(grepl("Tekken ",GenData$Game) == TRUE),"Franchise"] <- "Tekken" #Left the space on purpose
+GenData[which(grepl("Virtua Fighter",GenData$Game) == TRUE),"Franchise"] <- "Virtua Fighter"
+GenData[which(grepl("World of Tanks",GenData$Game) == TRUE),"Franchise"] <- "World of Tanks"
 
 # Removing the dataframe unnecessary 
 rm(temp_3_words)
@@ -428,7 +430,7 @@ rm(temp_3_words)
 
 ```{r franchise_search_2_words, include = FALSE}
 
-Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
+Franchise_check <- GenData %>% filter(is.na(Franchise))
 temp_2_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
 temp_2_words <- data.frame(words = regmatches(Franchise_check$Game,temp_2_words))
 temp_2_words <- temp_2_words %>% group_by(words) %>% summarise(n=n())
@@ -437,21 +439,21 @@ temp_2_words
 
 # Continuing on and inserting more franchises.
 
-Earnings_by_game[which(grepl("Day of Defeat",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Day of Defeat"
-Earnings_by_game[which(grepl("Dragon Ball",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Dragon Ball"
-Earnings_by_game[which(grepl("FIFA Online",Earnings_by_game$Game) == TRUE),"Franchise"] <- "FIFA Online"
-Earnings_by_game[which(grepl("Forza Motorsport",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Forza"
-Earnings_by_game[which(grepl("Gran Turismo",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Gran Turismo"
-Earnings_by_game[which(grepl("Guitar Hero",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Guitar Hero"
-Earnings_by_game[which(grepl("Halo",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Halo"
-Earnings_by_game[which(grepl("Madden NFL",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Madden NFL"
-Earnings_by_game[which(grepl("Mortal Kombat",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Mortal Kombat"
-Earnings_by_game[which(grepl("NASCAR Thunder",Earnings_by_game$Game) == TRUE),"Franchise"] <- "NASCAR Thunder"
-Earnings_by_game[which(grepl("Pokkén Tournament",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Pokkén Tournament"
-Earnings_by_game[which(grepl("Project Cars",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Project Cars"
-Earnings_by_game[which(grepl("Samurai Shodown",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Samurai Shodown"
-Earnings_by_game[which(grepl("Track[Mm]ania",Earnings_by_game$Game) == TRUE),"Franchise"] <- "TrackMania"
-Earnings_by_game[which(grepl("Unreal Tournament",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Unreal Tournament"
+GenData[which(grepl("Day of Defeat",GenData$Game) == TRUE),"Franchise"] <- "Day of Defeat"
+GenData[which(grepl("Dragon Ball",GenData$Game) == TRUE),"Franchise"] <- "Dragon Ball"
+GenData[which(grepl("FIFA Online",GenData$Game) == TRUE),"Franchise"] <- "FIFA Online"
+GenData[which(grepl("Forza Motorsport",GenData$Game) == TRUE),"Franchise"] <- "Forza"
+GenData[which(grepl("Gran Turismo",GenData$Game) == TRUE),"Franchise"] <- "Gran Turismo"
+GenData[which(grepl("Guitar Hero",GenData$Game) == TRUE),"Franchise"] <- "Guitar Hero"
+GenData[which(grepl("Halo",GenData$Game) == TRUE),"Franchise"] <- "Halo"
+GenData[which(grepl("Madden NFL",GenData$Game) == TRUE),"Franchise"] <- "Madden NFL"
+GenData[which(grepl("Mortal Kombat",GenData$Game) == TRUE),"Franchise"] <- "Mortal Kombat"
+GenData[which(grepl("NASCAR Thunder",GenData$Game) == TRUE),"Franchise"] <- "NASCAR Thunder"
+GenData[which(grepl("Pokkén Tournament",GenData$Game) == TRUE),"Franchise"] <- "Pokkén Tournament"
+GenData[which(grepl("Project Cars",GenData$Game) == TRUE),"Franchise"] <- "Project Cars"
+GenData[which(grepl("Samurai Shodown",GenData$Game) == TRUE),"Franchise"] <- "Samurai Shodown"
+GenData[which(grepl("Track[Mm]ania",GenData$Game) == TRUE),"Franchise"] <- "TrackMania"
+GenData[which(grepl("Unreal Tournament",GenData$Game) == TRUE),"Franchise"] <- "Unreal Tournament"
 
 # Removing the dataframe unnecessary 
 rm(temp_2_words)
@@ -459,7 +461,7 @@ rm(temp_2_words)
 
 ```{r franchise_search_1_word, include = FALSE}
 
-Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
+Franchise_check <- GenData %>% filter(is.na(Franchise))
 temp_1_word <- regexpr("^[[:graph:]]+",Franchise_check$Game)
 temp_1_word <- data.frame(words = regmatches(Franchise_check$Game,temp_1_word))
 temp_1_word <- temp_1_word %>% group_by(words) %>% summarise(n=n())
@@ -468,36 +470,38 @@ temp_1_word
 
 # Continuing on and inserting more franchises.
 
-Earnings_by_game[which(grepl("Artifact",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Artifact"
-Earnings_by_game[which(grepl("Asphalt ",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Asphalt" # Space is on purpose
-Earnings_by_game[which(grepl("Battlefield",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Battlefield"
-Earnings_by_game[which(grepl("Counter-Strike",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Counter-Strike"
-Earnings_by_game[which(grepl("Doom",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Doom"
-Earnings_by_game[which(grepl("Dota 2|Defense of the Ancients",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Dota"
-Earnings_by_game[which(grepl("F1",Earnings_by_game$Game) == TRUE),"Franchise"] <- "F1"
-Earnings_by_game[which(grepl("FIFA (?!Online)",Earnings_by_game$Game,perl = TRUE) == TRUE),"Franchise"] <- "FIFA" # As Fifa and Fifa online are different
-Earnings_by_game[which(grepl("NHL",Earnings_by_game$Game) == TRUE),"Franchise"] <- "NHL"
-Earnings_by_game[which(grepl("Power Rangers",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Power Rangers"
-Earnings_by_game[which(grepl("Quake",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Quake"
-Earnings_by_game[which(grepl("Skullgirls",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Skullgirls"
-Earnings_by_game[which(grepl("Splatoon",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Splatoon"
-Earnings_by_game[which(grepl("Supreme Commander",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Supreme Commander"
-Earnings_by_game[which(grepl("Tetris",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Tetris"
-Earnings_by_game[which(grepl("^WarCraft",Earnings_by_game$Game) == TRUE),"Franchise"] <- "WarCraft"
+GenData[which(grepl("Artifact",GenData$Game) == TRUE),"Franchise"] <- "Artifact"
+GenData[which(grepl("Asphalt ",GenData$Game) == TRUE),"Franchise"] <- "Asphalt" # Space is on purpose
+GenData[which(grepl("Battlefield",GenData$Game) == TRUE),"Franchise"] <- "Battlefield"
+GenData[which(grepl("Counter-Strike",GenData$Game) == TRUE),"Franchise"] <- "Counter-Strike"
+GenData[which(grepl("Doom",GenData$Game) == TRUE),"Franchise"] <- "Doom"
+GenData[which(grepl("Dota 2|Defense of the Ancients",GenData$Game) == TRUE),"Franchise"] <- "Dota"
+GenData[which(grepl("F1",GenData$Game) == TRUE),"Franchise"] <- "F1"
+GenData[which(grepl("FIFA (?!Online)",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "FIFA" # As Fifa and Fifa online are different
+GenData[which(grepl("NHL",GenData$Game) == TRUE),"Franchise"] <- "NHL"
+GenData[which(grepl("Power Rangers",GenData$Game) == TRUE),"Franchise"] <- "Power Rangers"
+GenData[which(grepl("Quake",GenData$Game) == TRUE),"Franchise"] <- "Quake"
+GenData[which(grepl("Skullgirls",GenData$Game) == TRUE),"Franchise"] <- "Skullgirls"
+GenData[which(grepl("Splatoon",GenData$Game) == TRUE),"Franchise"] <- "Splatoon"
+GenData[which(grepl("Supreme Commander",GenData$Game) == TRUE),"Franchise"] <- "Supreme Commander"
+GenData[which(grepl("Tetris",GenData$Game) == TRUE),"Franchise"] <- "Tetris"
+GenData[which(grepl("^WarCraft",GenData$Game) == TRUE),"Franchise"] <- "WarCraft"
+GenData[which(grepl("Wolfenstein",GenData$Game) == TRUE),"Franchise"] <- "Wolfenstein"
+GenData[which(grepl("NBA",GenData$Game) == TRUE),"Franchise"] <- "NBA"
 
 # Removing the dataframe unnecessary 
 rm(temp_1_word)
 ```
 
 ```{r Last_franchise_check,include = FALSE}
-Franchise_check <- Earnings_by_game %>% filter(is.na(Franchise))
+Franchise_check <- GenData %>% filter(is.na(Franchise))
 
-Earnings_by_game[which(grepl("^Gears ",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Gears of War"
-Earnings_by_game[which(grepl("^Catherine",Earnings_by_game$Game) == TRUE),"Franchise"] <- "Catherine"
-Earnings_by_game[which(grepl("(?<!Auto )[Cc]hess",Earnings_by_game$Game,perl = TRUE) == TRUE),"Franchise"] <- "Chess" #Avoiding Auto Chess
-Earnings_by_game[which(grepl("Injustice",Earnings_by_game$Game,perl = TRUE) == TRUE),"Franchise"] <- "Injustice"
-Earnings_by_game[which(grepl("PLAYERUNKNOWN",Earnings_by_game$Game,perl = TRUE) == TRUE),"Franchise"] <- "PUBG"
-Earnings_by_game[which(grepl("StarCraft",Earnings_by_game$Game,perl = TRUE) == TRUE),"Franchise"] <- "StarCraft"
+GenData[which(grepl("^Gears ",GenData$Game) == TRUE),"Franchise"] <- "Gears of War"
+GenData[which(grepl("^Catherine",GenData$Game) == TRUE),"Franchise"] <- "Catherine"
+GenData[which(grepl("(?<!Auto )[Cc]hess",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "Chess" #Avoiding Auto Chess
+GenData[which(grepl("Injustice",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "Injustice"
+GenData[which(grepl("PLAYERUNKNOWN",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "PUBG"
+GenData[which(grepl("StarCraft",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "StarCraft"
 
 ```
 
@@ -506,39 +510,45 @@ Earnings_by_game[which(grepl("StarCraft",Earnings_by_game$Game,perl = TRUE) == T
 ##### A note #######
 # It is important that once the database will be updated with more games this process will need to be redone.
 ####################
-for (i in seq(1:nrow(Earnings_by_game)))
+for (i in seq(1:nrow(GenData)))
   {
-  if (is.na(Earnings_by_game[i,"Franchise"]))
+  if (is.na(GenData[i,"Franchise"]))
     {
-    Earnings_by_game[i,"Franchise"] <- Earnings_by_game[i,"Game"]
-    Earnings_by_game[i,"Stand_alone?"] <- 1
+    GenData[i,"Franchise"] <- GenData[i,"Game"]
   }
 }
 
-sum(is.na(Earnings_by_game$Franchise))
+for (i in 1:nrow(GenData)) {
+  GenData[i,"FranchiseSize"] <- length(which(GenData$Franchise == GenData$Franchise[i]))
+}
+
+sum(is.na(GenData$Franchise))
 # All done!
 
 # Deleating the df
-rm(Franchise_check)
+rm(Franchise_check,i)
 ```
 
 Now let's do some analysis about different franchises in the Esports scene. <br>
+
+
+
 
 First, let's see which if after itroducing franchises, the list of top 10 in distribution of prize money change.
 
 ```{r top10_franchise}
 # Creating df that groups by franchises
-Earnings_by_franchise <- Earnings_by_game %>% 
-  select(Earnings,Genre,Tournaments,Franchise) %>% 
+Earnings_by_franchise <- GenData %>% 
+  select(TotalEarnings,Genre,TotalTournaments,Franchise,FranchiseSize) %>% 
   group_by(Franchise,Genre) %>% 
-  summarise(Size = n(),Tournaments = sum(Tournaments),Earnings = sum(Earnings))
+  summarise(Size = n(),Tournaments = sum(TotalTournaments),Earnings = sum(TotalEarnings),Size = n())
 
 # Ordering and keeping the 10 biggest franchises
 Earnings_by_franchise[order(Earnings_by_franchise$Earnings,decreasing = TRUE),][1:10,]
 ```
 
 <br>
-As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th place with 15 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
+As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th place with 16 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
 
 
 ```{r Largest_amount_of_tournaments}
