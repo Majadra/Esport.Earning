@@ -2,7 +2,15 @@
 title: "Esport_Analysis"
 author: "Ran K"
 date: "7/28/2020"
-output: html_document
+output: 
+  html_document:
+    number_sections: true
+    toc: true
+    fig_width: 7
+    fig_height: 4.5
+    theme: cosmo
+    highlight: tango
+    code_folding: hide
   
 ---
 
@@ -18,10 +26,9 @@ library(ggrepel)
 ```{r knitr_otions, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(fig.width=9, fig.height=6)
 ```
 
-<center><h2>Loading data</center></h2>
+#  Loading data
 <br>
 
 ```{r Load Data}
@@ -33,7 +40,7 @@ str(HistData)
 str(GenData)
 ```
 
-<center><h2>Some variable manipulation</center></h2>
+# Some variable manipulation
 
 
 ```{r Variable_manipulation_date,echo = TRUE}
@@ -54,7 +61,7 @@ GenData$Genre[which(GenData$Genre == "Third-Person Shooter")] <- "TPS"
 GenData$Genre[which(GenData$Genre == "First-Person Shooter")] <- "FPS"
 ```
 
-<center><h2> Explanatory Data Analysis</h2></center>
+#  Explanatory Data Analysis
 <br>
 
 **An important note**, all the information from this dataset comes from [EsportsEarnings](https://www.esportsearnings.com), this site gets its information by different contributers. As the data is collected by volunteers, it is likely that there would be errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened more then 10-15 years ago, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
@@ -239,7 +246,7 @@ rm(list = c("p1","p2"))
 
 We can see that most of the earnings came from the months of july and august, and as we see that the number of tournements isn't especially higher in these months, it is safe to say that the avarage prizepool is higher in these times (which makes since, as the summer is a peak periode in the Esports industry).
 
-### Did the coronavirus pandemic effect earnings and amount of tournaments?
+## Did the coronavirus pandemic effect earnings and amount of tournaments?
 
 To check this, ill creat a line plot of months with each line representing a year from 2016 onwards, if the coronavirus had no affect, we should see that 2020 looks to be similar to other years in the matter of tournaments, and higher than other years earning wise.
 
@@ -322,7 +329,7 @@ We can see that there is no real correlation between the release date of the gam
 
 Now it's time to dive in and do a little bit of feature engineering the retrieve some precius insight.
 
-<center><h2>Feature engineering</h2></center>
+# Feature engineering
 
 In this part i'd like to create new variables which will help in the analysis process.
 
@@ -585,8 +592,8 @@ ggplot(data = Franchise_by_genre,aes(x = Genre,y = Number_of_franchises, fill = 
 
 
 
-<center><h2>This is a work in progress, there is more to come</h2></center>
-<center><h3>Feel free to upvote or to give feedback :)</h3></center>
+<h2>This is a work in progress, there is more to come</h2>
+<h3>Feel free to upvote or to give feedback :)</h3>
   
   
   
