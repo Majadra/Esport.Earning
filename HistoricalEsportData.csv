@@ -372,6 +372,7 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2005,Unreal Tournament 2004,944.65,4,3
 8/1/2005,Call of Duty,629.77,0,1
 8/1/2005,Counter-Strike: Source,629.77,0,1
+8/1/2005,Need for Speed: Underground 2,629.48,3,1
 8/1/2005,Capcom vs. SNK 2,0,3,1
 8/1/2005,Guilty Gear XX #Reload,0,3,1
 8/1/2005,Marvel vs. Capcom 2,0,3,1
@@ -445,6 +446,7 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2006,StarCraft: Brood War,37540,26,2
 3/1/2006,WarCraft III,22000,9,3
 3/1/2006,Call of Duty 2,2970.79,0,2
+3/1/2006,FIFA 06,200,1,1
 3/1/2006,Need for Speed: Most Wanted,0,3,1
 4/1/2006,Counter-Strike,44687.27,93,8
 4/1/2006,Halo 2,38975,26,2
@@ -550,7 +552,7 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2006,Halo 2,35000,12,1
 12/1/2006,Project Gotham Racing 3,35000,3,1
 12/1/2006,Quake 4,35000,3,1
-12/1/2006,FIFA 06,30649.1,3,2
+12/1/2006,FIFA 06,32149.1,5,3
 12/1/2006,FIFA 07,26000,3,1
 12/1/2006,Ghost Recon Advanced Warfighter,16000,0,1
 12/1/2006,Age of Empires II,5000,16,1
@@ -1216,7 +1218,7 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2010,Age of Empires II,300,2,1
 8/1/2010,Super Smash Bros.,110,3,1
 9/1/2010,StarCraft: Brood War,92703.94,40,2
-9/1/2010,Counter-Strike,71828.19,90,8
+9/1/2010,Counter-Strike,73095.89,95,9
 9/1/2010,StarCraft II,15442.22,48,38
 9/1/2010,WarCraft III,15021.05,15,7
 9/1/2010,Heroes of Newerth,6000,0,3
@@ -1251,6 +1253,7 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2010,Defense of the Ancients,6757.47,15,1
 10/1/2010,Super Smash Bros. Melee,3725,23,5
 10/1/2010,Call of Duty 4: Modern Warfare,1395,5,2
+10/1/2010,rFactor,1117.35,10,1
 10/1/2010,FIFA 11,695.25,5,6
 10/1/2010,Team Fortress 2,398.24,6,2
 11/1/2010,Halo 3,280000,32,1
@@ -1320,7 +1323,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2011,Call of Duty: Black Ops,51000,14,3
 2/1/2011,StarCraft II,35754.86,84,66
 2/1/2011,Counter-Strike,33641.28,89,7
-2/1/2011,Counter-Strike: Source,13037.3,69,5
+2/1/2011,Counter-Strike: Source,13037.3,68,5
 2/1/2011,Call of Duty: Modern Warfare 2,10000,0,1
 2/1/2011,Halo: Reach,10000,12,1
 2/1/2011,Super Smash Bros. Melee,6375,13,3
@@ -1461,7 +1464,7 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2011,iRacing.com,15500,3,1
 9/1/2011,League of Legends,14012.82,87,17
 9/1/2011,Counter-Strike: Source,12000,20,1
-9/1/2011,Defense of the Ancients,9392.63,10,1
+9/1/2011,Defense of the Ancients,9392.63,15,1
 9/1/2011,Team Fortress 2,5240,6,1
 9/1/2011,Heroes of Newerth,3486.95,10,1
 9/1/2011,Call of Duty: Black Ops,3035.34,12,1
@@ -1508,6 +1511,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2011,FIFA 11,7431.53,30,9
 11/1/2011,Age of Empires II,7329,28,2
 11/1/2011,Counter-Strike: Source,6761.52,40,1
+11/1/2011,rFactor,4724.49,30,1
 11/1/2011,Tekken 6,3527.33,9,4
 11/1/2011,Super Smash Bros. Melee,2920,14,4
 11/1/2011,Marvel vs. Capcom 3,820,3,1
@@ -1569,7 +1573,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2012,StarCraft II,105998.99,115,69
 2/1/2012,League of Legends,42541.43,114,22
 2/1/2012,Call of Duty: Modern Warfare 3,25720,1,4
-2/1/2012,Counter-Strike: Source,24992.47,66,6
+2/1/2012,Counter-Strike: Source,24992.47,65,6
 2/1/2012,Counter-Strike,16477.27,89,6
 2/1/2012,Tekken 6,3971.22,3,1
 2/1/2012,Dota 2,2621.34,20,1
@@ -1644,7 +1648,7 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2012,League of Legends,228878.36,233,34
 5/1/2012,Counter-Strike,38374.64,105,9
 5/1/2012,FIFA 12,26643.73,11,6
-5/1/2012,Counter-Strike: Source,15483.81,81,4
+5/1/2012,Counter-Strike: Source,15483.81,80,4
 5/1/2012,Call of Duty: Modern Warfare 3,11821.28,24,6
 5/1/2012,Heroes of Newerth,11588.93,40,2
 5/1/2012,Dota 2,8843.93,30,9
@@ -1812,6 +1816,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2012,Super Street Fighter IV Arcade Edition,7955.86,8,3
 11/1/2012,Point Blank,5500,0,1
 11/1/2012,World of Tanks,5000,0,1
+11/1/2012,rFactor,4645.73,29,1
 11/1/2012,Team Fortress 2,3254.53,18,1
 11/1/2012,Super Smash Bros. Melee,3030,27,4
 11/1/2012,CrossFire,2173.58,42,5
@@ -2134,6 +2139,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2013,Super Smash Bros. Melee,8630.4,58,18
 11/1/2013,FIFA 14,8539.64,8,6
 11/1/2013,TrackMania 2: Stadium,8000,3,1
+11/1/2013,rFactor,4595.99,30,1
 11/1/2013,WarCraft III,3041.45,9,6
 11/1/2013,CrossFire,2336.6,40,6
 11/1/2013,StarCraft: Brood War,1440.38,6,2
@@ -2484,6 +2490,7 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2014,Team Fortress 2,11334,42,3
 10/1/2014,Project M,4943.5,26,7
 10/1/2014,Ultra Street Fighter IV,4400,18,14
+10/1/2014,rFactor 2,3545.13,30,1
 10/1/2014,Battlefield 4,2938.74,15,6
 10/1/2014,FIFA 15,1329.79,11,17
 10/1/2014,Age of Empires II,1000,2,1
@@ -2953,7 +2960,7 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2015,Dota 2,728072.42,211,18
 10/1/2015,Counter-Strike: Global Offensive,444739.34,767,92
 10/1/2015,Heroes of the Storm,307559.3,224,22
-10/1/2015,Call of Duty: Advanced Warfare,278813.96,189,28
+10/1/2015,Call of Duty: Advanced Warfare,278813.96,188,28
 10/1/2015,StarCraft II,205731.67,132,69
 10/1/2015,Hearthstone,163549.2,81,23
 10/1/2015,World of Tanks,1.00E+05,28,1
@@ -3031,6 +3038,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2015,ShootMania Storm,10000,0,1
 11/1/2015,Rocket League,5231.95,41,20
 11/1/2015,Team Fortress 2,5180,24,2
+11/1/2015,rFactor 2,4135.99,34,1
 11/1/2015,WarCraft III,3133.19,17,7
 11/1/2015,Age of Empires II,2736.83,25,3
 11/1/2015,World of Tanks,2598.29,3,1
@@ -3369,7 +3377,7 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2016,Pro Evolution Soccer 2016,232.2,3,1
 6/1/2016,Quake Live,135.48,2,3
 7/1/2016,Counter-Strike: Global Offensive,2955840.82,783,59
-7/1/2016,Dota 2,1309745.81,341,20
+7/1/2016,Dota 2,1309745.81,340,20
 7/1/2016,Call of Duty: Black Ops III,560540,106,7
 7/1/2016,FIFA Online 3,301000,0,1
 7/1/2016,Halo 5: Guardians,293000,49,3
@@ -3569,6 +3577,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2016,Project Cars,12400,9,2
 11/1/2016,Team Fortress 2,6588.98,63,3
 11/1/2016,Battlerite,5013.48,39,16
+11/1/2016,rFactor 2,4723.91,30,1
 11/1/2016,Vainglory,4608.11,21,5
 11/1/2016,FIFA 16,4555.07,8,1
 11/1/2016,Age of Empires,4144.8,12,1
@@ -3610,7 +3619,7 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2016,Call of Duty: Black Ops III,11234.16,24,1
 12/1/2016,Heroes of Newerth,11229.63,20,1
 12/1/2016,Old School Runescape,10000,1,1
-12/1/2016,Project Cars,6356.5,4,4
+12/1/2016,Project Cars,6416,4,5
 12/1/2016,Battlerite,5924.7,28,16
 12/1/2016,Tekken 7,5203.81,3,1
 12/1/2016,Age of Empires II,4794.47,27,7
@@ -3783,6 +3792,7 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2017,Super Smash Bros. Melee,51198.02,118,35
 4/1/2017,Attack on Titan Tribute Game,50000,8,1
 4/1/2017,Heroes of the Storm,26095.3,55,3
+4/1/2017,Forza Motorsport 6,25000,12,1
 4/1/2017,Super Smash Bros. for Wii U,22112.05,65,18
 4/1/2017,WarCraft III,16944.39,33,18
 4/1/2017,Team Fortress 2,16228.59,42,2
@@ -3798,7 +3808,6 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2017,Gwent,1500,8,2
 4/1/2017,Battlerite,1332.78,12,6
 4/1/2017,Super Smash Bros. Brawl,1021.77,14,3
-4/1/2017,Forza Motorsport 6,1000,1,1
 4/1/2017,CrossFire,869.42,20,1
 4/1/2017,Super Smash Bros.,780,12,2
 4/1/2017,Ultimate Marvel vs. Capcom 3,660,6,2
@@ -3949,6 +3958,7 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2017,Company of Heroes 2,3556.22,8,1
 7/1/2017,Quake Champions,3553.7,15,14
 7/1/2017,Pokkén Tournament,3320,3,1
+7/1/2017,Project Cars,2925,8,1
 7/1/2017,TrackMania 2: Stadium,2600.43,8,4
 7/1/2017,Vainglory,2400,6,1
 7/1/2017,Gwent,1773.08,21,8
@@ -3987,6 +3997,7 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2017,Tekken 7,29610,22,5
 8/1/2017,Team Fortress 2,28085.54,93,5
 8/1/2017,Gwent,26640,26,7
+8/1/2017,Project Cars,23400,21,2
 8/1/2017,Pokkén Tournament,20455,16,4
 8/1/2017,WarCraft III,17742.83,24,9
 8/1/2017,Paladins,16900,53,3
@@ -4032,7 +4043,7 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2017,Hearthstone,95702.47,79,8
 9/1/2017,Rocket League,85796.87,75,13
 9/1/2017,Halo 5: Guardians,75000,54,2
-9/1/2017,Tekken 7,33323.08,24,5
+9/1/2017,Tekken 7,34623.08,32,6
 9/1/2017,Super Smash Bros. for Wii U,30371.36,90,19
 9/1/2017,Super Smash Bros. Melee,28843.64,65,17
 9/1/2017,Rainbow Six Siege,21654.81,60,2
@@ -4094,9 +4105,9 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2017,World of WarCraft,1.00E+05,37,1
 10/1/2017,Super Smash Bros. Melee,85600,111,22
 10/1/2017,Super Smash Bros. for Wii U,79258.13,100,22
+10/1/2017,Tekken 7,76060,63,9
 10/1/2017,Quake Champions,75820.04,23,4
 10/1/2017,StarCraft II,57524.98,85,48
-10/1/2017,Tekken 7,43810,45,6
 10/1/2017,iRacing.com,32000,10,2
 10/1/2017,League of Legends,21632.34,139,11
 10/1/2017,Gwent,19187.39,61,13
@@ -4122,7 +4133,7 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2017,Injustice 2,1130,9,3
 10/1/2017,Age of Empires III,1000,8,1
 10/1/2017,Marvel vs. Capcom: Infinite,990,3,1
-10/1/2017,Team Fortress 2,590.2,8,1
+10/1/2017,Team Fortress 2,590.8,12,1
 10/1/2017,Age of Empires Online,500,8,1
 10/1/2017,Guilty Gear Xrd REV 2,410,3,1
 10/1/2017,BlazBlue: Central Fiction,390,6,2
@@ -4139,7 +4150,7 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2017,Soul Calibur V,120,2,1
 10/1/2017,Windjammers,100,3,1
 10/1/2017,Super Smash Bros. Brawl,80,2,1
-11/1/2017,League of Legends,5148195.47,373,20
+11/1/2017,League of Legends,5148195.47,389,20
 11/1/2017,Counter-Strike: Global Offensive,2039880.48,996,87
 11/1/2017,Dota 2,1184832.4,306,19
 11/1/2017,Heroes of the Storm,1041000,161,2
@@ -4172,7 +4183,8 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2017,Madden NFL 2018,15676.62,8,1
 11/1/2017,Super Smash Bros. for Wii U,13945.3,34,11
 11/1/2017,Hand of the Gods,9500,17,7
-11/1/2017,Team Fortress 2,7336.84,25,2
+11/1/2017,Team Fortress 2,7933.45,33,3
+11/1/2017,rFactor 2,4694.66,30,1
 11/1/2017,Splatoon 2,3125,0,2
 11/1/2017,CrossFire,2390.91,15,6
 11/1/2017,Project M,2271.5,11,2
@@ -4219,7 +4231,7 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2017,Madden NFL 2018,5000,1,1
 12/1/2017,Pokémon VGC,5000,8,1
 12/1/2017,Yu-Gi-Oh! Duel Links,4970.49,30,19
-12/1/2017,Age of Empires II,4414.18,15,4
+12/1/2017,Age of Empires II,4614.18,15,5
 12/1/2017,osu!,4320,255,1
 12/1/2017,Power Rangers: Legacy Wars,4178.55,2,1
 12/1/2017,iRacing.com,3000,3,3
@@ -4263,9 +4275,9 @@ Date,Game,Earnings,Players,Tournaments
 1/1/2018,Marvel vs. Capcom: Infinite,1900,8,1
 1/1/2018,Super Smash Bros.,1880,10,2
 1/1/2018,Lichess,1500,5,1
+1/1/2018,Age of Empires II,1475,14,5
 1/1/2018,Mystery Game Tournament,1280,8,1
 1/1/2018,TrackMania 2: Stadium,1184.47,10,2
-1/1/2018,Age of Empires II,1175,13,3
 1/1/2018,BlazBlue: Central Fiction,1040,8,1
 1/1/2018,ARMS,1000,8,1
 1/1/2018,Ultimate Marvel vs. Capcom 3,920,3,1
@@ -4300,7 +4312,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2018,Madden NFL 2018,259000,32,1
 2/1/2018,StarCraft II,222986.67,77,34
 2/1/2018,Overwatch,202248.83,225,14
-2/1/2018,League of Legends,112339.52,131,12
+2/1/2018,League of Legends,112339.52,141,12
 2/1/2018,Call of Duty: World War II,99797.43,40,8
 2/1/2018,Halo 5: Guardians,81500,55,6
 2/1/2018,Hearthstone,78830,67,8
@@ -4310,7 +4322,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2018,Tekken 7,31500,3,1
 2/1/2018,Super Smash Bros. for Wii U,26223.64,88,19
 2/1/2018,WarCraft III,20835.59,26,15
-2/1/2018,Team Fortress 2,18869.27,58,2
+2/1/2018,Team Fortress 2,19889.27,78,3
 2/1/2018,Brawlhalla,15093.6,60,4
 2/1/2018,Super Smash Bros. Melee,14579.74,64,12
 2/1/2018,Fortnite,8690.78,12,1
@@ -4323,6 +4335,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2018,Age of Empires II,1755,7,2
 2/1/2018,Quake Champions,1550,8,2
 2/1/2018,Gwent,1320,11,2
+2/1/2018,Faeria,800,5,2
 2/1/2018,TrackMania 2: Stadium,432.42,3,1
 2/1/2018,Super Smash Bros. Brawl,400,7,2
 2/1/2018,Age of Empires III,350,3,1
@@ -4370,6 +4383,7 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2018,WarCraft III,2504.21,18,21
 3/1/2018,Lichess,2200,5,1
 3/1/2018,Gears of War 4,2000,15,1
+3/1/2018,Faeria,800,6,2
 3/1/2018,Marvel vs. Capcom: Infinite,730,3,1
 3/1/2018,King of Fighters XIV,605,3,1
 3/1/2018,Age of Empires II,597.21,8,2
@@ -4416,9 +4430,9 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2018,Pokémon VGC,14000,16,2
 4/1/2018,Super Smash Bros. for Wii U,13498.81,95,18
 4/1/2018,Paladins,10500,82,2
+4/1/2018,Tekken 7,8000,15,4
 4/1/2018,Age of Empires II,7855.44,31,5
 4/1/2018,Yu-Gi-Oh! Duel Links,7165.93,55,14
-4/1/2018,Tekken 7,7000,10,3
 4/1/2018,NHL 18,5000,16,2
 4/1/2018,TrackMania 2: Stadium,4918.71,19,5
 4/1/2018,Age of Empires,4202.75,22,3
@@ -4427,6 +4441,7 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2018,Guilty Gear Xrd REV 2,3168,8,1
 4/1/2018,BlazBlue: Central Fiction,2790,8,1
 4/1/2018,ARMS,2552.6,23,5
+4/1/2018,Faeria,2500,4,1
 4/1/2018,Dragon Ball FighterZ,1903.76,11,2
 4/1/2018,Quake Champions,1386.12,13,5
 4/1/2018,StarCraft: Brood War,1062,6,2
@@ -4451,11 +4466,12 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2018,StarCraft: Brood War,166140.85,42,5
 5/1/2018,SMITE,149500,50,3
 5/1/2018,StarCraft II,121808.62,105,42
+5/1/2018,Radical Heights,120000,12,2
 5/1/2018,Arena of Valor,115084.3,20,1
 5/1/2018,NBA 2K18,1.00E+05,36,1
 5/1/2018,Heroes of the Storm,65563,81,5
 5/1/2018,Quake Champions,57000,48,21
-5/1/2018,Fortnite,52910.9,61,6
+5/1/2018,Fortnite,52934.56,61,6
 5/1/2018,Super Smash Bros. Melee,47440.69,85,16
 5/1/2018,World of WarCraft,42000,55,5
 5/1/2018,Street Fighter V: Arcade Edition,38070.35,23,4
@@ -4463,7 +4479,7 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2018,RaceRoom Racing Experience,27768.7,91,5
 5/1/2018,Gwent,25000,8,1
 5/1/2018,Super Smash Bros. for Wii U,22865.33,92,20
-5/1/2018,Tekken 7,17567.64,17,4
+5/1/2018,Tekken 7,18567.64,22,5
 5/1/2018,Killer Instinct (2013),16410,8,1
 5/1/2018,WarCraft III,16233.42,29,17
 5/1/2018,Injustice 2,12661.88,11,2
@@ -4536,7 +4552,7 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2018,World of Tanks Blitz,20000,0,1
 6/1/2018,WarCraft III,18661.5,27,7
 6/1/2018,Gwent,15000,16,2
-6/1/2018,Tekken 7,12916.5,17,4
+6/1/2018,Tekken 7,13916.5,24,5
 6/1/2018,Quake Champions,10600,53,26
 6/1/2018,Pokémon VGC,10000,16,2
 6/1/2018,StarCraft: Brood War,9883.01,11,3
@@ -4589,7 +4605,7 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2018,Super Smash Bros. Melee,19734.96,70,14
 7/1/2018,Dragon Ball FighterZ,18947.74,13,4
 7/1/2018,Age of Empires,18630,37,7
-7/1/2018,Tekken 7,17124.46,22,6
+7/1/2018,Tekken 7,18124.46,27,7
 7/1/2018,Quake Champions,13440,36,20
 7/1/2018,Battalion 1944,7012.24,15,1
 7/1/2018,Age of Empires II,6246.7,16,6
@@ -4631,7 +4647,7 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2018,WarCraft III,36648.24,13,3
 8/1/2018,Dragon Ball FighterZ,26442.2,9,2
 8/1/2018,Team Fortress 2,25661.68,105,5
-8/1/2018,Tekken 7,21857.17,16,4
+8/1/2018,Tekken 7,22857.17,24,5
 8/1/2018,Gears of War 4,20000,20,1
 8/1/2018,Injustice 2,14030,10,2
 8/1/2018,BlazBlue: Cross Tag Battle,12480,11,2
@@ -4680,9 +4696,9 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2018,Old School Runescape,32000,4,1
 9/1/2018,Brawlhalla,26808,62,13
 9/1/2018,Rocket League,23998.8,76,11
+9/1/2018,Tekken 7,20254.78,18,6
 9/1/2018,SMITE,20000,16,1
 9/1/2018,Super Smash Bros. Melee,19645,32,6
-9/1/2018,Tekken 7,19254.78,14,5
 9/1/2018,iRacing.com,19215,18,2
 9/1/2018,WarCraft III,18906.16,25,7
 9/1/2018,Super Smash Bros. for Wii U,16991.41,55,14
@@ -4690,6 +4706,7 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2018,Quake Champions,12933.7,59,23
 9/1/2018,Arena of Valor,11100,11,1
 9/1/2018,Paladins,10500,63,3
+9/1/2018,Gran Turismo Sport,10080,10,1
 9/1/2018,Attack on Titan Tribute Game,10000,8,1
 9/1/2018,Injustice 2,10000,8,1
 9/1/2018,Age of Empires II,5800.38,19,6
@@ -4732,14 +4749,14 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2018,Pro Evolution Soccer 2018,0,6,1
 10/1/2018,Fortnite,8898886.68,714,37
 10/1/2018,Counter-Strike: Global Offensive,1369734.03,1018,76
-10/1/2018,Dota 2,1043820.71,416,30
+10/1/2018,Dota 2,1043820.71,415,30
 10/1/2018,Rocket League,594656.99,151,16
 10/1/2018,Hearthstone,527738,90,7
 10/1/2018,PLAYERUNKNOWN’S BATTLEGROUNDS,458207.81,258,12
 10/1/2018,Heroes of the Storm,425000,40,1
 10/1/2018,Clash Royale,406761.68,58,3
 10/1/2018,Arena of Valor,288604,64,2
-10/1/2018,Call of Duty: Black Ops 4,284085,56,9
+10/1/2018,Call of Duty: Blackout,275000,23,3
 10/1/2018,Rainbow Six Siege,174396.44,197,11
 10/1/2018,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,170069.08,48,4
 10/1/2018,League of Legends,136251.1,257,14
@@ -4762,11 +4779,13 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2018,Assetto Corsa,15000,8,1
 10/1/2018,Dragon Ball FighterZ,13530,14,3
 10/1/2018,World of Tanks Blitz,10000,0,1
+10/1/2018,Call of Duty: Black Ops 4,9085,33,6
 10/1/2018,WarCraft III,7756.32,18,3
 10/1/2018,Age of Empires II,7080.64,31,6
 10/1/2018,King of Fighters XIV,7000,2,1
 10/1/2018,TrackMania 2: Stadium,6614.53,17,4
 10/1/2018,Super Smash Bros. for Wii U,6391.08,40,14
+10/1/2018,rFactor 2,4752.26,29,1
 10/1/2018,Call of Duty: World War II,3898.1,12,1
 10/1/2018,NHL 19,2500,1,1
 10/1/2018,Age of Empires III,1500,4,1
@@ -4798,7 +4817,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2018,StarCraft II,765973.9,71,31
 11/1/2018,PLAYERUNKNOWN’S BATTLEGROUNDS,634843.86,199,10
 11/1/2018,Rocket League,512458.38,95,13
-11/1/2018,Hearthstone,426515.3,205,5
+11/1/2018,Hearthstone,432515.3,213,6
 11/1/2018,Arena of Valor,385350.82,53,5
 11/1/2018,Halo 5: Guardians,3.00E+05,48,1
 11/1/2018,Paladins,3.00E+05,41,1
@@ -4818,11 +4837,12 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2018,Super Smash Bros. Melee,79751.2,31,5
 11/1/2018,Street Fighter V: Arcade Edition,62500,34,5
 11/1/2018,SMITE,50000,50,2
-11/1/2018,Call of Duty: Black Ops 4,47886.95,80,15
 11/1/2018,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,45000,12,1
 11/1/2018,Old School Runescape,28500,8,1
+11/1/2018,Call of Duty: Black Ops 4,27886.95,74,14
 11/1/2018,FIFA 19,27299.52,13,5
 11/1/2018,Super Smash Bros. for Wii U,22903.85,58,23
+11/1/2018,Call of Duty: Blackout,20000,6,1
 11/1/2018,Age of Empires II,16150,21,4
 11/1/2018,Quake Champions,13670,42,13
 11/1/2018,Artifact,10175,11,2
@@ -4830,6 +4850,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2018,StarCraft: Brood War,6818.99,20,2
 11/1/2018,Dragon Ball FighterZ,6155.46,12,2
 11/1/2018,Tekken 7,5635.93,13,3
+11/1/2018,Forza Motorsport 7,5000,5,1
 11/1/2018,Soul Calibur VI,3191,11,2
 11/1/2018,WarCraft III,2224.48,13,4
 11/1/2018,BlazBlue: Cross Tag Battle,1880,10,2
@@ -4845,7 +4866,7 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2018,TrackMania 2: Stadium,397.97,8,3
 11/1/2018,ARMS,300,7,3
 11/1/2018,Dengeki Bunko: Fighting Climax Ignition,300,8,1
-12/1/2018,Counter-Strike: Global Offensive,3274230.97,1546,164
+12/1/2018,Counter-Strike: Global Offensive,3298230.97,1546,172
 12/1/2018,Arena of Valor,2509250,123,3
 12/1/2018,Shadowverse,1310000,24,1
 12/1/2018,Fortnite,1182561.89,311,18
@@ -4855,9 +4876,9 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2018,PLAYERUNKNOWN’S BATTLEGROUNDS,595339.4,341,16
 12/1/2018,FIFA 19,463113.14,110,9
 12/1/2018,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,402000,80,1
-12/1/2018,League of Legends,364917.09,290,15
+12/1/2018,League of Legends,376260.1,314,16
 12/1/2018,Street Fighter V: Arcade Edition,332347.84,59,6
-12/1/2018,Call of Duty: Black Ops 4,314278,88,17
+12/1/2018,Call of Duty: Black Ops 4,284278,79,15
 12/1/2018,Rocket League,260670.68,110,12
 12/1/2018,Quake Champions,206120,55,16
 12/1/2018,Hearthstone,194750,64,9
@@ -4874,6 +4895,7 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2018,WarCraft III,28927.5,27,4
 12/1/2018,Madden NFL 19,25000,1,1
 12/1/2018,Brawlhalla,21304.1,52,11
+12/1/2018,Call of Duty: Blackout,20000,12,2
 12/1/2018,Team Fortress 2,19831,68,5
 12/1/2018,Super Smash Bros. Melee,16860.7,69,11
 12/1/2018,Dragon Ball FighterZ,12195.55,22,5
@@ -4916,7 +4938,7 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2018,Lethal League Blaze,11.4,1,1
 1/1/2019,Dota 2,1499927.13,227,13
 1/1/2019,Overwatch,1035800.98,602,11
-1/1/2019,Counter-Strike: Global Offensive,810881.05,458,75
+1/1/2019,Counter-Strike: Global Offensive,834881.05,470,83
 1/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,626067.65,138,4
 1/1/2019,Arena of Valor,539360,40,2
 1/1/2019,FIFA 19,363000,72,3
@@ -4929,11 +4951,12 @@ Date,Game,Earnings,Players,Tournaments
 1/1/2019,WarCraft III,52475.3,24,7
 1/1/2019,Super Smash Bros. Ultimate,48235.65,244,63
 1/1/2019,Heroes of the Storm,47075,30,3
-1/1/2019,Call of Duty: Black Ops 4,41900,27,8
 1/1/2019,Artifact,39282.65,78,28
+1/1/2019,Call of Duty: Blackout,30000,11,2
 1/1/2019,Halo 3,29400,32,1
 1/1/2019,Dragon Ball FighterZ,28796.91,21,4
 1/1/2019,Shadowverse,12000,24,3
+1/1/2019,Call of Duty: Black Ops 4,11900,16,6
 1/1/2019,NHL 19,7500,2,1
 1/1/2019,Age of Empires II,6815.85,20,11
 1/1/2019,Guilty Gear Xrd REV 2,4130,14,3
@@ -4985,13 +5008,14 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2019,Apex Legends,212829,116,8
 2/1/2019,Gears of War 4,2.00E+05,60,1
 2/1/2019,Rocket League,128748.38,78,8
-2/1/2019,Call of Duty: Black Ops 4,119192,69,9
+2/1/2019,Call of Duty: Blackout,121608.35,71,4
 2/1/2019,League of Legends,111376.5,89,6
 2/1/2019,Arena of Valor,70880,10,1
 2/1/2019,Super Smash Bros. Ultimate,67398.38,224,66
 2/1/2019,Clash Royale,52130,17,2
-2/1/2019,Hearthstone,40000,20,3
+2/1/2019,Hearthstone,42291.32,28,5
 2/1/2019,Age of Empires II,35700,36,5
+2/1/2019,Stardew Valley,35000,40,1
 2/1/2019,Street Fighter V: Arcade Edition,28681.03,14,3
 2/1/2019,Tekken 7,28580.6,14,3
 2/1/2019,Brawlhalla,26200,101,15
@@ -5010,6 +5034,7 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2019,King of Fighters XIV,9050.21,8,1
 2/1/2019,NHL 19,8500,3,2
 2/1/2019,iRacing.com,7000,43,1
+2/1/2019,Call of Duty: Black Ops 4,5992,24,5
 2/1/2019,Pokkén Tournament DX,5340,11,2
 2/1/2019,Age of Empires,4300,4,1
 2/1/2019,Under Night In-Birth EXE: Late[st],2740,8,1
@@ -5028,17 +5053,17 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2019,Mortal Kombat XL,140,2,1
 2/1/2019,Virtua Fighter 5,80,1,1
 2/1/2019,Xonotic,11.46,12,1
-3/1/2019,Counter-Strike: Global Offensive,2713717.12,805,69
+3/1/2019,Counter-Strike: Global Offensive,2763717.12,818,70
 3/1/2019,Dota 2,2375413.65,335,22
 3/1/2019,Magic: The Gathering Arena,1.00E+06,64,1
-3/1/2019,Fortnite,959455.56,667,32
+3/1/2019,Fortnite,957055.56,667,32
 3/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,646959.69,321,15
 3/1/2019,StarCraft II,646771.8,93,24
 3/1/2019,Overwatch,511801.18,135,5
 3/1/2019,Hearthstone,500197.18,58,6
-3/1/2019,Call of Duty: Black Ops 4,446325,157,7
+3/1/2019,Call of Duty: Black Ops 4,426325,140,6
 3/1/2019,Apex Legends,315590.41,246,30
-3/1/2019,League of Legends,217995.54,319,16
+3/1/2019,League of Legends,222487.15,337,17
 3/1/2019,FIFA 19,152693.66,20,4
 3/1/2019,Super Smash Bros. Ultimate,135928.11,375,104
 3/1/2019,Halo 3,120000,38,2
@@ -5051,15 +5076,17 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2019,Clash of Clans,50000,40,1
 3/1/2019,Street Fighter V: Arcade Edition,43652.6,21,4
 3/1/2019,Old School Runescape,32000,4,1
+3/1/2019,The Division 2,27250,40,2
 3/1/2019,rFactor 2,25752.15,72,7
 3/1/2019,Gwent,25000,8,1
 3/1/2019,Brawlhalla,24595.5,61,22
+3/1/2019,Call of Duty: Blackout,20000,28,1
 3/1/2019,Rocket League,16964.62,35,8
 3/1/2019,Madden NFL 19,15000,2,1
 3/1/2019,WarCraft III,11703,8,1
 3/1/2019,Artifact,9392,53,22
 3/1/2019,Super Smash Bros. Melee,8999.39,49,9
-3/1/2019,Age of Empires II,8699.01,36,11
+3/1/2019,Age of Empires II,8799.01,37,12
 3/1/2019,TrackMania 2: Stadium,5835.31,25,9
 3/1/2019,NHL 19,3000,2,2
 3/1/2019,Heroes of the Storm,2932,21,2
@@ -5092,8 +5119,8 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2019,Windjammers,150,3,1
 3/1/2019,Street Fighter Alpha 2,130,3,1
 3/1/2019,Hand of the Gods,34.2,1,1
-4/1/2019,Fortnite,3606031.61,666,41
-4/1/2019,League of Legends,2140775.75,839,34
+4/1/2019,Fortnite,3606031.61,668,41
+4/1/2019,League of Legends,2230041.87,845,35
 4/1/2019,Counter-Strike: Global Offensive,1728838.02,1234,84
 4/1/2019,Hearthstone,1007307.32,24,2
 4/1/2019,Dota 2,875430.28,212,19
@@ -5107,11 +5134,13 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2019,Gears of War 4,3.00E+05,15,1
 4/1/2019,Free Fire,102400,53,1
 4/1/2019,Madden NFL 19,85000,3,1
-4/1/2019,Call of Duty: Black Ops 4,77390,54,2
 4/1/2019,Super Smash Bros. Ultimate,62696.61,277,79
 4/1/2019,Chess.com,41050,69,6
+4/1/2019,Call of Duty: Blackout,40000,31,1
+4/1/2019,Call of Duty: Black Ops 4,37390,40,1
 4/1/2019,Brawlhalla,27762,95,18
 4/1/2019,Heroes of the Storm,24295.24,10,2
+4/1/2019,Sekiro: Shadows Die Twice,19596,20,1
 4/1/2019,Street Fighter V: Arcade Edition,18999.72,18,3
 4/1/2019,Age of Empires II,17306.04,31,14
 4/1/2019,Team Fortress 2,16552.87,91,4
@@ -5136,15 +5165,15 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2019,Guilty Gear Xrd REV 2,300,3,1
 4/1/2019,Lethal League Blaze,134.99,3,1
 4/1/2019,Age of Empires III,100,1,1
-5/1/2019,Fortnite,4095331.48,548,41
+5/1/2019,Fortnite,4095331.48,552,41
 5/1/2019,Overwatch,1956577.2,496,11
 5/1/2019,Counter-Strike: Global Offensive,1366921.91,796,62
 5/1/2019,Dota 2,1153882.77,203,13
 5/1/2019,Rocket League,617271.92,169,15
 5/1/2019,FIFA 19,564060,67,7
 5/1/2019,League of Legends,531752.86,250,16
-5/1/2019,Call of Duty: Black Ops 4,430000,137,3
 5/1/2019,Rainbow Six Siege,400796.14,237,8
+5/1/2019,Call of Duty: Black Ops 4,4.00E+05,115,2
 5/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,336306,228,10
 5/1/2019,FIFA Online 4,239000,36,1
 5/1/2019,Arena of Valor,202898,67,3
@@ -5160,6 +5189,7 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2019,Splitgate: Arena Warfare,50000,64,2
 5/1/2019,Magic: The Gathering Arena,45000,51,6
 5/1/2019,Tekken 7,43363.56,31,7
+5/1/2019,Call of Duty: Blackout,30000,28,1
 5/1/2019,Street Fighter V: Arcade Edition,27669.32,28,5
 5/1/2019,iRacing.com,25000,12,1
 5/1/2019,Project Cars 2,22400,16,2
@@ -5214,20 +5244,20 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2019,Ultimate Marvel vs. Capcom 3,160,3,1
 5/1/2019,Project M,152.89,8,1
 5/1/2019,Puyo Puyo Tetris,130,2,1
-6/1/2019,Fortnite,5101515.49,550,32
+6/1/2019,Fortnite,5100715.49,626,32
 6/1/2019,Counter-Strike: Global Offensive,2014445.67,863,70
-6/1/2019,Dota 2,1915543.51,417,26
+6/1/2019,Dota 2,1915543.51,418,26
 6/1/2019,Arena of Valor,1450311,27,2
 6/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,905051.37,387,13
 6/1/2019,Magic: The Gathering Arena,766000,81,5
 6/1/2019,Rocket League,651813.94,116,16
 6/1/2019,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,551160.31,402,8
-6/1/2019,Hearthstone,513420,121,5
+6/1/2019,Hearthstone,513420,127,5
 6/1/2019,Call of Duty: Black Ops 4,406435,141,4
 6/1/2019,StarCraft II,263615.66,158,36
 6/1/2019,Pro Evolution Soccer 2019,216000,25,2
 6/1/2019,Overwatch,191229,123,5
-6/1/2019,League of Legends,164283.63,281,18
+6/1/2019,League of Legends,167083.38,291,19
 6/1/2019,Rainbow Six Siege,132358.23,189,10
 6/1/2019,Super Smash Bros. Ultimate,130568.15,423,115
 6/1/2019,Brawlhalla,110400,65,13
@@ -5242,14 +5272,17 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2019,Super Smash Bros. Melee,65991.95,112,23
 6/1/2019,Apex Legends,65092.96,80,5
 6/1/2019,Old School Runescape,64000,2,2
-6/1/2019,Tekken 7,56713.44,35,6
+6/1/2019,Tekken 7,63621.44,48,8
 6/1/2019,Battalion 1944,52500,38,6
 6/1/2019,Halo 3,50800,32,2
+6/1/2019,Call of Duty: Blackout,40000,18,1
 6/1/2019,Street Fighter V: Arcade Edition,37830,22,4
 6/1/2019,Brawl Stars,32400,20,4
 6/1/2019,Assetto Corsa,27904,19,3
 6/1/2019,Mortal Kombat 11,23820,24,3
 6/1/2019,Chess.com,21402,18,2
+6/1/2019,Stardew Valley,19250,28,1
+6/1/2019,Mordhau,16500,40,2
 6/1/2019,Dead or Alive 6,13870,14,2
 6/1/2019,CrossFire,13225,40,1
 6/1/2019,Guns of Boom,10000,4,1
@@ -5282,7 +5315,7 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2019,iRacing.com,111,1,1
 6/1/2019,Super Smash Bros. Brawl,76.38,3,1
 6/1/2019,Ring of Elysium,0,9,1
-7/1/2019,Fortnite,36713355.9,720,33
+7/1/2019,Fortnite,36713555.9,785,33
 7/1/2019,Call of Duty: Black Ops 4,2999500,163,5
 7/1/2019,Counter-Strike: Global Offensive,2744531.87,1256,80
 7/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,1260030.73,265,13
@@ -5312,7 +5345,7 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2019,Tekken 7,38574.78,49,12
 7/1/2019,Auto Chess,35522.28,31,1
 7/1/2019,Street Fighter V: Arcade Edition,34040.91,32,6
-7/1/2019,Heroes of the Storm,23344.15,30,2
+7/1/2019,Heroes of the Storm,23360.15,50,2
 7/1/2019,rFactor 2,19968,12,2
 7/1/2019,Soul Calibur VI,15628.03,15,3
 7/1/2019,Farming Simulator 19,13316.27,24,1
@@ -5358,15 +5391,15 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2019,Samurai Shodown V Special,61.4,3,1
 7/1/2019,ARMS,50,3,1
 8/1/2019,Dota 2,34460762.14,422,28
-8/1/2019,Fortnite,3226700,716,49
+8/1/2019,Fortnite,3273950,840,49
 8/1/2019,Arena of Valor,2166994.19,60,1
-8/1/2019,Call of Duty: Black Ops 4,2105647,190,3
+8/1/2019,Call of Duty: Black Ops 4,2095647,180,2
 8/1/2019,Overwatch,1028680.64,410,7
-8/1/2019,League of Legends,941281.05,558,26
+8/1/2019,League of Legends,941281.05,561,26
 8/1/2019,Rainbow Six Siege,684045.45,183,8
 8/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,544068.51,156,4
 8/1/2019,FIFA 19,530388.57,49,3
-8/1/2019,Hearthstone,528540,138,3
+8/1/2019,Hearthstone,528540,175,3
 8/1/2019,Counter-Strike: Global Offensive,359173.58,516,48
 8/1/2019,Apex Legends,354873,166,5
 8/1/2019,StarCraft II,175909.79,139,42
@@ -5393,8 +5426,9 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2019,Under Night In-Birth EXE: Late[st],12132.59,17,3
 8/1/2019,WarCraft III,12070.39,36,5
 8/1/2019,Shadowverse,11900,24,3
-8/1/2019,Heroes of the Storm,10948.8,37,2
+8/1/2019,Heroes of the Storm,11109.72,75,2
 8/1/2019,rFactor 2,10260,23,3
+8/1/2019,Call of Duty: Blackout,10000,12,1
 8/1/2019,Assetto Corsa,9797.5,5,2
 8/1/2019,Battalion 1944,8000,15,2
 8/1/2019,Team Fortress 2,7657.07,38,2
@@ -5447,10 +5481,10 @@ Date,Game,Earnings,Players,Tournaments
 8/1/2019,Aquapazza: Aquaplus Dream Match,85,3,1
 8/1/2019,Guilty Gear,32,3,1
 8/1/2019,Yu-Gi-Oh! Duel Links,20,1,1
-9/1/2019,Fortnite,8771928.96,753,80
+9/1/2019,Fortnite,8742028.96,1039,80
 9/1/2019,Overwatch,3811048.85,212,5
 9/1/2019,Counter-Strike: Global Offensive,2542981.72,885,70
-9/1/2019,League of Legends,1466204.48,501,19
+9/1/2019,League of Legends,1470600.48,513,20
 9/1/2019,Apex Legends,1050001,150,3
 9/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,603429.59,210,5
 9/1/2019,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,424692.36,153,3
@@ -5459,11 +5493,13 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2019,Street Fighter V: Arcade Edition,155052.53,47,8
 9/1/2019,Teamfight Tactics,125000,52,2
 9/1/2019,iRacing.com,105470,20,3
+9/1/2019,Free Fire,93000,5,2
 9/1/2019,Heroes of the Storm,80592,0,1
 9/1/2019,Tekken 7,78958.8,59,16
 9/1/2019,Shadowverse,71213.49,32,4
 9/1/2019,StarCraft: Brood War,67040,28,1
 9/1/2019,Super Smash Bros. Ultimate,52190.16,268,66
+9/1/2019,Borderlands 3,50000,16,1
 9/1/2019,Halo 3,50000,32,1
 9/1/2019,Rainbow Six Siege,44527.61,128,4
 9/1/2019,Brawlhalla,40031.5,53,5
@@ -5480,7 +5516,9 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2019,CrossFire,13110,40,1
 9/1/2019,Magic: The Gathering Arena,12000,22,3
 9/1/2019,Age of Empires II,11555,29,10
+9/1/2019,Gran Turismo Sport,10080,10,1
 9/1/2019,Super Smash Bros. Melee,8559.05,50,12
+9/1/2019,Call of Duty: Blackout,5000,4,1
 9/1/2019,Rocket League,4597.67,28,6
 9/1/2019,Dragon Ball FighterZ,4245.8,27,5
 9/1/2019,Samurai Shodown (2019),3164.45,17,4
@@ -5493,10 +5531,11 @@ Date,Game,Earnings,Players,Tournaments
 9/1/2019,Project Cars 2,2000,9,4
 9/1/2019,BlazBlue: Cross Tag Battle,1930,11,2
 9/1/2019,Chess.com,1402,8,1
+9/1/2019,Clash of Clans,1330,5,1
 9/1/2019,BlazBlue: Central Fiction,1320,8,1
 9/1/2019,Brawl Stars,1200,9,1
 9/1/2019,rFactor 2,1130,3,2
-9/1/2019,TrackMania 2: Stadium,1080.73,9,3
+9/1/2019,TrackMania 2: Stadium,1102.77,10,4
 9/1/2019,Melty Blood: Actress Again Current Code,740,8,1
 9/1/2019,Skullgirls 2nd Encore,630,3,1
 9/1/2019,Ultimate Marvel vs. Capcom 3,600,4,2
@@ -5521,15 +5560,15 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2019,Dota 2,860345.5,205,14
 10/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,824578.64,350,17
 10/1/2019,Clash of Clans,7.00E+05,40,1
-10/1/2019,Hearthstone,686500,141,4
+10/1/2019,Hearthstone,686500,170,4
 10/1/2019,Rainbow Six Siege,434784.42,397,17
 10/1/2019,Overwatch,381000,246,4
 10/1/2019,Arena of Valor,327220,40,1
 10/1/2019,Magic: The Gathering Arena,250000,8,1
+10/1/2019,Fortnite,176031.86,148,14
 10/1/2019,Teamfight Tactics,150250,16,1
 10/1/2019,Clash Royale,150000,24,1
 10/1/2019,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,144600,188,2
-10/1/2019,Fortnite,139856.86,63,13
 10/1/2019,Super Smash Bros. Ultimate,118317.99,239,59
 10/1/2019,iRacing.com,112000,32,1
 10/1/2019,Big Buck Hunter Arcade,76200,3,1
@@ -5546,13 +5585,14 @@ Date,Game,Earnings,Players,Tournaments
 10/1/2019,Rocket League,22287.09,61,11
 10/1/2019,Super Smash Bros. Melee,21794.68,37,6
 10/1/2019,Free Fire,19074.76,3,2
+10/1/2019,Heroes of the Storm,18946.74,50,2
 10/1/2019,FIFA 20,15631.16,13,9
 10/1/2019,Dead or Alive 6,15470,24,4
-10/1/2019,Heroes of the Storm,13984.74,10,1
+10/1/2019,Dead By Daylight,15000,15,3
 10/1/2019,Farming Simulator 19,13349.23,24,1
 10/1/2019,StarCraft: Brood War,11326.35,12,2
 10/1/2019,Battalion 1944,11041.74,15,1
-10/1/2019,Call of Duty: Warzone,10000,6,1
+10/1/2019,Call of Duty: Modern Warfare,10000,6,1
 10/1/2019,Tetris,10000,16,1
 10/1/2019,Samurai Shodown (2019),8865.98,11,2
 10/1/2019,rFactor 2,7770,8,1
@@ -5589,9 +5629,9 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2019,League of Legends,2386031.6,263,7
 11/1/2019,Counter-Strike: Global Offensive,1970036.98,1024,70
 11/1/2019,Dota 2,1546865.42,235,17
+11/1/2019,Fortnite,1041425,419,19
 11/1/2019,StarCraft II,807598.62,94,20
 11/1/2019,Hearthstone,8.00E+05,23,2
-11/1/2019,Fortnite,678125,193,10
 11/1/2019,Rocket League,652165.72,179,11
 11/1/2019,Arena of Valor,5.00E+05,42,1
 11/1/2019,Magic: The Gathering Arena,5.00E+05,32,1
@@ -5608,22 +5648,22 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2019,WarCraft III,85930,12,2
 11/1/2019,StarCraft: Brood War,68240,16,1
 11/1/2019,Shadowverse,66907.56,24,3
+11/1/2019,iRacing.com,53420,20,4
 11/1/2019,Super Smash Bros. Ultimate,51093.89,206,63
 11/1/2019,Halo 3,50000,32,1
 11/1/2019,Halo: Reach,50000,16,1
-11/1/2019,iRacing.com,43420,17,3
 11/1/2019,Farming Simulator 19,39722.8,41,3
 11/1/2019,BlazBlue: Central Fiction,33000,8,1
 11/1/2019,BlazBlue: Cross Tag Battle,33000,8,1
 11/1/2019,Guilty Gear Xrd REV 2,33000,8,1
-11/1/2019,Tekken 7,31860.4,58,9
+11/1/2019,Tekken 7,32860.4,65,10
 11/1/2019,Super Smash Bros. Melee,29677.05,35,7
 11/1/2019,Soul Calibur VI,27085.8,21,3
 11/1/2019,RaceRoom Racing Experience,16990,6,2
 11/1/2019,rFactor 2,16500,20,2
 11/1/2019,Mortal Kombat 11,13743.28,22,4
 11/1/2019,Dragon Ball FighterZ,11782.73,27,4
-11/1/2019,Call of Duty: Warzone,10000,6,1
+11/1/2019,Call of Duty: Modern Warfare,11000,11,3
 11/1/2019,Teamfight Tactics,10000,8,1
 11/1/2019,Assetto Corsa,9116.2,6,3
 11/1/2019,Team Fortress 2,8960,164,4
@@ -5633,7 +5673,6 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2019,Street Fighter V: Arcade Edition,2532.9,14,3
 11/1/2019,Rivals of Aether,2210,9,2
 11/1/2019,Chess.com,1399.99,7,1
-11/1/2019,Call of Duty: Modern Warfare,1000,5,2
 11/1/2019,Lichess,1000,5,1
 11/1/2019,Age of Empires III,691,5,2
 11/1/2019,Artifact,601,13,7
@@ -5641,12 +5680,12 @@ Date,Game,Earnings,Players,Tournaments
 11/1/2019,Dota Underlords,360.75,4,6
 11/1/2019,Under Night In-Birth EXE: Late[st],110.58,3,1
 11/1/2019,Quake Champions,0,12,1
-12/1/2019,Fortnite,5728067.89,585,8
+12/1/2019,Fortnite,6535247.89,795,12
 12/1/2019,Counter-Strike: Global Offensive,3779775.08,1088,84
 12/1/2019,Arena of Valor,1520262.27,30,2
 12/1/2019,Shadowverse,1387727.29,24,1
 12/1/2019,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,1204250,228,3
-12/1/2019,League of Legends,1010019.5,99,4
+12/1/2019,League of Legends,1021040.51,119,5
 12/1/2019,CrossFire,820000,19,1
 12/1/2019,Dota 2,760661,211,15
 12/1/2019,Magic: The Gathering Arena,750000,28,1
@@ -5656,8 +5695,8 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2019,Clash Royale,4.00E+05,21,1
 12/1/2019,PLAYERUNKNOWN’S BATTLEGROUNDS,395238.9,296,12
 12/1/2019,Street Fighter V: Arcade Edition,379950,39,3
-12/1/2019,Call of Duty: Modern Warfare,302612.5,65,5
-12/1/2019,Gears 5,3.00E+05,69,3
+12/1/2019,Gears 5,360000,92,5
+12/1/2019,Call of Duty: Modern Warfare,327612.5,71,6
 12/1/2019,Tekken 7,263000.92,45,7
 12/1/2019,Rainbow Six Siege,225745.46,90,3
 12/1/2019,FIFA Online 4,198000,36,1
@@ -5669,7 +5708,6 @@ Date,Game,Earnings,Players,Tournaments
 12/1/2019,Battalion 1944,34036.31,31,2
 12/1/2019,Multigaming,33315.93,8,1
 12/1/2019,Super Smash Bros. Ultimate,27306.12,147,32
-12/1/2019,Call of Duty: Warzone,25000,6,1
 12/1/2019,Overwatch,15000,12,1
 12/1/2019,Teamfight Tactics,11995,17,3
 12/1/2019,RaceRoom Racing Experience,11100,13,1
@@ -5694,7 +5732,7 @@ Date,Game,Earnings,Players,Tournaments
 1/1/2020,Dota 2,1414185.6,194,8
 1/1/2020,Arena of Valor,518760,10,1
 1/1/2020,Counter-Strike: Global Offensive,487734.12,473,33
-1/1/2020,Call of Duty: Modern Warfare,257300,97,3
+1/1/2020,Call of Duty: Modern Warfare,267300,106,4
 1/1/2020,FIFA 20,216402.71,76,5
 1/1/2020,League of Legends,209885.86,153,3
 1/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,138652,75,3
@@ -5765,22 +5803,23 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2020,Magic: The Gathering Arena,1100000,28,2
 2/1/2020,Counter-Strike: Global Offensive,962945.58,596,48
 2/1/2020,Fortnite,517760,106,2
-2/1/2020,Hearthstone,502500,107,2
+2/1/2020,Hearthstone,502500,131,2
 2/1/2020,FIFA 20,365897.65,117,7
-2/1/2020,Dota 2,357587,55,3
+2/1/2020,Dota 2,358087,65,4
 2/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,347607.77,226,8
 2/1/2020,Call of Duty: Modern Warfare,235150,82,5
-2/1/2020,League of Legends,203917,95,4
+2/1/2020,League of Legends,203917,105,4
 2/1/2020,Dragon Ball FighterZ,80476.76,20,2
 2/1/2020,Super Smash Bros. Melee,74897.54,51,8
 2/1/2020,Chess.com,52000,27,3
 2/1/2020,WarCraft III: Reforged,34006.74,34,16
-2/1/2020,Super Smash Bros. Ultimate,32589.39,163,37
+2/1/2020,Super Smash Bros. Ultimate,33899.02,173,39
 2/1/2020,StarCraft II,18042.34,58,29
 2/1/2020,TrackMania 2: Stadium,14219.15,56,11
 2/1/2020,Shadowverse,8000,16,2
 2/1/2020,Rocket League,7248.74,37,14
 2/1/2020,Age of Empires II,3921.99,14,9
+2/1/2020,iRacing.com,3540,5,1
 2/1/2020,Dota Underlords,3083.25,9,2
 2/1/2020,StarCraft: Brood War,2468,19,2
 2/1/2020,FIFA Online 4,2240,3,1
@@ -5805,23 +5844,24 @@ Date,Game,Earnings,Players,Tournaments
 2/1/2020,Samurai Shodown V Special,130,3,1
 2/1/2020,Brawlhalla,53.6,6,1
 3/1/2020,Rocket League,1046224.2,152,9
-3/1/2020,Dota 2,903760,214,12
+3/1/2020,Dota 2,905260,228,15
 3/1/2020,Counter-Strike: Global Offensive,706302.6,407,36
 3/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,566036.2,255,8
-3/1/2020,Hearthstone,500100,128,2
+3/1/2020,Hearthstone,505100,144,3
 3/1/2020,CrossFire,458066.52,0,1
 3/1/2020,StarCraft II,442345.6,111,39
+3/1/2020,Gears 5,364000,101,5
 3/1/2020,Apex Legends,350000,178,9
 3/1/2020,Rainbow Six Siege,348771.9,241,12
-3/1/2020,Call of Duty: Warzone,274300,131,7
-3/1/2020,Fortnite,212500,272,9
-3/1/2020,League of Legends,192944.13,199,9
+3/1/2020,Call of Duty: Warzone,298050,186,7
+3/1/2020,Fortnite,225000,334,10
+3/1/2020,League of Legends,192944.13,231,9
 3/1/2020,Teamfight Tactics,150250,16,1
 3/1/2020,Call of Duty: Modern Warfare,103000,30,2
 3/1/2020,Mortal Kombat 11,1.00E+05,16,1
+3/1/2020,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,99050,166,4
 3/1/2020,Age of Empires II,81020.81,52,15
 3/1/2020,Brawlhalla,70020.1,107,13
-3/1/2020,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,61850,78,3
 3/1/2020,Brawl Stars,56250,21,1
 3/1/2020,Super Smash Bros. Ultimate,38175.85,89,17
 3/1/2020,rFactor 2,33950.36,7,5
@@ -5833,8 +5873,8 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2020,iRacing.com,7898,73,5
 3/1/2020,Diabotical,5535.93,46,13
 3/1/2020,TrackMania 2: Stadium,5414.63,33,13
+3/1/2020,Heroes of the Storm,5395,24,2
 3/1/2020,FIFA 20,5000.72,4,4
-3/1/2020,Heroes of the Storm,4035,9,1
 3/1/2020,Shadowverse,3800,8,1
 3/1/2020,Age of Empires III,3727,21,4
 3/1/2020,Super Smash Bros. Melee,3580,18,4
@@ -5849,9 +5889,9 @@ Date,Game,Earnings,Players,Tournaments
 3/1/2020,Super Smash Bros. for Wii U,490,3,1
 3/1/2020,Super Smash Bros.,190,3,1
 3/1/2020,Xonotic,22.29,18,1
-4/1/2020,Counter-Strike: Global Offensive,2048316,580,38
+4/1/2020,Counter-Strike: Global Offensive,2049939.78,600,39
+4/1/2020,Fortnite,1411700,548,14
 4/1/2020,League of Legends,1104168.74,426,12
-4/1/2020,Fortnite,711500,248,7
 4/1/2020,Dota 2,623956,345,20
 4/1/2020,Rainbow Six Siege,492749.4,135,4
 4/1/2020,Arena of Valor,308261.41,40,1
@@ -5861,20 +5901,21 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2020,Call of Duty: Modern Warfare,208000,45,5
 4/1/2020,Apex Legends,201000,232,17
 4/1/2020,Hearthstone,161100,57,8
+4/1/2020,Gears 5,89000,65,3
 4/1/2020,StarCraft: Brood War,67260,31,2
-4/1/2020,VALORANT,60580.8,290,51
-4/1/2020,Escape from Tarkov,54600,37,2
+4/1/2020,VALORANT,60580.8,292,51
+4/1/2020,Escape from Tarkov,54600,96,2
 4/1/2020,Forza Motorsport 7,49000,48,1
 4/1/2020,chess24,45400,16,1
+4/1/2020,rFactor 2,41977.5,5,3
 4/1/2020,Chess.com,22980.81,84,7
 4/1/2020,WarCraft III: Reforged,19451.65,28,10
 4/1/2020,StarCraft II,17322.51,76,37
 4/1/2020,Brawlhalla,15000,51,5
 4/1/2020,Farming Simulator 19,12909.95,24,1
-4/1/2020,rFactor 2,11977.5,4,2
 4/1/2020,Team Fortress 2,9496,110,4
+4/1/2020,Super Smash Bros. Ultimate,5500,42,9
 4/1/2020,FIFA 20,5000,4,2
-4/1/2020,Super Smash Bros. Ultimate,4800,39,8
 4/1/2020,TrackMania 2: Stadium,4421.32,92,20
 4/1/2020,Age of Empires II,4390,26,9
 4/1/2020,Super Smash Bros. Melee,3004.69,9,2
@@ -5887,10 +5928,10 @@ Date,Game,Earnings,Players,Tournaments
 4/1/2020,Puyo Puyo Tetris,184.5,3,1
 4/1/2020,Xonotic,141.54,30,3
 4/1/2020,Artifact,60,7,2
-5/1/2020,Fortnite,1976900,281,16
-5/1/2020,League of Legends,1524096.88,317,9
+5/1/2020,Fortnite,2209400,401,21
+5/1/2020,League of Legends,1525177.82,340,10
 5/1/2020,Dota 2,1102589.17,311,21
-5/1/2020,Counter-Strike: Global Offensive,928992.13,694,48
+5/1/2020,Counter-Strike: Global Offensive,920992.13,694,48
 5/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,490066,324,9
 5/1/2020,chess24,282476.21,27,3
 5/1/2020,Overwatch,225000,120,2
@@ -5899,15 +5940,17 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2020,Rocket League,208573.4,107,13
 5/1/2020,Apex Legends,206000,249,22
 5/1/2020,Call of Duty: Warzone,202000,68,11
-5/1/2020,VALORANT,133179.36,275,38
+5/1/2020,VALORANT,135371.36,292,41
 5/1/2020,Paladins,123000,90,3
 5/1/2020,Clash Royale,105000,39,2
 5/1/2020,Lichess,102100,17,4
+5/1/2020,Legends of Runeterra,1.00E+05,16,2
 5/1/2020,Rainbow Six Siege,93477.91,101,3
 5/1/2020,Hearthstone,80550,52,4
+5/1/2020,Gears 5,71000,40,1
 5/1/2020,Quake Champions,50000,24,1
-5/1/2020,iRacing.com,39200,22,3
-5/1/2020,StarCraft II,34709,67,30
+5/1/2020,iRacing.com,41799,84,3
+5/1/2020,StarCraft II,35468,68,31
 5/1/2020,Gwent,29200,8,1
 5/1/2020,WarCraft III: Reforged,26659.02,25,10
 5/1/2020,Age of Empires II,24199.29,25,9
@@ -5921,34 +5964,38 @@ Date,Game,Earnings,Players,Tournaments
 5/1/2020,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,4000,40,4
 5/1/2020,Prophecy,3000,23,3
 5/1/2020,Soul Calibur VI,3000,7,3
+5/1/2020,TrackMania 2: Stadium,2478.58,43,11
+5/1/2020,Melty Blood: Actress Again Current Code,2432.76,18,6
 5/1/2020,Age of Empires III,2366,29,1
-5/1/2020,TrackMania 2: Stadium,2336.62,41,10
 5/1/2020,Tetr.io,951.92,6,3
 5/1/2020,Brawlhalla,500,10,2
 5/1/2020,Puyo Puyo Tetris,437.29,5,2
 5/1/2020,Assetto Corsa Competizione,236,2,2
 5/1/2020,Artifact,194.4,10,5
 5/1/2020,Xonotic,131.74,30,3
-6/1/2020,Counter-Strike: Global Offensive,1903486.26,778,54
+5/1/2020,Beat Aim,70,3,1
+6/1/2020,Counter-Strike: Global Offensive,1900486.26,778,54
 6/1/2020,Dota 2,896917.98,314,15
-6/1/2020,Hearthstone,508000,81,2
-6/1/2020,VALORANT,357480.03,690,53
-6/1/2020,StarCraft II,280600,136,25
+6/1/2020,Hearthstone,513000,127,3
+6/1/2020,VALORANT,358980.03,706,56
+6/1/2020,StarCraft II,280680,136,25
+6/1/2020,Call of Duty: Warzone,271263.3,202,11
 6/1/2020,Lichess,267100,19,4
-6/1/2020,Call of Duty: Warzone,251963.3,161,11
 6/1/2020,Free Fire,245107.47,152,3
 6/1/2020,Call of Duty: Modern Warfare,208000,40,5
 6/1/2020,chess24,150000,12,1
+6/1/2020,WarCraft III: Reforged,122888.84,29,1
 6/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,112605.6,264,5
 6/1/2020,CrossFire,100320,40,1
 6/1/2020,Fortnite,1.00E+05,66,3
 6/1/2020,Overwatch,1.00E+05,54,2
 6/1/2020,Rocket League,90857.64,92,14
+6/1/2020,FIFA 20,76000,16,1
 6/1/2020,Chess.com,72300,65,7
 6/1/2020,Apex Legends,63519.05,108,14
 6/1/2020,Paladins,49999.98,30,1
 6/1/2020,Rainbow Six Siege,44000,20,1
-6/1/2020,Age of Empires II,25553.95,65,15
+6/1/2020,Age of Empires II,26203.95,69,20
 6/1/2020,Gwent,22000,8,1
 6/1/2020,Tekken 7,18688.2,20,6
 6/1/2020,StarCraft: Brood War,14468.94,29,3
@@ -5983,7 +6030,9 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2020,Dead or Alive 6,160,3,1
 6/1/2020,Kill la Kill the Game: IF,150,3,1
 6/1/2020,Rivals of Aether,150,6,2
+6/1/2020,Trackmania Turbo,112.5,3,1
 6/1/2020,Acceleration of SUGURI 2,100,3,1
+6/1/2020,Beat Aim,100,4,1
 6/1/2020,Schwarzerblitz,100,3,1
 6/1/2020,Street Fighter III: 3rd Strike,100,3,1
 6/1/2020,Twinkle Star Sprites,100,3,1
@@ -6028,18 +6077,22 @@ Date,Game,Earnings,Players,Tournaments
 6/1/2020,Million Arthur: Arcana Blood,10,3,1
 6/1/2020,Power Rangers: Battle for the Grid,10,3,1
 6/1/2020,Sailor Moon S,10,3,1
-7/1/2020,Counter-Strike: Global Offensive,939924.82,754,42
+7/1/2020,Counter-Strike: Global Offensive,959924.82,774,43
 7/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,926800,290,4
 7/1/2020,Dota 2,680258,234,8
-7/1/2020,Hearthstone,5.00E+05,68,1
+7/1/2020,Hearthstone,505000,115,2
 7/1/2020,Arena of Valor,350000,49,1
 7/1/2020,Call of Duty: Modern Warfare,307500,59,4
 7/1/2020,Hyper Scape,200600,123,2
+7/1/2020,VALORANT,198643.68,610,42
 7/1/2020,StarCraft II,198223.79,110,17
-7/1/2020,VALORANT,195516.68,556,37
 7/1/2020,Fortnite,183600,107,3
 7/1/2020,chess24,156819.88,20,2
+7/1/2020,NASCAR Heat 4,140000,34,4
+7/1/2020,Gears 5,139000,80,3
 7/1/2020,Call of Duty: Warzone,125500,76,11
+7/1/2020,Rocket Arena,1.00E+05,24,3
+7/1/2020,Minecraft,96200,32,2
 7/1/2020,Rocket League,89638.25,102,10
 7/1/2020,Chess.com,77862.42,88,14
 7/1/2020,Clash Royale,75000,16,1
@@ -6047,7 +6100,7 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2020,WarCraft III: Reforged,71447,8,1
 7/1/2020,Super Smash Bros. Melee,25001.05,16,1
 7/1/2020,iRacing.com,23780.35,60,3
-7/1/2020,League of Legends,21200,27,2
+7/1/2020,League of Legends,21877.95,42,3
 7/1/2020,Tekken 7,12184.4,12,4
 7/1/2020,Assetto Corsa,9025.2,20,2
 7/1/2020,Playchess.com,8861.35,67,5
@@ -6056,50 +6109,108 @@ Date,Game,Earnings,Players,Tournaments
 7/1/2020,Trackmania (2020),5503.84,22,8
 7/1/2020,Age of Empires II,5291,20,10
 7/1/2020,PLAYERUNKNOWN'S BATTLEGROUNDS Mobile,5000,28,1
-7/1/2020,Lichess,2350,12,3
-7/1/2020,rFactor 2,1977.5,3,1
+7/1/2020,rFactor 2,4025,6,2
+7/1/2020,Lichess,3307.32,69,5
 7/1/2020,Paladins,582.8,30,1
 7/1/2020,Tetr.io,542.11,4,2
 7/1/2020,Tetris,401.38,4,1
+7/1/2020,Assetto Corsa Competizione,235,2,2
 7/1/2020,Puyo Puyo Tetris,200,3,1
-7/1/2020,Assetto Corsa Competizione,118,2,1
 7/1/2020,Artifact,75,2,1
 7/1/2020,Artifact 2.0,50,1,1
-8/1/2020,Counter-Strike: Global Offensive,1332236.52,568,44
-8/1/2020,League of Legends,817308.21,188,7
-8/1/2020,Fortnite,515000,112,2
+7/1/2020,Beat Aim,40,3,1
+8/1/2020,Call of Duty: Modern Warfare,4600000,51,1
+8/1/2020,Counter-Strike: Global Offensive,1362949.22,605,48
+8/1/2020,League of Legends,964203.43,371,12
+8/1/2020,Fortnite,928600,319,8
 8/1/2020,chess24,450000,12,2
-8/1/2020,Call of Duty: Warzone,357975.59,130,11
-8/1/2020,VALORANT,209218.27,191,19
-8/1/2020,StarCraft II,169121.08,76,18
-8/1/2020,Hearthstone,161000,49,2
-8/1/2020,Dota 2,139052.21,141,3
+8/1/2020,Hearthstone,401750,87,11
+8/1/2020,Call of Duty: Warzone,377775.59,161,11
+8/1/2020,StarCraft II,316021.08,111,22
+8/1/2020,VALORANT,292687.55,311,33
+8/1/2020,Dota 2,243552.21,188,5
+8/1/2020,Quake Champions,152150,30,2
 8/1/2020,Apex Legends,128000,108,8
+8/1/2020,Minecraft,98500,48,1
+8/1/2020,Hyper Scape,98400,180,2
+8/1/2020,NASCAR Heat 4,60500,8,1
+8/1/2020,Fall Guys,51000,79,1
 8/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,50000,64,1
-8/1/2020,Age of Empires II,49562,52,13
+8/1/2020,Age of Empires II,49862,60,15
 8/1/2020,Chess.com,28300,53,9
+8/1/2020,iRacing.com,25000,16,1
+8/1/2020,WarCraft III: Reforged,25000,40,3
 8/1/2020,Gwent,21000,8,1
-8/1/2020,Lichess,12850,23,4
-8/1/2020,Super Smash Bros. Ultimate,9255.37,49,19
+8/1/2020,Lichess,13481.59,79,7
+8/1/2020,Super Smash Bros. Ultimate,9755.37,49,20
 8/1/2020,Assetto Corsa,9108,20,2
-8/1/2020,Tekken 7,4917.2,7,2
-8/1/2020,Rocket League,3656.4,15,4
-8/1/2020,Trackmania (2020),3213.35,33,11
-8/1/2020,Quake Champions,2150,23,2
+8/1/2020,Tekken 7,7359.6,11,4
+8/1/2020,Rocket League,5680,22,6
+8/1/2020,QuakeWorld,4168,6,1
+8/1/2020,Trackmania (2020),3313.35,34,11
+8/1/2020,rFactor 2,2047.5,3,1
+8/1/2020,Diabotical,1550,22,2
+8/1/2020,Paladins,1357.19,23,3
+8/1/2020,Eternal Fighter Zero,1301.6,7,1
 8/1/2020,Touhou Hisoutensoku ~ Choudokyuu Ginyoru no Nazo o Oe,1290.01,8,1
+8/1/2020,Super Smash Bros. Melee,1184.45,8,1
 8/1/2020,Vampire Savior,1117.21,6,2
-8/1/2020,Diabotical,1050,11,1
 8/1/2020,Fantasy Strike,1000,8,1
+8/1/2020,Team Fortress 2,1000,27,1
 8/1/2020,Fight of Animals,530.68,6,2
+8/1/2020,Age of Empires III,500,6,1
 8/1/2020,Age of Empires Online,420,8,1
-8/1/2020,Paladins,357.19,3,1
+8/1/2020,Puyo Puyo Champions,335.5,3,1
 8/1/2020,Tetr.io,312.2,3,1
+8/1/2020,Heroes of the Storm,300,10,1
 8/1/2020,BlazBlue: Central Fiction,296.84,6,4
 8/1/2020,JoJo's Bizarre Adventure: Heritage for the Future,234.99,3,1
+8/1/2020,Assetto Corsa Competizione,234,2,2
 8/1/2020,Jstris,225,8,1
+8/1/2020,Cultris II,190.95,3,1
 8/1/2020,Garou: Mark of the Wolves,145,3,1
 8/1/2020,Dengeki Bunko: Fighting Climax Ignition,135.5,3,1
 8/1/2020,Puyo Puyo Tetris,112.2,3,1
 8/1/2020,Samurai Shodown V Special,100.46,3,1
 8/1/2020,Brawlhalla,95,2,1
 8/1/2020,Artifact 2.0,60,1,1
+8/1/2020,Beat Aim,60,3,1
+8/1/2020,Breakers Revenge,16,3,1
+9/1/2020,League of Legends,1114893.75,275,7
+9/1/2020,Dota 2,1033618.14,316,14
+9/1/2020,Overwatch,950000,76,2
+9/1/2020,Counter-Strike: Global Offensive,760960.85,499,39
+9/1/2020,Fortnite,531999,547,31
+9/1/2020,Hearthstone,505000,84,2
+9/1/2020,Lichess,402875,38,6
+9/1/2020,Apex Legends,391450,240,4
+9/1/2020,Call of Duty: Warzone,314000,75,11
+9/1/2020,Teamfight Tactics,215000,16,2
+9/1/2020,StarCraft II,207729,105,6
+9/1/2020,PLAYERUNKNOWN’S BATTLEGROUNDS,2.00E+05,64,1
+9/1/2020,VALORANT,191261.61,227,20
+9/1/2020,Forza Motorsport 7,150000,24,2
+9/1/2020,Chess.com,104500,74,8
+9/1/2020,Call of Duty: Modern Warfare,1.00E+05,32,1
+9/1/2020,Fall Guys,1.00E+05,138,2
+9/1/2020,RaceRoom Racing Experience,17700,3,1
+9/1/2020,Tekken 7,15617,8,5
+9/1/2020,Super Smash Bros. Ultimate,11183.21,68,15
+9/1/2020,iRacing.com,10000,10,1
+9/1/2020,Diabotical,9174,40,9
+9/1/2020,Assetto Corsa,8942.4,20,2
+9/1/2020,Rocket League,4164.83,18,4
+9/1/2020,Age of Empires II,3349.5,32,10
+9/1/2020,Xonotic,2720.37,21,4
+9/1/2020,rFactor 2,2047.5,3,1
+9/1/2020,Gran Turismo Sport,1384,11,2
+9/1/2020,Trackmania (2020),1219.41,14,7
+9/1/2020,Heroes of the Storm,1050,15,1
+9/1/2020,Age of Empires III,950,28,2
+9/1/2020,Puyo Puyo Tetris,561.7,6,2
+9/1/2020,Paladins,500,10,1
+9/1/2020,Tetr.io,200,4,1
+9/1/2020,Beat Aim,160,7,2
+9/1/2020,Tetris,125,2,1
+9/1/2020,Rivals of Aether,50,4,1
+9/1/2020,Artifact 2.0,45,1,1
