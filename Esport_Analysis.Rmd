@@ -21,16 +21,34 @@ library(scales)
 library(gridExtra)
 library(forcats)
 library(ggrepel)
-```
 
-```{r knitr_otions, include = FALSE}
+detach("package:tidyverse", unload = TRUE)
+
+# magic option
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+
 knitr::opts_chunk$set(warning = FALSE)
 theme_set(theme_bw())
+
 ```
 
-#  Preparetion
+# Introduction
+
+According to [Wikipedia](https://en.wikipedia.org/wiki/Esports) - <br>
+Esports (also known as electronic sports, e-sports, or eSports) is a form of sport competition using video games. Esports often takes the form of organized, multiplayer video game competitions, particularly between professional players, individually or as teams.
+
+* **In the notebook** I will try to shine some light on this growing industy by doing an **Exploratory data analysis** or **EDA**, ill create some charts, some plots in the hopes of learning something new.
+
+* **This dataset** comes entirely from [EsportsEarnings.com](https://www.esportsearnings.com), this site gets its information by different contributers. As the data is collected by volunteers, it is likely that there would be some errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened in the early 2000's, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
+
+
+
+
 <br>
+
 ## Loading data
+
 ```{r Load Data}
 HistData <- read.csv("HistoricalEsportData.csv")
 GenData <- read.csv("GeneralEsportData.csv")
@@ -40,17 +58,21 @@ str(HistData)
 str(GenData)
 ```
 
-## Some variable manipulation
-
+## Some variable formatting
 
 ```{r Variable_manipulation_Year}
 # I would like to change the "Year" variable into date format
+options(scipen = 100)
 
 HistData$Date <- as.Date(HistData$Date, format = "%m/%d/%Y")
+
+# Adding timely variables to facilitate plotting
+HistData$Year <- as.numeric(regmatches(HistData$Date,regexpr("^\\d{4}",HistData$Date)))
+HistData$Month <- as.numeric(regmatches(HistData$Date,regexpr("\\d{2}(?=-01$)",HistData$Date, perl = TRUE)))
 ```
 
 ```{r Variable_manipulation_Genre}
-# Creating a dataframe
+# Making the genre variable easier to work with
 GenData$Genre <- gsub(" Game","",GenData$Genre)
 GenData$Genre[which(GenData$Genre == "Multiplayer Online Battle Arena")] <- "MOBA"
 GenData$Genre[which(GenData$Genre == "Role-Playing")] <- "RPG"
@@ -58,12 +80,30 @@ GenData$Genre[which(GenData$Genre == "Third-Person Shooter")] <- "TPS"
 GenData$Genre[which(GenData$Genre == "First-Person Shooter")] <- "FPS"
 ```
 
+
+## Removing games who "do not belong" in this database.
+<br>
+I have came to the conclusion that not every game that is presented on the site should be in this database: <br>
+Games without any recorded cash prizes or an amount which is extremely low (for example, the fighting game **King of Fighters XI which has a whopping total of 25$ in prize pool distributed), the same goes for the number of tournaments, a game which held only one or two tournaments does not qualify here (in my opinion). <br>
+
+For this reason I have decided to ommit from the database games who has either **less then 500$ prize pool earnings** and 
+game with **less then 5 tournaments and a total prize pool of under 2000$** recorded on the site. 
+
+```{r filtering the data}
+Games_to_filter <- GenData$Game[which(GenData$TotalEarnings < 500 | (GenData$TotalTournaments < 5 & GenData$TotalEarnings <2000))]
+
+GenData <- GenData[-which(GenData$Game %in% Games_to_filter),]
+HistData <- HistData[-which(HistData$Game %in% Games_to_filter),]
+
+rm(Games_to_filter) # No longer necessary
+```
+<br>
+We are now ready to start our analysis.
+
 #  Explanatory Data Analysis
 <br>
+First of all, let's look at which games had the biggest amount of money distributed. <br>
 
-**An important note**, all the information from this dataset comes from [EsportsEarnings](https://www.esportsearnings.com), this site gets its information by different contributers. As the data is collected by volunteers, it is likely that there would be errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened more then 10-15 years ago, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
-
-First of all, let's look at which games had the biggest amount of money distributed.
 ## Biggest Games (Earning wise)
 ```{r Biggest_TotalEarnings}
 # Adding a rank for the earnings per game
@@ -71,12 +111,39 @@ First of all, let's look at which games had the biggest amount of money distribu
 GenData[order(GenData$TotalEarnings, decreasing = TRUE),] %>%
   slice(1:10) %>%
   ggplot(data = .,aes(x = reorder(Game,+ TotalEarnings), y = TotalEarnings)) + 
-  geom_bar(stat = "identity", fill = rainbow(n = 10 , start = 0.35, end = 0.45)) + coord_flip() +
+  geom_bar(stat = "identity", 
+           fill = rainbow(n = 10 , start = 0.35, end = 0.45), color = "black", alpha = 0.85) + 
+  coord_flip() +
   labs(x = element_blank(), y = "Earnings in millions") +
-  scale_y_continuous(labels = scales::label_number(scale = 1/1000000))
+  scale_y_continuous(labels = scales::label_number(scale = 1/10^6)) +
+  geom_text(aes(label = round(TotalEarnings/(10^6),0), hjust = 1.2))
 ```
+
 <br>
 In the top 10 biggest games, there are no apparent surprises, we find **Dota 2**, **CS:GO**,**Fortnite**,**League of Legends**, and **Starcraft 2** at the top. <br>
+Let's see the evolution of prizes destributed in these top 5 games. <br> 
+
+```{r Biggest_TotalEarnings_timeline}
+# Preparing list of top 5 games
+Top5Games <- c(GenData[order(-GenData$TotalEarnings),1] %>% head(5))
+
+# Prepering Data for the plot
+Top5GamesTimeline <- HistData[which(HistData$Game %in% Top5Games),c(1:3,5)]
+Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "Counter-Strike: Global Offensive")] <- "CS : GO"
+Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "League of Legends")] <- "LOL"
+Top5GamesTimeline$Game <- factor(Top5GamesTimeline$Game,levels = c("Dota 2","CS : GO","Fortnite","LOL","StarCraft II"))
+
+ggplot(data = Top5GamesTimeline, aes(x = Date, y = Earnings/1000)) +
+  geom_area(fill = "lightblue",color = "black") +
+  facet_grid(Game ~ .,scales = "free") +
+  labs(title = "Prize pool evolution - top 5 games",subtitle = "In thousands",x = element_blank(), y = element_blank()) +
+  scale_x_date(breaks = "2 years", date_labels = "%Y")
+
+rm(Top5Games,Top5GamesTimeline) # No longer necessary
+
+```
+
+We can see that some games distribute prize money in a cyclical manner, with one main tournament every year (like **Dota** and **LOL**). other games like **StarCraft** and **CS : GO** seems to distribute prize pool in a more even manner. For **Fortnite** it is too early to say as the game came out at 2018.
 
 
 ```{r Game_earnings_pieplot}
@@ -99,6 +166,8 @@ ggplot(data = Top10Earnings,aes(x = "",y = Percent,fill = Title)) +
   theme_minimal() +
   labs(title = "Precentage of earnings", y = element_blank(), x = element_blank(),
        fill = "Game Title") 
+
+rm(Top10Earnings) # No longer necessary
 ```
 <br>
 We can see that the earnings are highly concentrated: almost 50% of the earnings are concentrated in 3 games and about 75% of the total earnings come from the biggest 10 games.
@@ -106,21 +175,54 @@ We can see that the earnings are highly concentrated: almost 50% of the earnings
 
 Now let's see which games had the most tournaments <br>
 
+
+
+
+
 ## Biggest Games (Tournament wise)
 
 ```{r Most_tournaments}
+# Plotting
 GenData[order(GenData$TotalTournaments, decreasing = TRUE),] %>%
   slice(1:10) %>%
   ggplot(data = .,aes(x = reorder(Game,+ TotalTournaments), y = TotalTournaments)) + 
-  geom_bar(stat = "identity", fill = rainbow(n = 10 , start = 0.35, end = 0.45)) + coord_flip() +
+  geom_bar(stat = "identity", fill = rainbow(n = 10 , start = 0.35, end = 0.45)
+           , color = "black", alpha = 0.85) + 
+  coord_flip() +
   labs(title = "Games with the most tournaments",x = element_blank(), y = element_blank()) +
-  geom_text(aes(label = TotalTournaments), hjust = 1.2, fontface = "bold")
+  geom_text(aes(label = TotalTournaments), hjust = 1.2)
+
 ```
 <br>
 
 It is not surprising that we find a similarity between the two lists: Dota 2, Starcraft 2, League of Legends and Counter-Strike: Global Offensive are all in the top 10 in prizepool earnings. <br>
 What is somewhat interaesting is the fact that we have 3 different Super Smash Bros games, all in the top 10, this is while being not as big in the matter of prize pools (1.2M, 1.5M and 3.1M). <br>
-Also, it seems as though the amount of tournaments is concentrated between a few big games, but less then the earnings, let's visualise.
+
+
+
+```{r Biggest_Tournaments_timeline}
+# Preparing list of top 5 games
+Top5Games <- c(GenData[order(-GenData$TotalTournaments),1] %>% head(5))
+
+# Prepering Data for the plot
+Top5GamesTimeline <- HistData[which(HistData$Game %in% Top5Games),c(1:3,5)]
+Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "Counter-Strike: Global Offensive")] <- "CS : GO"
+Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "League of Legends")] <- "LOL"
+Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "Super Smash Bros. Melee")] <- "Sm.Melee"
+Top5GamesTimeline$Game <- factor(Top5GamesTimeline$Game,levels = c("StarCraft II","Sm.Melee","CS : GO","LOL","Dota 2"))
+
+ggplot(data = Top5GamesTimeline, aes(x = Date, y = Tournaments)) +
+  geom_area(fill = "lightblue",color = "black") +
+  facet_grid(Game ~ .,scales = "free") +
+  labs(title = "Tournament evolution - top 5 games",x = element_blank(), y = element_blank()) +
+  scale_x_date(breaks = "2 years", date_labels = "%Y")
+
+rm(Top5Games,Top5GamesTimeline) # No longer necessary
+
+```
+<br>
+The distribution of **Dota** and **LOL** tournaments seems cyclical, also, it is interesting how there where **Super Smash Bros.Melee** tournamnets back in 2003 but the amount picked up only around 2014.
+<br>
 
 
 ```{r Tournaments_pieplot}
@@ -143,6 +245,8 @@ ggplot(data = Top10Tournaments,aes(x = "",y = Percent,fill = Title)) +
   theme_minimal() +
   labs(title = "Precentage of tournaments", y = element_blank(), x = element_blank(),
        fill = "Game Title") 
+
+rm(Top10Tournaments) # No longer necessary
 ```
 <br>
 Indeed, tournaments are a little bit less concetrated then earnings.
@@ -150,15 +254,6 @@ Indeed, tournaments are a little bit less concetrated then earnings.
 
 Let's take a deeper look at the data - <br>
 First, let's look at how the earnings developped through the years.
-
-```{r Earning_timeseries,echo = FALSE}
-#Disabling scientific annotation
-options(scipen = 100)
-
-# Adding timely variables to facilitate plotting
-HistData$Year <- as.numeric(regmatches(HistData$Date,regexpr("^\\d{4}",HistData$Date)))
-HistData$Month <- as.numeric(regmatches(HistData$Date,regexpr("\\d{2}(?=-01$)",HistData$Date, perl = TRUE)))
-```
 
 ## Yearly prise earnings.
 
@@ -272,11 +367,12 @@ ggplot(data = HistData %>%
   scale_fill_gradient(low ="lightsalmon",high = "green2") +
   labs(title = "Yearly prize pool during july - august",
        subtitle = "In millions of dollars",x = element_blank(), y = element_blank()) +
-  guides(fill = FALSE) + 
+  guides(fill = "none") + 
   theme_classic() +
   geom_text(aes(label = Earnings, vjust = -0.25))
 
 ```
+<br>
 In the summer of 2020 the prizepool allocated in Esport tournements was **5 times** lower then in 2019.
 
 Let's look at the tournament plot now.
@@ -289,7 +385,8 @@ ggplot(data = HistData %>%
          group_by(Date) %>% 
          summarise(Tournaments = sum(Tournaments)),
        aes(x = Date, y = Tournaments)) + 
-  geom_line(size = 1) +
+  geom_area(fill = "lightblue", alpha = 0.85) +
+  geom_line(color = "black") +
   labs(title = "Monthly amount of tournaments 2016 - 2020",
        subtitle = "11 of march 2020 - official date of the coronavirus being declared a pandemic",x = element_blank(), y = element_blank()) +
   scale_x_date(labels = date_format("%m/%y"),breaks = seq.Date(from = as.Date("2016-01-01"), to = as.Date("2021-01-01"), by ="6 months")) +
@@ -297,25 +394,89 @@ ggplot(data = HistData %>%
 
 ```
 
-It seems that tournements have been hit hard starting from january. <br>
+It seems that tournements have been hit hard as well: after a usual weak start (as january and fabruary are the months with the lowest amounts of tournaments) the the number of tournaments did not rise as sharply as in recent years. <br>
 
 
 Let's look at the diffrenet genres <br>
 
+## A look at Genres
 
-``` {r Total_earnings_per_genre,echo = FALSE}
-# Plotting
-ggplot(data = GenData %>% 
+``` {r Total_earnings_per_genre}
+# Preparing Data
+Genre_plot <- GenData %>% 
+  filter(Genre != "Puzzle") %>%
          group_by(Genre) %>% 
-         summarise(TotalEarnings = round(sum(TotalEarnings)/1000000,2)),
-       aes(x = Genre,y = TotalEarnings, fill = Genre)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = TotalEarnings),
+         summarise(Total_M = round(sum(TotalEarnings)/10^6,1),
+                   Average_M = round(mean(TotalEarnings)/1000000,1),
+                   Number = n())
+# Plotting total earnings per genre
+ggplot(data = Genre_plot,
+       aes(x = reorder(Genre,-Total_M),y = Total_M, fill = reorder(Genre,-Total_M))) +
+  geom_bar(stat = "identity",alpha = 0.75,color = "black") +
+  geom_text(aes(label = Total_M),
             vjust = -0.3,hjust = 0.55, size = 3.5) +
   theme_classic() +
-  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right") + 
-  labs(title = "Total Earnings", subtitle = "In millions of dollars", y = element_blank(), x = element_blank())
+  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
+  labs(title = "Total prizepool earnings by genre",
+       subtitle = "in millions of dollars \n(not including the puzzle genre)",
+       y = element_blank(),
+       x = element_blank(),
+       fill = "Genre")
+
+
+
+
+
+
 ```
+
+
+
+
+
+``` {r Number_of_games_per_genre}
+# Plotting average earnings per genre
+
+ggplot(data = Genre_plot,
+       aes(x = reorder(Genre,-Total_M),y = Number, fill = reorder(Genre,-Total_M))) +
+  geom_bar(stat = "identity",alpha = 0.75,color = "black") +
+  geom_text(aes(label = Number),
+            vjust = -0.3,hjust = 0.55, size = 3.5) +
+  theme_classic() +
+  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
+  labs(title = "Average prizepool earnings by genre",
+       subtitle = "in millions of dollars \n(not including the puzzle genre)",
+       y = element_blank(),
+       x = element_blank(),
+       fill = "Genre")
+
+
+```
+
+
+
+
+
+``` {r Average_earnings_per_genre}
+
+# Plotting average earnings per genre
+
+ggplot(data = Genre_plot,
+       aes(x = reorder(Genre,-Total_M),y = Average_M, fill = reorder(Genre,-Total_M))) +
+  geom_bar(stat = "identity",alpha = 0.75,color = "black") +
+  geom_text(aes(label = Average_M),
+            vjust = -0.3,hjust = 0.55, size = 3.5) +
+  theme_classic() +
+  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
+  labs(title = "Average prizepool earnings by genre",
+       subtitle = "in millions of dollars \n(not including the puzzle genre)",
+       y = element_blank(),
+       x = element_blank(),
+       fill = "Genre")
+
+```
+
+
 
 
  <br><br>
@@ -323,23 +484,62 @@ ggplot(data = GenData %>%
  
 Now let's look at the release date, do games from a specific year had a biggest impact on the Esports industry?
  
-``` {r Avg_earnings_per_releasedate}
+``` {r ReleaseDate_histogram}
+rm(Genre_plot) # Not necessary anymore
 
 # Plotting
-ggplot(data = GenData,aes(x = ReleaseDate,y = TotalEarnings,fill = Genre)) +
-  geom_bar(stat = "identity",col = "Darkgrey") +
-  theme_classic() +
-  scale_y_continuous(labels = scales::label_number(scale = 1/1000000)) +
-  labs(title = "Earnings by release date",subtitle = "In millions of dollars",
-    y = element_blank(), x = element_blank()) +
-  ggrepel::geom_text_repel(data = head(GenData[order(-GenData$TotalEarnings),],5),
-               aes(label = Game), size = 3.5,
-               box.padding = unit(0.35, "lines"),
-               point.padding = unit(0.3, "lines"))
+ggplot(data = GenData %>% mutate(Temp = ifelse(ReleaseDate == 2007,TRUE,FALSE)), aes(x = ReleaseDate,fill = Temp)) + 
+  geom_histogram(color = "tomato2",alpha = 0.45,size = 1,binwidth = 1) +
+  labs(title = "Distribution of release dates", y = element_blank(), x = element_blank()) +
+  scale_x_continuous(breaks = c(seq(from = 1990, to = 2200, by = 10),2007)) +
+  scale_fill_manual(values = c("tomato1","tomato4")) +
+  guides(fill = "none")
 
 ```  
 <br>
+It is intersting to note that there was a after 2007 there was a sharp decrease in the amount of releases - I would suspect that it is due to the 2008 financial crisis.  
+<br>
+
+``` {r Avg_earnings_per_releasedate}
+# Plotting
+ggplot(data = GenData, aes(x = ReleaseDate,y = TotalEarnings,color = Genre,size = TotalEarnings)) +
+  geom_point() +
+  ggrepel::geom_text_repel(data = head(GenData[order(-GenData$TotalEarnings),],5),
+               aes(label = Game), size = 3.5,
+               box.padding = unit(0.45, "lines"),
+               point.padding = unit(0.3, "lines")) +
+  guides(size = "none") +
+  scale_y_continuous(labels = scales::label_number(scale = 1/1000000)) +
+  scale_x_continuous(breaks = seq(from = 1980, to = 2020, by = 5)) +
+  labs(title = "Earnings by release date",subtitle = "In millions of dollars",
+    y = element_blank(), x = element_blank())
+```  
+<br>
 We can see that there is no real correlation between the release date of the game and the success it will have in the Esports scene.<br>
+
+Now let's have a look at **OnlineEarnings**
+
+## Precentage of prizes from online tournaments
+
+```{r OnlineEarning}
+GenData$PercentOnline <- GenData$OnlineEarnings/GenData$TotalEarnings
+
+ggplot(GenData, aes(x = reorder(Genre,-PercentOnline), y = PercentOnline)) + geom_boxplot() +coord_flip()
+ggplot(GenData %>% 
+         filter(TotalEarnings >10000), aes(x = reorder(Genre,-PercentOnline), y = PercentOnline)) + geom_boxplot() +coord_flip()
+
+
+
+
+```
+
+
+
+
+
+
+
+
 
 Now it's time to dive in and do a little bit of feature engineering the retrieve some precius insight.
 
