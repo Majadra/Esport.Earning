@@ -1,18 +1,40 @@
 ---
-title: "Esport_Analysis"
+title: "Esports - evolution and present state"
 author: "Ran K"
-date: "7/28/2020"
+date: "24/10/2020"
 output: 
   html_document:
     number_sections: true
     toc: true
     fig_width: 7
     fig_height: 4.5
-    theme: cosmo
+    theme: cerulean
     highlight: tango
     code_folding: hide
   
 ---
+
+<br><br><br><br>
+
+
+
+# Introduction.
+
+<br><br>
+
+<center>![Photo](https://econreview.berkeley.edu/wp-content/uploads/2018/10/1_ewziZ6Ym_K6JwlRII9_1nQ.jpeg){#id .class width=75% height=75%} </center> <br>
+[Photo source](https://econreview.berkeley.edu/the-explosive-growth-of-esports/)
+<br><br>
+
+According to [Wikipedia](https://en.wikipedia.org/wiki/Esports) - <br>
+Esports (also known as electronic sports, e-sports, or eSports) is a form of sport competition using video games.
+Esports often takes the form of organized, multiplayer video game competitions, particularly between professional players, individually or as teams.
+
+* **In the notebook** I will try to shine some light on this growing industy by doing an **Exploratory data analysis** or **EDA**, then, I will try to visualise some of the effects of the recent pandemic on the industry.
+
+* **This dataset** comes entirely from [EsportsEarnings.com](https://www.esportsearnings.com). <br>
+As the data in the site is collected by volunteers, it is likely that there would be some errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that orgenised in the early 2000's, when the Esports scene was a lot smaller). 
+This means that we should take all the earnings data with a grain of salt and not as definitive. <br>
 
 ```{r setup, include = FALSE}
 library(tidyverse)
@@ -33,34 +55,26 @@ theme_set(theme_bw())
 
 ```
 
-# Introduction
-
-According to [Wikipedia](https://en.wikipedia.org/wiki/Esports) - <br>
-Esports (also known as electronic sports, e-sports, or eSports) is a form of sport competition using video games. Esports often takes the form of organized, multiplayer video game competitions, particularly between professional players, individually or as teams.
-
-* **In the notebook** I will try to shine some light on this growing industy by doing an **Exploratory data analysis** or **EDA**, ill create some charts, some plots in the hopes of learning something new.
-
-* **This dataset** comes entirely from [EsportsEarnings.com](https://www.esportsearnings.com), this site gets its information by different contributers. As the data is collected by volunteers, it is likely that there would be some errors in documentation (I would assume these errors are more frequent in smaller tournaments and in tournaments that happened in the early 2000's, when the Esports scene was a lot smaller). This means that we should take all the earnings data with a grain of salt and not as a definitive number. <br>
-
-
-
-
 <br>
 
-## Loading data
+## Loading datasets and some variable manipulation
 
+Loading our 2 datasets <br>
 ```{r Load Data}
 HistData <- read.csv("HistoricalEsportData.csv")
+
+str(HistData)
+
 GenData <- read.csv("GeneralEsportData.csv")
 
-#Quick variable summary.
-str(HistData)
 str(GenData)
+
 ```
 
-## Some variable formatting
+<br>
+Also, ill manipulate the **Date** variable into a date format, ill add a variable indicating the year and the month ill edit some of the genres to not be too long (which will interfere with plotting) 
 
-```{r Variable_manipulation_Year}
+```{r Variable_manipulation}
 # I would like to change the "Year" variable into date format
 options(scipen = 100)
 
@@ -69,25 +83,27 @@ HistData$Date <- as.Date(HistData$Date, format = "%m/%d/%Y")
 # Adding timely variables to facilitate plotting
 HistData$Year <- as.numeric(regmatches(HistData$Date,regexpr("^\\d{4}",HistData$Date)))
 HistData$Month <- as.numeric(regmatches(HistData$Date,regexpr("\\d{2}(?=-01$)",HistData$Date, perl = TRUE)))
-```
 
-```{r Variable_manipulation_Genre}
-# Making the genre variable easier to work with
 GenData$Genre <- gsub(" Game","",GenData$Genre)
 GenData$Genre[which(GenData$Genre == "Multiplayer Online Battle Arena")] <- "MOBA"
 GenData$Genre[which(GenData$Genre == "Role-Playing")] <- "RPG"
 GenData$Genre[which(GenData$Genre == "Third-Person Shooter")] <- "TPS"
 GenData$Genre[which(GenData$Genre == "First-Person Shooter")] <- "FPS"
-```
 
+
+unique(GenData$Genre)
+
+```
+Much better <br>
 
 ## Removing games who "do not belong" in this database.
 <br>
-I have came to the conclusion that not every game that is presented on the site should be in this database: <br>
-Games without any recorded cash prizes or an amount which is extremely low (for example, the fighting game **King of Fighters XI which has a whopping total of 25$ in prize pool distributed), the same goes for the number of tournaments, a game which held only one or two tournaments does not qualify here (in my opinion). <br>
+I have came to the conclusion that not every game presented in our database should be taked in consideration: <br>
+We will filter out games who do not meet *earning* and *tournament* restrictions
+For example: games without any recorded cash prizes or an extremely low amount (in the low hundreds), the same goes for the number of tournaments, a game which held only a tournament or to should not be considered in my opinion. <br>
 
-For this reason I have decided to ommit from the database games who has either **less then 500$ prize pool earnings** and 
-game with **less then 5 tournaments and a total prize pool of under 2000$** recorded on the site. 
+I have decided to ommit from the database games who have either **less then 500$ in prize pool earnings** and 
+game with **less then 5 tournaments and a total prize pool of under 2000$** recorded. 
 
 ```{r filtering the data}
 Games_to_filter <- GenData$Game[which(GenData$TotalEarnings < 500 | (GenData$TotalTournaments < 5 & GenData$TotalEarnings <2000))]
@@ -100,13 +116,17 @@ rm(Games_to_filter) # No longer necessary
 <br>
 We are now ready to start our analysis.
 
-#  Explanatory Data Analysis
+#  Explanatory Data Analysis.
 <br>
+In this part, i'd like to explore the different variables and the possible relationship they have with each other in the hopes of getting some insight into the ins and out of this up and coming industry.
+<br><br>
+
 First of all, let's look at which games had the biggest amount of money distributed. <br>
 
-## Biggest Games (Earning wise)
+## Biggest Games (earning wise).
+
 ```{r Biggest_TotalEarnings}
-# Adding a rank for the earnings per game
+# Plotting earnings bar chart
 
 GenData[order(GenData$TotalEarnings, decreasing = TRUE),] %>%
   slice(1:10) %>%
@@ -118,10 +138,13 @@ GenData[order(GenData$TotalEarnings, decreasing = TRUE),] %>%
   scale_y_continuous(labels = scales::label_number(scale = 1/10^6)) +
   geom_text(aes(label = round(TotalEarnings/(10^6),0), hjust = 1.2))
 ```
-
 <br>
-In the top 10 biggest games, there are no apparent surprises, we find **Dota 2**, **CS:GO**,**Fortnite**,**League of Legends**, and **Starcraft 2** at the top. <br>
-Let's see the evolution of prizes destributed in these top 5 games. <br> 
+In the top 10 biggest games, there are no apparent surprises, we find **Dota 2**, **CS:GO**,**Fortnite**,**League of Legends**, and **Starcraft 2** at the top. 
+<br>
+
+Let's see the evolution of prizes destributed in these top 5 games.
+<br> 
+
 
 ```{r Biggest_TotalEarnings_timeline}
 # Preparing list of top 5 games
@@ -137,14 +160,16 @@ ggplot(data = Top5GamesTimeline, aes(x = Date, y = Earnings/1000)) +
   geom_area(fill = "lightblue",color = "black") +
   facet_grid(Game ~ .,scales = "free") +
   labs(title = "Prize pool evolution - top 5 games",subtitle = "In thousands",x = element_blank(), y = element_blank()) +
-  scale_x_date(breaks = "2 years", date_labels = "%Y")
+  scale_x_date(breaks = "2 years", date_labels = "%Y") +
+  scale_y_continuous(labels = scales::comma)
 
 rm(Top5Games,Top5GamesTimeline) # No longer necessary
 
 ```
+<br>
 
-We can see that some games distribute prize money in a cyclical manner, with one main tournament every year (like **Dota** and **LOL**). other games like **StarCraft** and **CS : GO** seems to distribute prize pool in a more even manner. For **Fortnite** it is too early to say as the game came out at 2018.
-
+We can see that some games distribute prize money in a cyclical manner, with one main tournament every year (like **Dota** and **LOL**).
+Other games like **StarCraft** and **CS : GO** seems to distribute prize pool in a more even manner. For **Fortnite** it is too early to say as the game came out at 2018.
 
 ```{r Game_earnings_pieplot}
 # Reordering based on earnings
@@ -171,15 +196,11 @@ rm(Top10Earnings) # No longer necessary
 ```
 <br>
 We can see that the earnings are highly concentrated: almost 50% of the earnings are concentrated in 3 games and about 75% of the total earnings come from the biggest 10 games.
+Also, it is quite shocking that about a quarter of all prize pool earnings have came solely from **Dota 2** tournaments. <br>
 
+Now let's see which games held the highest amount of tournaments. <br>
 
-Now let's see which games had the most tournaments <br>
-
-
-
-
-
-## Biggest Games (Tournament wise)
+## Biggest Games (tournament wise).
 
 ```{r Most_tournaments}
 # Plotting
@@ -198,7 +219,7 @@ GenData[order(GenData$TotalTournaments, decreasing = TRUE),] %>%
 It is not surprising that we find a similarity between the two lists: Dota 2, Starcraft 2, League of Legends and Counter-Strike: Global Offensive are all in the top 10 in prizepool earnings. <br>
 What is somewhat interaesting is the fact that we have 3 different Super Smash Bros games, all in the top 10, this is while being not as big in the matter of prize pools (1.2M, 1.5M and 3.1M). <br>
 
-
+Let's see the evolution of the amount of tournaments which were being held for the top 5 games. <br>
 
 ```{r Biggest_Tournaments_timeline}
 # Preparing list of top 5 games
@@ -244,160 +265,129 @@ ggplot(data = Top10Tournaments,aes(x = "",y = Percent,fill = Title)) +
   coord_polar("y",direction = -1) +
   theme_minimal() +
   labs(title = "Precentage of tournaments", y = element_blank(), x = element_blank(),
-       fill = "Game Title") 
+       fill = "Game Title")
 
 rm(Top10Tournaments) # No longer necessary
 ```
+
 <br>
-Indeed, tournaments are a little bit less concetrated then earnings.
+Indeed, tournaments are a little less concentrated then earnings.
 <br>
 
-Let's take a deeper look at the data - <br>
-First, let's look at how the earnings developped through the years.
-
-## Yearly prise earnings.
+##  A yearly look at earnings and tournaments.
 
 ```{r Yearly_earnings}
 # Plotting Earnings per year
 ggplot(data = HistData %>%
          group_by(Year) %>%
-         summarise(EarningsInMillions = round(sum(Earnings)/1000000,1)),
-       aes(x = Year, y = EarningsInMillions)) +
-  geom_bar(stat = "Identity", fill = "lightblue",color = "black") +
-  geom_text(aes(label = EarningsInMillions),
-            vjust = -0.3,hjust = 0.5, size = 3.2) +
-  theme_classic() +
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
-  labs(title = "Earnings per year", subtitle = "In millions of dollars",
-       y = element_blank(),x = element_blank())
+         summarise(EarningsInMillions = 
+                     ifelse(sum(Earnings) <= 100*10^6,round(sum(Earnings)/10^6,1),
+                            round(sum(Earnings)/10^6,0))) %>%
+         mutate(Condition = ifelse(Year == 2020,TRUE,FALSE)),
+       aes(x = Year, y = EarningsInMillions, fill = Condition)) +
+  geom_bar(stat = "Identity",color = "black",alpha = 0.75) +
+  geom_text(aes(label = EarningsInMillions), vjust = -0.3, size = 3) +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+        plot.caption = element_text(size = 10)) + 
+  labs(title = "Earnings per year*", subtitle = "In millions of dollars", caption = "*not including data from oct 2020 and onwards", y = element_blank(),x = element_blank()) +
+  scale_fill_manual(values = c("lightblue","lightblue4")) +
+  guides(fill = "none")
 
 ```
 <br>
-__It is important to note that 2020 is not finished and this is why the earnings are low.__
 We can see that the Esports industry picked up towards 2011 - 2012, reaching a whopping 228.9 miliion dollar in prizes distributed in 2019. <br>
 Also it is interesting to note that was a small dip earnings in 2009, probably caused by the 2008 - 2009 economic crisis.
-
-## Yearly amount of tournaments
+<br>
 
 ```{r Yearly_tournaments}
-
 # Plotting Tournaments per year
 ggplot(data = HistData %>%
          group_by(Year) %>%
-         summarise(TotalEarnings = sum(Earnings), Tournaments = sum(Tournaments)),
-       aes(x = Year, y = Tournaments, group = 1)) +
-  geom_bar(stat = "identity", fill = "lightblue",color = "black") +
-  geom_text(aes(label = Tournaments), vjust = - 0.5, size = 3) +
-  labs(title = "Tournaments per year", y = element_blank(),x = element_blank()) +
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+         summarise(TotalEarnings = sum(Earnings), Tournaments = sum(Tournaments)) %>%
+          mutate(Condition = ifelse(Year == 2020,TRUE,FALSE)),
+       aes(x = Year, y = Tournaments, fill = Condition)) +
+  geom_bar(stat = "identity",color = "black",alpha = 0.75) +
+  geom_text(aes(label = Tournaments), vjust = - 0.3, size = 3) +
+  labs(title = "Tournaments per year*", y = element_blank(),x = element_blank(), caption = "*not including data from oct 2020 and onwards") +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), 
+        plot.caption = element_text(size = 10)) +
+  scale_fill_manual(values = c("lightblue","lightblue4")) +
+  guides(fill = "none")
 ```
 
 <br>
 Tournament wise, we see that the number of tournaments started to skyrocket in 2011, stabilizing at the 4500 - 5500 range from 2015 onwards. <br> 
 
 
-Now let's look at the monthly data: is there a specific period with more tournaments and more prize earnings? 
-__(for these plots I will filter out all datapoints from 2020, as it is not over yet).__ <br>
+Now let's look at the monthly data: is there a specific period where there are more tournaments and more prize earnings? 
+<br>
 
-## Monthly prizepool earnings and tournaments
+##  A monthly look at earnings and tournaments.
 
 ```{r Earnings_Per_month}
 # For the purpose of this plot ill transform the month variable into a factor
 HistData$Month <- as.factor(HistData$Month)
-# Plotting
 
+# Plotting
 p1 <- ggplot(data = HistData %>% 
          filter(Date < "2020-01-01") %>%
          group_by(Month) %>%
          summarise(Earnings_in_millions = round(sum(Earnings)/10^6,1)),
          aes(x = Month, y = Earnings_in_millions)) +
-  geom_bar(stat = "identity",fill = "lightblue",color = "black") +
-  theme(legend.position = "bottom") +
-  geom_text(aes(label = Earnings_in_millions), vjust = -0.3,hjust = 0.55, size = 3) +
-  labs(title = "Esport monthly earnings", subtitle = "In millions of dollars", y = element_blank()) +
   theme_classic() +
+  geom_bar(stat = "identity",fill = "lightblue",color = "black",alpha = 0.85) +
+  theme(legend.position='none', plot.caption = element_text(size = 8)) +
+  geom_text(aes(label = Earnings_in_millions), vjust = -0.3,hjust = 0.55, size = 3) +
+  labs(title = "Esport monthly earnings*", subtitle = "in millions of dollars",
+       y = element_blank(), caption = "Data does not including 2020") +
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
 p2 <- ggplot(data = HistData %>%
          filter(Date < "2020-01-01") %>%
          group_by(Month) %>%
          summarise(Tournaments = sum(Tournaments)), aes(x = Month, y = Tournaments,fill = Month)) +
-  geom_bar(stat = "identity", color = "black") +
+  geom_bar(stat = "identity", color = "black",alpha = 0.85) +
   theme_classic() +
-  theme(legend.position='none') +
-  labs(title = "Number of tournaments", y = element_blank())
+  theme(legend.position='none', plot.caption = element_text(size = 8)) +
+  labs(title = "Monthly amount of tournaments*", y = element_blank(),
+       caption = "*Data does not including 2020") +
+  geom_hline(yintercept = 3000,linetype = "dotted") +
+  geom_hline(yintercept = 3500,linetype = "dotted") +
+  scale_y_continuous(breaks = c(500,1500,2500,3000,3500))
 
 grid.arrange(p1,p2,ncol = 2)
 rm(list = c("p1","p2"))
 ```
 
-We can see that most of the earnings came from the months of july and august, and as we see that the number of tournements isn't especially higher in these months, it is safe to say that the avarage prizepool is higher in these times (which makes since, as the summer is a peak periode in the Esports industry).
+We can see that the majority of the earnings come from the months of july and august. <br>
+Regarding the amount of tournaments, we notice that the beggining of the year is a mostly a dry period for tournaments, with august and november being the peak months with the most amount of tournaments.
 
-## Covid 19 affect on the Esports industry
+<br>
 
-To check this, ill creat a line plot of months with each line representing a year from 2016 onwards, if the coronavirus had no affect, we should see that 2020 looks to be similar to other years in the matter of tournaments, and higher than other years earning wise.
+## Which games have distributed cash prizes for the most players.
 
-```{r Coronavirus_effect_earnings}
-HistData$Year <- as.factor(HistData$Year)
 
-# Filtering to last 5 years and plotting monthly earnings
-ggplot(data = HistData %>% 
-         filter(Date >= "2016-01-01") %>% 
-         group_by(Year,Month) %>% 
-         summarise(Earnings = round(sum(Earnings)/1000000,2)),
-       aes(x = Month, y = Earnings, group = Year)) +
-  geom_line(aes(color = Year), size = 1) +
-  theme_minimal() +
-  labs(title = "Monthly earnings 2016 - 2020",
-       subtitle = "In millions of dollars",x = element_blank(), y = element_blank())
+```{r Player_per_game}
+# Plotting
 
-```
+GenData[order(GenData$TotalPlayers, decreasing = TRUE),] %>%
+  slice(1:10) %>%
+  ggplot(data = .,aes(x = reorder(Game,+ TotalPlayers), y = TotalPlayers)) + 
+  geom_bar(stat = "identity", 
+           fill = rainbow(n = 10 , start = 0.45, end = 0.50), color = "black", alpha = 0.85) + 
+  coord_flip() +
+  labs(x = element_blank(), y = "# of players",title = "Games awarding prizes for most players") +
+  scale_y_continuous(labels = scales::comma) +
+  geom_text(aes(label = TotalPlayers, hjust = 1.2),size = 3.5)
 
-We can see that 2020 did not open well as expected, as of march we see a decrease in earnings when compared to prior years, between 30% to 60%, depending on the month.
-The effect of the pandemic could be felt most in the summer months, let's see a detailed look at the summer months <br>
-
-```{r Coronavirus_effect_earnings_summer}
-# Filtering to last 5 years and plotting monthly earnings
-ggplot(data = HistData %>% 
-         filter((Month == 7 | Month == 8) ,Date >= "2010-01-01") %>% 
-         group_by(Year) %>% 
-         summarise(Earnings = round(sum(Earnings)/1000000,2)),
-       aes(x = Year, y = Earnings,fill = Earnings)) +
-  geom_bar(stat = "identity", color = "black") +
-  scale_fill_gradient(low ="lightsalmon",high = "green2") +
-  labs(title = "Yearly prize pool during july - august",
-       subtitle = "In millions of dollars",x = element_blank(), y = element_blank()) +
-  guides(fill = "none") + 
-  theme_classic() +
-  geom_text(aes(label = Earnings, vjust = -0.25))
 
 ```
 <br>
-In the summer of 2020 the prizepool allocated in Esport tournements was **5 times** lower then in 2019.
-
-Let's look at the tournament plot now.
-
-```{r Coronavirus_effect_tournaments}
-# Filtering to last 5 years and plotting monthly amount of tournaments
-
-ggplot(data = HistData %>% 
-         filter(Date >= "2016-01-01") %>% 
-         group_by(Date) %>% 
-         summarise(Tournaments = sum(Tournaments)),
-       aes(x = Date, y = Tournaments)) + 
-  geom_area(fill = "lightblue", alpha = 0.85) +
-  geom_line(color = "black") +
-  labs(title = "Monthly amount of tournaments 2016 - 2020",
-       subtitle = "11 of march 2020 - official date of the coronavirus being declared a pandemic",x = element_blank(), y = element_blank()) +
-  scale_x_date(labels = date_format("%m/%y"),breaks = seq.Date(from = as.Date("2016-01-01"), to = as.Date("2021-01-01"), by ="6 months")) +
-  geom_vline(xintercept = as.Date("2020-03-11"), linetype = "dashed", color = "darkred",size = 1)
-
-```
-
-It seems that tournements have been hit hard as well: after a usual weak start (as january and fabruary are the months with the lowest amounts of tournaments) the the number of tournaments did not rise as sharply as in recent years. <br>
+It is interesting to note that in this list, most games are either played in teams of 5 or are a part of the **Battle Royal** genre in which each match could hold up to 100 players. 
+however, 2 games stand out, **Hearthstone** , **StarCraft II** (in positions 8, 9): These games are exclusively 1v1 based (there is an option for 2v2 in starcraft, however there are not compatitive compatitions for this mode). <br>
 
 
-Let's look at the diffrenet genres <br>
+now let's look at the diffrenet genres <br>
 
 ## A look at Genres
 
@@ -415,46 +405,58 @@ ggplot(data = Genre_plot,
   geom_bar(stat = "identity",alpha = 0.75,color = "black") +
   geom_text(aes(label = Total_M),
             vjust = -0.3,hjust = 0.55, size = 3.5) +
-  theme_classic() +
   theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
-  labs(title = "Total prizepool earnings by genre",
-       subtitle = "in millions of dollars \n(not including the puzzle genre)",
+  labs(title = "Total prizepool earnings by genre*",
+       subtitle = "in millions of dollars",caption ="*not including the puzzle genre",
        y = element_blank(),
        x = element_blank(),
        fill = "Genre")
 
-
-
-
-
-
 ```
 
-
-
+<br>
+As expected, the **MOBA** genre is largly on top of the earning leaderboard, it is followed by the **First-person shooter** genre and by the quite new **Battle Royale** genre. <br>
 
 
 ``` {r Number_of_games_per_genre}
-# Plotting average earnings per genre
+# Plotting games per genre
 
 ggplot(data = Genre_plot,
        aes(x = reorder(Genre,-Total_M),y = Number, fill = reorder(Genre,-Total_M))) +
   geom_bar(stat = "identity",alpha = 0.75,color = "black") +
   geom_text(aes(label = Number),
             vjust = -0.3,hjust = 0.55, size = 3.5) +
-  theme_classic() +
   theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
-  labs(title = "Average prizepool earnings by genre",
-       subtitle = "in millions of dollars \n(not including the puzzle genre)",
+  labs(title = "Games by genre*",
+       caption = "*not including the puzzle genre",
        y = element_blank(),
        x = element_blank(),
        fill = "Genre")
 
 
 ```
+<br>
+It is no surprise that we find **FPS**, **Fighting**, **Racing** and **Sports** as the genres with the most games, it is due to the fact that there are more franchises in these genres, and every franchise has new games being released quite often (the **Call of Duty** and **Fifa** franchises come to mind). <br>
+However, I find it interesting to see so many **Strategy** games, as there less franchises in this genre, and it seemed to me that the strategy genre is in the process of slowly dying down. <br>
 
+To check this, ill create a plot with these 5 genres to see what percentages of games came out in the last couple of years. <br>
 
+```{r ReleaseDate_prop_by_genre}
 
+ggplot(data = GenData %>%
+         filter(Genre %in% c("FPS","Racing","Fighting","Strategy","Sports")) %>% 
+         mutate(ReleaseGroup = ifelse(ReleaseDate <= 2010,"Before 2010", ifelse(ReleaseDate <= 2015,"2011 - 2015","2016 and After"))), 
+       aes(x = factor(Genre,levels = c("Strategy","Fighting","Racing","Sports","FPS")), 
+           fill = factor(ReleaseGroup,levels = c("Before 2010","2011 - 2015","2016 and After")))) + 
+  geom_bar(position = "fill",color = "black",alpha = 0.75) +
+  labs(fill = "Release Date", x = element_blank(), y = element_blank()) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Proportion of games released in each period", caption = "*selected genres only")
+
+```
+<br>
+Looking at the bar chart we can conclude that our assumption that the **Strategy** genre is dying down is quite false, as there is a significant proportion of games the came out in the last few year.
+<br>
 
 
 ``` {r Average_earnings_per_genre}
@@ -466,23 +468,18 @@ ggplot(data = Genre_plot,
   geom_bar(stat = "identity",alpha = 0.75,color = "black") +
   geom_text(aes(label = Average_M),
             vjust = -0.3,hjust = 0.55, size = 3.5) +
-  theme_classic() +
   theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right",plot.subtitle = element_text(size = 10)) + 
-  labs(title = "Average prizepool earnings by genre",
-       subtitle = "in millions of dollars \n(not including the puzzle genre)",
-       y = element_blank(),
-       x = element_blank(),
-       fill = "Genre")
+  labs(title = "Average prizepool earnings by genre*",
+       subtitle = "in millions of dollars", caption = "*not including the puzzle genre",
+       y = element_blank(), x = element_blank(), fill = "Genre")
 
 ```
-
-
-
-
- <br><br>
- We can see that there is no real relation between the number of games and the amount of money distributed in Esport tournaments. <br>
+<br>
+We see that games in the  **MOBA** and **Battle Royale** genres are a lot more successful in relation to other genres, this makes since as the games in these are designed to be esport compatible. <br>
  
-Now let's look at the release date, do games from a specific year had a biggest impact on the Esports industry?
+Now let's look at the release date, how many games are released in each year and do games from a specific year have a biggest impact on the Esports industry? <br>
+
+## A look at release dates
  
 ``` {r ReleaseDate_histogram}
 rm(Genre_plot) # Not necessary anymore
@@ -515,299 +512,104 @@ ggplot(data = GenData, aes(x = ReleaseDate,y = TotalEarnings,color = Genre,size 
     y = element_blank(), x = element_blank())
 ```  
 <br>
-We can see that there is no real correlation between the release date of the game and the success it will have in the Esports scene.<br>
-
-Now let's have a look at **OnlineEarnings**
-
-## Precentage of prizes from online tournaments
-
-```{r OnlineEarning}
-GenData$PercentOnline <- GenData$OnlineEarnings/GenData$TotalEarnings
-
-ggplot(GenData, aes(x = reorder(Genre,-PercentOnline), y = PercentOnline)) + geom_boxplot() +coord_flip()
-ggplot(GenData %>% 
-         filter(TotalEarnings >10000), aes(x = reorder(Genre,-PercentOnline), y = PercentOnline)) + geom_boxplot() +coord_flip()
-
-
-
-
-```
-
-
-
-
-
-
-
-
-
-Now it's time to dive in and do a little bit of feature engineering the retrieve some precius insight.
-
-# Feature engineering
-
-In this part i'd like to create new variables which will help in the analysis process.
-
-<h3>Creating **Franchise** variable</h3><br>
-As a lot of the games are a part of a franchise containing several games, it may help us if we look at the date looking at the entire franchise, for example, let's take a look at the **Street - Fighter** franchise.<br>
-
-```{r Street_Fighter_look,echo = TRUE}
-# Creating a dataframe with games with a name containing the name "Street Fighter"
-df_sf <- GenData[which(grepl("[Ss]treet [Ff]ighter",GenData$Game) == TRUE),]
-df_sf
-print(paste0("The number of games is ",nrow(df_sf)," and the total earnings for the franchise is ",sum(df_sf$Earnings)))
-
-# Removing the df as it is unnecessary
-rm(df_sf)
-
-```
-<br>
-Ok, so the fact that a game is a part of a franchise **_does_** matter. In the case if the "Street Fighter" franchise, there are 15 games with earnings ranging from 350 to 220,000 dollars.<br>
-It is fair to say that the entire franchise had destruted prizes in an amount of almost 560,000 dollars.<br>
-
-To figure out which games are a part of which franchise, ill work with the __Earnings_per_game__ dataframe (as it has 1 observation per game, it is easier to work with) and use some regular expressions to find game titles which have identical words in it.
-
-```{r franchise_search_5_words}
-
-# At the start ill cast a large net, finding the first 5 words of each game.
-# then filtering to find groups of 2 or more games with the same 5 first words in the title.
-
-temp_5_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",GenData$Game)
-# Creating a dataframe to recieve the matches
-temp_5_words <- data.frame(words = regmatches(GenData$Game,temp_5_words))
-temp_5_words <-  temp_5_words %>% group_by(words) %>% summarise(n=n())
-# Filtering and presnting
-temp_5_words <- temp_5_words %>% filter(n >1)
-temp_5_words
-
-# We already indentified a few franchises, ill put them in a new variable - "Franchise".
-
-GenData[which(grepl("Call of Duty",GenData$Game) == TRUE),"Franchise"] <- "Call of Duty"
-GenData[which(grepl("Guilty Gear",GenData$Game) == TRUE),"Franchise"] <- "Guilty Gear"
-GenData[which(grepl("Street Fighter",GenData$Game) == TRUE),"Franchise"] <- "Street Fighter"
-
-# Removing the dataframe unnecessary 
-rm(temp_5_words)
-```
-<br>
-
-Now we move into the 4 words category, but at first we will need to filter out the games with a valid francise variable, ill put all the games that are left in another temporary dataframe - **Franchise_check**. <br>
-
-I'll continue the same process for expressions that inclue 4, 3, 2 and then one word (ill not present it to not clutter too much).
-
-```{r franchise_search_4_words, include = FALSE}
-
-Franchise_check <- GenData %>% filter(is.na(Franchise))
-temp_4_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
-temp_4_words <- data.frame(words = regmatches(Franchise_check$Game,temp_4_words))
-temp_4_words <- temp_4_words %>% group_by(words) %>% summarise(n=n())
-temp_4_words <- temp_4_words %>% filter(n >1)
-temp_4_words
-
-# Continuing on and inserting more franchises.
-
-GenData[which(grepl("Dead or Alive",GenData$Game) == TRUE),"Franchise"] <- "Dead or Alive"
-GenData[which(grepl("Dengeki Bunko",GenData$Game) == TRUE),"Franchise"] <- "Dengeki Bunko"
-GenData[which(grepl("Melty Blood",GenData$Game) == TRUE),"Franchise"] <- "Melty Blood"
-GenData[which(grepl("Need for Speed",GenData$Game) == TRUE),"Franchise"] <- "Need for Speed"
-GenData[which(grepl("Under Night In-Birth",GenData$Game) == TRUE),"Franchise"] <- "Under Night In-Birth"
-
-# Removing the dataframe unnecessary 
-rm(temp_4_words)
-```
-
-
-```{r franchise_search_3_words, include = FALSE}
-
-Franchise_check <- GenData %>% filter(is.na(Franchise))
-temp_3_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
-temp_3_words <- data.frame(words = regmatches(Franchise_check$Game,temp_3_words))
-temp_3_words <- temp_3_words %>% group_by(words) %>% summarise(n=n())
-temp_3_words <- temp_3_words %>% filter(n >1)
-temp_3_words
-
-# Continuing on and inserting more franchises.
-
-GenData[which(grepl("Age of Empires",GenData$Game) == TRUE),"Franchise"] <- "Age of Empires"
-GenData[which(grepl("Arcana Heart",GenData$Game) == TRUE),"Franchise"] <- "Arcana Heart"
-GenData[which(grepl("BlazBlue",GenData$Game) == TRUE),"Franchise"] <- "BlazBlue"
-GenData[which(grepl("Capcom vs. SNK",GenData$Game) == TRUE),"Franchise"] <- "Capcom vs. SNK"
-GenData[which(grepl("Gears of War",GenData$Game) == TRUE),"Franchise"] <- "Gears of War"
-GenData[which(grepl("King of Fighters",GenData$Game) == TRUE),"Franchise"] <- "King of Fighters"
-GenData[which(grepl("Magic: The Gathering",GenData$Game) == TRUE),"Franchise"] <- "Magic: The Gathering"
-GenData[which(grepl("Marvel vs. Capcom",GenData$Game) == TRUE),"Franchise"] <- "Marvel vs. Capcom"
-GenData[which(grepl("Persona",GenData$Game) == TRUE),"Franchise"] <- "Persona"
-GenData[which(grepl("Pro Evolution Soccer",GenData$Game) == TRUE),"Franchise"] <- "Pro Evolution Soccer"
-GenData[which(grepl("Project Gotham Racing",GenData$Game) == TRUE),"Franchise"] <- "Project Gotham Racing"
-GenData[which(grepl("Rainbow Six",GenData$Game) == TRUE),"Franchise"] <- "Rainbow Six"
-GenData[which(grepl("Soul Calibur",GenData$Game) == TRUE),"Franchise"] <- "Soul Calibur"
-GenData[which(grepl("Super Smash Bros",GenData$Game) == TRUE),"Franchise"] <- "Super Smash Bros"
-GenData[which(grepl("Tekken ",GenData$Game) == TRUE),"Franchise"] <- "Tekken" #Left the space on purpose
-GenData[which(grepl("Virtua Fighter",GenData$Game) == TRUE),"Franchise"] <- "Virtua Fighter"
-GenData[which(grepl("World of Tanks",GenData$Game) == TRUE),"Franchise"] <- "World of Tanks"
-
-# Removing the dataframe unnecessary 
-rm(temp_3_words)
-```
-
-```{r franchise_search_2_words, include = FALSE}
-
-Franchise_check <- GenData %>% filter(is.na(Franchise))
-temp_2_words <- regexpr("^[[:graph:]]+\\s{1}[[:graph:]]+",Franchise_check$Game)
-temp_2_words <- data.frame(words = regmatches(Franchise_check$Game,temp_2_words))
-temp_2_words <- temp_2_words %>% group_by(words) %>% summarise(n=n())
-temp_2_words <- temp_2_words %>% filter(n >1)
-temp_2_words
-
-# Continuing on and inserting more franchises.
-
-GenData[which(grepl("Day of Defeat",GenData$Game) == TRUE),"Franchise"] <- "Day of Defeat"
-GenData[which(grepl("Dragon Ball",GenData$Game) == TRUE),"Franchise"] <- "Dragon Ball"
-GenData[which(grepl("FIFA Online",GenData$Game) == TRUE),"Franchise"] <- "FIFA Online"
-GenData[which(grepl("Forza Motorsport",GenData$Game) == TRUE),"Franchise"] <- "Forza"
-GenData[which(grepl("Gran Turismo",GenData$Game) == TRUE),"Franchise"] <- "Gran Turismo"
-GenData[which(grepl("Guitar Hero",GenData$Game) == TRUE),"Franchise"] <- "Guitar Hero"
-GenData[which(grepl("Halo",GenData$Game) == TRUE),"Franchise"] <- "Halo"
-GenData[which(grepl("Madden NFL",GenData$Game) == TRUE),"Franchise"] <- "Madden NFL"
-GenData[which(grepl("Mortal Kombat",GenData$Game) == TRUE),"Franchise"] <- "Mortal Kombat"
-GenData[which(grepl("NASCAR Thunder",GenData$Game) == TRUE),"Franchise"] <- "NASCAR Thunder"
-GenData[which(grepl("Pokkén Tournament",GenData$Game) == TRUE),"Franchise"] <- "Pokkén Tournament"
-GenData[which(grepl("Project Cars",GenData$Game) == TRUE),"Franchise"] <- "Project Cars"
-GenData[which(grepl("Samurai Shodown",GenData$Game) == TRUE),"Franchise"] <- "Samurai Shodown"
-GenData[which(grepl("Track[Mm]ania",GenData$Game) == TRUE),"Franchise"] <- "TrackMania"
-GenData[which(grepl("Unreal Tournament",GenData$Game) == TRUE),"Franchise"] <- "Unreal Tournament"
-
-# Removing the dataframe unnecessary 
-rm(temp_2_words)
-```
-
-```{r franchise_search_1_word, include = FALSE}
-
-Franchise_check <- GenData %>% filter(is.na(Franchise))
-temp_1_word <- regexpr("^[[:graph:]]+",Franchise_check$Game)
-temp_1_word <- data.frame(words = regmatches(Franchise_check$Game,temp_1_word))
-temp_1_word <- temp_1_word %>% group_by(words) %>% summarise(n=n())
-temp_1_word <- temp_1_word %>% filter(n >1)
-temp_1_word
-
-# Continuing on and inserting more franchises.
-
-GenData[which(grepl("Artifact",GenData$Game) == TRUE),"Franchise"] <- "Artifact"
-GenData[which(grepl("Asphalt ",GenData$Game) == TRUE),"Franchise"] <- "Asphalt" # Space is on purpose
-GenData[which(grepl("Battlefield",GenData$Game) == TRUE),"Franchise"] <- "Battlefield"
-GenData[which(grepl("Counter-Strike",GenData$Game) == TRUE),"Franchise"] <- "Counter-Strike"
-GenData[which(grepl("Doom",GenData$Game) == TRUE),"Franchise"] <- "Doom"
-GenData[which(grepl("Dota 2|Defense of the Ancients",GenData$Game) == TRUE),"Franchise"] <- "Dota"
-GenData[which(grepl("F1",GenData$Game) == TRUE),"Franchise"] <- "F1"
-GenData[which(grepl("FIFA (?!Online)",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "FIFA" # As Fifa and Fifa online are different
-GenData[which(grepl("NHL",GenData$Game) == TRUE),"Franchise"] <- "NHL"
-GenData[which(grepl("Power Rangers",GenData$Game) == TRUE),"Franchise"] <- "Power Rangers"
-GenData[which(grepl("Quake",GenData$Game) == TRUE),"Franchise"] <- "Quake"
-GenData[which(grepl("Skullgirls",GenData$Game) == TRUE),"Franchise"] <- "Skullgirls"
-GenData[which(grepl("Splatoon",GenData$Game) == TRUE),"Franchise"] <- "Splatoon"
-GenData[which(grepl("Supreme Commander",GenData$Game) == TRUE),"Franchise"] <- "Supreme Commander"
-GenData[which(grepl("Tetris",GenData$Game) == TRUE),"Franchise"] <- "Tetris"
-GenData[which(grepl("^WarCraft",GenData$Game) == TRUE),"Franchise"] <- "WarCraft"
-GenData[which(grepl("Wolfenstein",GenData$Game) == TRUE),"Franchise"] <- "Wolfenstein"
-GenData[which(grepl("NBA",GenData$Game) == TRUE),"Franchise"] <- "NBA"
-
-# Removing the dataframe unnecessary 
-rm(temp_1_word)
-```
-
-```{r Last_franchise_check,include = FALSE}
-Franchise_check <- GenData %>% filter(is.na(Franchise))
-
-GenData[which(grepl("^Gears ",GenData$Game) == TRUE),"Franchise"] <- "Gears of War"
-GenData[which(grepl("^Catherine",GenData$Game) == TRUE),"Franchise"] <- "Catherine"
-GenData[which(grepl("(?<!Auto )[Cc]hess",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "Chess" #Avoiding Auto Chess
-GenData[which(grepl("Injustice",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "Injustice"
-GenData[which(grepl("PLAYERUNKNOWN",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "PUBG"
-GenData[which(grepl("StarCraft",GenData$Game,perl = TRUE) == TRUE),"Franchise"] <- "StarCraft"
-
-```
-
-```{r franchise_for_standalone_games, echo = TRUE}
-# For the rest of the games which are not part of a franchise ill insert their title as a franchise.
-##### A note #######
-# It is important that once the database will be updated with more games this process will need to be redone.
-####################
-for (i in seq(1:nrow(GenData)))
-  {
-  if (is.na(GenData[i,"Franchise"]))
-    {
-    GenData[i,"Franchise"] <- GenData[i,"Game"]
-  }
-}
-
-for (i in 1:nrow(GenData)) {
-  GenData[i,"FranchiseSize"] <- length(which(GenData$Franchise == GenData$Franchise[i]))
-}
-
-sum(is.na(GenData$Franchise))
-# All done!
-
-# Deleating the df
-rm(Franchise_check,i)
-```
-
-Now let's do some analysis about different franchises in the Esports scene. <br>
-
-
-
-
-First, let's see which if after itroducing franchises, the list of top 10 in distribution of prize money change.
-
-```{r top10_franchise}
-# Creating df that groups by franchises
-Earnings_by_franchise <- GenData %>% 
-  select(TotalEarnings,Genre,TotalTournaments,Franchise,FranchiseSize) %>% 
-  group_by(Franchise,Genre) %>% 
-  summarise(Size = n(),Tournaments = sum(TotalTournaments),Earnings = sum(TotalEarnings),Size = n())
-
-# Ordering and keeping the 10 biggest franchises
-Earnings_by_franchise[order(Earnings_by_franchise$Earnings,decreasing = TRUE),][1:10,]
-```
-
-<br>
-As there are no real differences between the list of top10 games and top10 franchises (except for the Call of Duty franchise in 6th place with 16 games in the franchise), now lets see how the list of top 10 largest amount of tournaments changes after intoducing franchises.
-
-
-```{r Largest_amount_of_tournaments}
-# Ordering and keeping the 10 biggest franchises
-Earnings_by_franchise[order(Earnings_by_franchise$Tournaments,decreasing = TRUE),][1:10,c(1,3,4,5)]
-```
-<br>
-Also in the matter of the amount of tournaments, except the Call of Duty and WarCraft franchises, the list stays about the same.
-
-
-``` {r Total_franchises_per_genre}
-# Creating another df, this time for the plot
-
-Franchise_by_genre <- Earnings_by_franchise %>% 
-  group_by(Genre) %>%
-  summarise(Number_of_franchises = n(),Tournaments = sum(Tournaments),Earnings = sum(Earnings),Number_of_games = sum(Size),Avg_games_per_franchise = round( (sum(Size)/n()),2))
-
-# Plotting
-
-ggplot(data = Franchise_by_genre,aes(x = Genre,y = Number_of_franchises, fill = Genre)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = Number_of_franchises),
-            vjust = -0.3,hjust = 0.55, size = 3.5) +
-  theme_classic() +
-  theme(axis.text= element_blank(), axis.ticks = element_blank(), legend.position = "right") + 
-  labs(title = "Number of franchises per genre", y = element_blank(), x = element_blank())
-
-```
-
+It seems that there is no real connection between the release date of a game and the success it has in the Esports scene.
 <br>
 
 
 
+# Visualising the effect of the covid-19 pandemic.
+<br><br>
+
+As we all know, 2020 was a special not an ordinary year as the coronavirus pandemic has and is distrupting many industries, with the Esport industry being one of them. <br>
+To try to visualise the effect by create a line chart showing monthly earnings and monthly amounts of tournaments in the past 5 years.<br>
+If the pandemic had no effect, we should see that 2020 looks to be similar to prior years.
+
+## Effect on earnings.
+
+```{r Coronavirus_effect_earnings}
+HistData$Year <- as.factor(HistData$Year)
+
+# Filtering to last 5 years and plotting monthly earnings
+ggplot(data = HistData %>% 
+         filter(Date >= "2016-01-01") %>% 
+         group_by(Year,Month) %>% 
+         summarise(Earnings = round(sum(Earnings)/10^6,2)),
+       aes(x = Month, y = Earnings, group = Year)) +
+  geom_line(aes(color = Year), size = 1) +
+  theme_minimal() +
+  labs(title = "Monthly earnings 2016 - 2020",
+       subtitle = "In millions of dollars",x = element_blank(), y = element_blank())
+
+```
+<br>
+We can see that 2020 did not open well as expected, as of march we see a massive decrease in earnings when compared to prior years, with the highest difference being in july and august. <br> 
 
 
+As july and august are so important, let's zoom in on this period. <br>
 
-<h2>This is a work in progress, there is more to come</h2>
-<h3>Feel free to upvote or to give feedback :)</h3>
+```{r Coronavirus_effect_earnings_summer}
+# Filtering to last 5 years and plotting monthly earnings
+ggplot(data = HistData %>% 
+         filter((Month == 7 | Month == 8) ,Date >= "2010-01-01") %>% 
+         group_by(Year) %>% 
+         summarise(Earnings = round(sum(Earnings)/1000000,2)),
+       aes(x = factor(Year), y = Earnings,fill = Earnings)) +
+  geom_bar(stat = "identity", color = "black") +
+  scale_fill_gradient(low ="lightsalmon",high = "green2") +
+  labs(title = "Yearly prize pool in summer months*",
+       subtitle = "In millions of dollars",caption = "*july and august",
+       x = element_blank(), y = element_blank()) +
+  guides(fill = "none") + theme_classic() +
+  geom_text(aes(label = Earnings, vjust = -0.25)) +
+  theme(plot.caption = element_text(size = 10))
+
+```
+<br>
+In the summer of 2020 the prizepool allocated in Esport tournements was **5 times** lower then in 2019.
+**Important note - ** about half of the difference between 2020 and 2019 is due to the fact that the annual **Dota 2** tournament - "The International", usually being held in august, had been postponed.
+The tournament should have had a prize pool of around 40 million dollars. <br>
+Even if we taken this in considaration, the difference is still quite drastic. <br>
+
+Let's look at the tournament plot now.
+
+## Effect on tournaments.
+
+```{r Coronavirus_effect_tournaments}
+# Filtering to last 5 years and plotting monthly amount of tournaments
+
+ggplot(data = HistData %>% 
+         filter(Date >= "2016-01-01") %>% 
+         group_by(Date) %>% 
+         summarise(Tournaments = sum(Tournaments)),
+       aes(x = Date, y = Tournaments)) + 
+  geom_area(fill = "lightblue", alpha = 0.85) +
+  geom_line(color = "black") +
+  labs(title = "Monthly amount of tournaments 2016 - 2020",
+       caption = "In dotted line - official declaration of the pandemic",
+       x = element_blank(), y = element_blank()) +
+  scale_x_date(labels = date_format("%m/%y"),breaks = seq.Date(from = as.Date("2016-01-01"), to = as.Date("2021-01-01"), by ="6 months")) +
+  geom_vline(xintercept = as.Date("2020-03-11"), linetype = "dotted", color = "darkred",size = 1)
+
+```
+
+It seems that tournements have been hit hard as well: after a usual weak start (as january and fabruary are the months with the lowest amounts of tournaments) the the number of tournaments did not rise as sharply as in recent years. <br><br><br><br>
+
+# Conclusions 
+<br><br>
+
+We have learn a few things about the Esport industry
+
+1. Prize money is extremely concentrated between a few games, this is less of the case in the amount of tournaments. 
+2. **Dota 2** is the game with the most earnings, **StarCraft II** the one with the most tournaments to date.
+3. The summer (july - august) is the period with the most earning in the year, the winter (january - february) is the weakest period.
+4. Tournament wise, january and february are the months with the lowest amount of tournaments, the rest of the year is stable.
+5. The industry is mostly dominated by the **MOBA** and **Battle Royale** genres
+6. There is not a clear relationship between the release date of a game and the success it will have in the Esport scene.
+7. The coronavirus pandemic has hit hard the Esport scence, the effect could be seen in earnings and amounts of tournaments from the month march to present times, and there are no doubts that the industry will be affected for a longer period.<br><br>
+8. Finally, it is clear that the esport industry is on the rise, and it will be interesting to see how it will develop in the next couple of years.
+
+
+<h3>Thank you for reading, feel free to upvote or to leave a feedback</h3>
   
   
   
