@@ -41,7 +41,6 @@ library(tidyverse)
 library(ggrepel)
 library(scales)
 library(gridExtra)
-library(forcats)
 library(ggrepel)
 library(glue)
 
@@ -52,7 +51,7 @@ theme_set(theme_bw())
 
 <br>
 
-## Loading datasets and some variable manipulation
+## Loading datasets and some variable manipulation.
 
 Loading our 2 datasets <br>
 ```{r Load Data}
@@ -215,25 +214,6 @@ What is somewhat interaesting is the fact that we have 3 different Super Smash B
 Let's see the evolution of the amount of tournaments which were being held for the top 5 games. <br>
 
 ```{r Biggest_Tournaments_timeline}
-# Preparing list of top 5 games
-Top5Games <- c(GenData[order(-GenData$TotalTournaments),1] %>% head(5))
-
-# Prepering Data for the plot
-Top5GamesTimeline <- HistData[which(HistData$Game %in% Top5Games),c(1:3,5)]
-Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "Counter-Strike: Global Offensive")] <- "CS : GO"
-Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "League of Legends")] <- "LOL"
-Top5GamesTimeline$Game[which(Top5GamesTimeline$Game == "Super Smash Bros. Melee")] <- "Sm.Melee"
-Top5GamesTimeline$Game <- factor(Top5GamesTimeline$Game,levels = c("StarCraft II","Sm.Melee","CS : GO","LOL","Dota 2"))
-
-ggplot(data = Top5GamesTimeline, aes(x = Date, y = Tournaments)) +
-  geom_area(fill = "lightblue",color = "black") +
-  facet_grid(Game ~ .,scales = "free") +
-  labs(title = "Tournament evolution - top 5 games",x = element_blank(), y = element_blank()) +
-  scale_x_date(breaks = "2 years", date_labels = "%Y")
-
-rm(Top5Games,Top5GamesTimeline) # No longer necessary
-
-
 HistData %>%
   filter(Game %in% c(GenData[order(-GenData$TotalTournaments),1] %>%
                        head(5))) %>%
@@ -412,7 +392,7 @@ ggplot(aes(x = Genre,y = TotalEarnings)) +
   coord_flip() +
   theme(legend.position = "none",plot.subtitle = element_text(size = 10)) + 
   labs(title = "Total prizepool by genre*",
-       subtitle = "in millions of dollars",caption ="*In brackets - the number of games in each catergory",
+       subtitle = "in millions of dollars",caption ="*In brackets - the number of games in each genre",
        y = element_blank(), x = element_blank(), fill = "") + 
   geom_text(aes(label = ifelse(TotalEarnings >60E6,round(TotalEarnings/1E6,1),round(TotalEarnings/1E6,2))
                 ,hjust = if_else(TotalEarnings > 60E6,1.1,-0.2)),
@@ -439,7 +419,7 @@ ggplot(aes(x = Genre,y = AverageErnings)) +
 
 grid.arrange(p3,p4,ncol = 2)
 
-
+rm(list = c("p3","p4"))
 ```
 
 
@@ -453,17 +433,15 @@ However, I find it interesting to see so many **Strategy** games, as there less 
 To check this, ill create a plot with these 5 genres to see what percentages of games came out in the last couple of years. <br>
 
 ```{r ReleaseDate_prop_by_genre}
-
-ggplot(data = GenData %>%
+GenData %>%
          filter(Genre %in% c("FPS","Racing","Fighting","Strategy","Sports")) %>% 
-         mutate(ReleaseGroup = ifelse(ReleaseDate <= 2010,"Before 2010", ifelse(ReleaseDate <= 2015,"2011 - 2015","2016 and After"))), 
-       aes(x = factor(Genre,levels = c("Strategy","Fighting","Racing","Sports","FPS")), 
+         mutate(ReleaseGroup = ifelse(ReleaseDate <= 2010,"Before 2010", ifelse(ReleaseDate <= 2015,"2011 - 2015","2016 and After"))) %>%
+  ggplot(aes(x = factor(Genre,levels = c("Strategy","Fighting","Racing","Sports","FPS")), 
            fill = factor(ReleaseGroup,levels = c("Before 2010","2011 - 2015","2016 and After")))) + 
   geom_bar(position = "fill",color = "black",alpha = 0.75) +
   labs(fill = "Release Date", x = element_blank(), y = element_blank()) +
   scale_fill_brewer(palette = "Dark2") +
   labs(title = "Proportion of games released in each period", caption = "*selected genres only")
-
 
 ```
 <br>
@@ -476,7 +454,6 @@ Now let's look at the release date, how many games are released in each year and
 ## A look at release dates.
  
 ``` {r ReleaseDate_histogram}
-rm(Genre_plot) # Not necessary anymore
 
 # Plotting
 ggplot(data = GenData %>% mutate(Temp = ifelse(ReleaseDate == 2007,TRUE,FALSE)), aes(x = ReleaseDate,fill = Temp)) + 
@@ -488,10 +465,11 @@ ggplot(data = GenData %>% mutate(Temp = ifelse(ReleaseDate == 2007,TRUE,FALSE)),
 
 ```  
 <br>
-It is intersting to note that there was a after 2007 there was a sharp decrease in the amount of releases - I would suspect that it is due to the 2008 financial crisis.  
+It is intersting to note that there after 2007 there was a sharp decrease in the amount of releases - I would suspect that it is due to the 2008 financial crisis.  
 <br>
 
 ``` {r Avg_earnings_per_releasedate}
+
 # Plotting
 ggplot(data = GenData, aes(x = ReleaseDate,y = TotalEarnings,color = Genre,size = TotalEarnings)) +
   geom_point() +
@@ -504,6 +482,7 @@ ggplot(data = GenData, aes(x = ReleaseDate,y = TotalEarnings,color = Genre,size 
   scale_x_continuous(breaks = seq(from = 1980, to = 2020, by = 5)) +
   labs(title = "Earnings by release date",subtitle = "In millions of dollars",
     y = element_blank(), x = element_blank())
+
 ```  
 <br>
 It seems that there is no real connection between the release date of a game and the success it has in the Esports scene.
@@ -521,16 +500,15 @@ If the pandemic had no effect, we should see that 2020 looks to be similar to pr
 ## Effect on earnings.
 
 ```{r Coronavirus_effect_earnings}
-HistData$Year <- as.factor(HistData$Year)
-
 # Filtering to last 5 years and plotting monthly earnings
-ggplot(data = HistData %>% 
-         filter(Date >= "2016-01-01") %>% 
-         group_by(Year,Month) %>% 
-         summarise(Earnings = round(sum(Earnings)/10^6,2)),
-       aes(x = Month, y = Earnings, group = Year)) +
+HistData %>% 
+  filter(Date >= "2016-01-01") %>% 
+  group_by(Year,Month) %>% 
+  summarise(Earnings = round(sum(Earnings)/10^6,2)) %>%
+  ungroup() %>%
+  mutate(Year = as.factor(Year)) %>%
+  ggplot(aes(x = Month, y = Earnings, group = Year)) +
   geom_line(aes(color = Year), size = 1) +
-  theme_minimal() +
   labs(title = "Monthly earnings 2016 - 2020",
        subtitle = "In millions of dollars",x = element_blank(), y = element_blank())
 
@@ -543,17 +521,17 @@ As july and august are so important, let's zoom in on this period. <br>
 
 ```{r Coronavirus_effect_earnings_summer}
 # Filtering to last 5 years and plotting monthly earnings
-ggplot(data = HistData %>% 
-         filter((Month == 7 | Month == 8) ,Date >= "2010-01-01") %>% 
-         group_by(Year) %>% 
-         summarise(Earnings = round(sum(Earnings)/1000000,2)),
-       aes(x = factor(Year), y = Earnings,fill = Earnings)) +
-  geom_bar(stat = "identity", color = "black") +
+HistData %>% 
+  filter((Month == 7 | Month == 8) ,Date >= "2010-01-01") %>% 
+  group_by(Year) %>% 
+  summarise(Earnings = round(sum(Earnings)/1E6,2)) %>%
+  ggplot(aes(x = factor(Year), y = Earnings,fill = Earnings)) +
+  geom_col(color = "black") +
   scale_fill_gradient(low ="lightsalmon",high = "green2") +
   labs(title = "Yearly prize pool in summer months*",
        subtitle = "In millions of dollars",caption = "*july and august",
        x = element_blank(), y = element_blank()) +
-  guides(fill = "none") + theme_classic() +
+  guides(fill = "none") +
   geom_text(aes(label = Earnings, vjust = -0.25)) +
   theme(plot.caption = element_text(size = 10))
 
@@ -570,19 +548,18 @@ Let's look at the tournament plot now.
 
 ```{r Coronavirus_effect_tournaments}
 # Filtering to last 5 years and plotting monthly amount of tournaments
-
-ggplot(data = HistData %>% 
-         filter(Date >= "2016-01-01") %>% 
-         group_by(Date) %>% 
-         summarise(Tournaments = sum(Tournaments)),
-       aes(x = Date, y = Tournaments)) + 
+HistData %>% 
+  filter(Date >= "2016-01-01") %>% 
+  group_by(Date) %>% 
+  summarise(Tournaments = sum(Tournaments)) %>%
+  ggplot(aes(x = Date, y = Tournaments)) + 
   geom_area(fill = "lightblue", alpha = 0.85) +
   geom_line(color = "black") +
-  labs(title = "Monthly amount of tournaments 2016 - 2020",
-       caption = "In dotted line - official declaration of the pandemic",
-       x = element_blank(), y = element_blank()) +
-  scale_x_date(labels = date_format("%m/%y"),breaks = seq.Date(from = as.Date("2016-01-01"), to = as.Date("2021-01-01"), by ="6 months")) +
-  geom_vline(xintercept = as.Date("2020-03-11"), linetype = "dotted", color = "darkred",size = 1)
+  labs(title = "Monthly amount of tournaments 2016 - 2020",x = element_blank(), y = element_blank(),
+       caption = "*In dotted line - official declaration of the pandemic") +
+  scale_x_date(labels = date_format("%m/%y"),
+               breaks = seq.Date(from = as.Date("2016-01-01"), to = as.Date("2021-01-01"), by ="6 months")) +
+  geom_vline(xintercept = as.Date("2020-03-11"), linetype = "dashed", color = "darkred",size = 1)
 
 ```
 
@@ -591,7 +568,7 @@ It seems that tournements have been hit hard as well: after a usual weak start (
 # Conclusions.
 <br><br>
 
-We have learn a few things about the Esport industry
+We have learned a few things about the Esport industry
 
 1. Prize money is extremely concentrated between a few games, this is less of the case in the amount of tournaments. 
 2. **Dota 2** is the game with the most earnings, **StarCraft II** the one with the most tournaments to date.
@@ -601,6 +578,10 @@ We have learn a few things about the Esport industry
 6. There is not a clear relationship between the release date of a game and the success it will have in the Esport scene.
 7. The coronavirus pandemic has hit hard the Esport scence, the effect could be seen in earnings and amounts of tournaments from the month march to present times, and there are no doubts that the industry will be affected for a longer period.<br><br>
 8. Finally, it is clear that the esport industry is on the rise, and it will be interesting to see how it will develop in the next couple of years.
+<br><br><br>
 
+<center>![GG](https://www.howtogeek.com/wp-content/uploads/2019/12/GG-Banner.jpg)</center>
+<br><br>
 
 <h3>Thank you for reading, feel free to upvote or to leave a feedback</h3>
+
