@@ -28,7 +28,7 @@ First ill do some preparation.
 ```{r GeneralData.csv_prep}
 nap <- function(){
   print("Napping")
-  Sys.sleep(runif(1,2,3))
+  Sys.sleep(runif(1,7,9))
 }
 
 webpg1 <- read_html("https://www.esportsearnings.com/games/browse-by-genre")
@@ -54,7 +54,7 @@ Game_stats <- webpg1 %>% html_nodes(".games_main_game_stats") %>% html_text()
 # Game_stats variable will need some treatment before we add to the database
 
 # Looping through each game and mining more information
-for (i in 382:length(link_list)) {
+for (i in 408:length(link_list)) {
   game_pg <- read_html(link_list[i])
   print(paste0("Scraping game number ",i))
   nap()
