@@ -5,10 +5,11 @@ date: "7/10/2020"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # Installing Packages
-
+library(robotstxt)
 library(tidyverse)
 library(stringr)
 library(rvest)
@@ -28,7 +29,7 @@ First ill do some preparation.
 ```{r GeneralData.csv_prep}
 nap <- function(){
   print("Napping")
-  Sys.sleep(runif(1,7,9))
+  Sys.sleep(runif(1,6,9))
 }
 
 webpg1 <- read_html("https://www.esportsearnings.com/games/browse-by-genre")
@@ -54,7 +55,7 @@ Game_stats <- webpg1 %>% html_nodes(".games_main_game_stats") %>% html_text()
 # Game_stats variable will need some treatment before we add to the database
 
 # Looping through each game and mining more information
-for (i in 408:length(link_list)) {
+for (i in 389:length(link_list)) {
   game_pg <- read_html(link_list[i])
   print(paste0("Scraping game number ",i))
   nap()
@@ -162,7 +163,7 @@ write.csv(GeneralData,"GeneralEsportData.csv", row.names = FALSE)
 
 ```{r HistoricalData.csv_mining}
 HistoricalData <- data.frame()
-for (i in 1998:2020) {
+for (i in 2017:2021) {
   for (j in 1:12) {
   print(paste0("Mining historical data from ",j,"/",i))
   nap()
@@ -186,6 +187,9 @@ for (i in 1998:2020) {
   HistoricalData <- rbind(HistoricalData,temp)
   }
 }
+write.csv(HistoricalData,
+          "C:/Users/User/Desktop/Ran/R Projects/Esport.Earning/RawData/HistRaw.csv",
+          row.names = FALSE)
 rm(temp) #removing temporary df
 ```
 
